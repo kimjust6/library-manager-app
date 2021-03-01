@@ -8,4 +8,26 @@
 	</buildSpec>
 	<natures>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>TesterAssignment/src/application/Book.java</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/Assignment1/src/Book.java</locationURI>
+		</link>
+		<link>
+			<name>TesterAssignment/src/application/Librarian.java</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/Assignment1/src/Librarian.java</locationURI>
+		</link>
+		<link>
+			<name>TesterAssignment/src/application/Library.java</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/Assignment1/src/Library.java</locationURI>
+		</link>
+		<link>
+			<name>TesterAssignment/src/application/Student.java</name>
+			<type>1</type>
+			<locationURI>PROJECT_LOC/Assignment1/src/Student.java</locationURI>
+		</link>
+	</linkedResources>
 </projectDescription>
