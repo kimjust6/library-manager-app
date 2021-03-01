@@ -5,6 +5,7 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 
+
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
@@ -18,12 +19,13 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 		
-		System.out.println("Test by Harsh");
+
 	}
 	
 	public static void main(String[] args) {
+
 		launch(args);
 		
-		System.out.println("Another test");
+
 	}
 }
