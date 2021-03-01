@@ -18,6 +18,8 @@ public class Main extends Application {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println("Test by Harsh");
 	}
 	
 	public static void main(String[] args) {
@@ -25,5 +27,8 @@ public class Main extends Application {
 		System.out.println("Test by Justin to see if Push works");
 		
 		launch(args);
+		
+		
+		System.out.println("Another test");
 	}
 }
