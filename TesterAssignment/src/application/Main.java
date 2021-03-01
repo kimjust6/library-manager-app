@@ -18,11 +18,14 @@ public class Main extends Application {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
+		
+
 	}
 	
 	public static void main(String[] args) {
 
-		System.out.println("test 2 by Justin");
 		launch(args);
+		
+
 	}
 }
