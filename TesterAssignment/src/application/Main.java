@@ -24,10 +24,7 @@ public class Main extends Application {
 	
 	public static void main(String[] args) {
 
-		//This is a test by Justin Kim
-		console.log("Test by Justin to see if Push works");
-		
-		System.out.println("hellooo");
+		launch(args);
 		
 
 	}
