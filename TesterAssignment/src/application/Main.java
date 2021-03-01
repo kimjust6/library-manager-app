@@ -23,9 +23,8 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
-		//This is a test by Justin Kim
-		System.out.println("Test by Justin to see if Push works");
-		
+
+		System.out.println("test 1 by Justin");
 		launch(args);
 		
 		
