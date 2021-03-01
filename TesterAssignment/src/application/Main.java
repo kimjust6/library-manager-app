@@ -23,11 +23,7 @@ public class Main extends Application {
 	}
 	
 	public static void main(String[] args) {
-		//This is a test by Justin Kim
-		System.out.println("Test by Justin to see if Push works");
-		
 		launch(args);
-		
 		
 		System.out.println("Another test");
 	}
