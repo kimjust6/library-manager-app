@@ -28,7 +28,7 @@ public class Main extends Application {
 		//This is a test by Justin Kim
 		console.log("Test by Justin to see if Push works");
 		
-		System.out.println("Natalie is here");
+		System.out.println("hellooo");
 =======
 >>>>>>> branch 'master' of https://github.com/hershk17/BTP400_Assignment-1.git
 =======
