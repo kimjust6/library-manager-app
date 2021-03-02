@@ -20,8 +20,8 @@ public class Main extends Application {
 		try {
 			BorderPane rootPane = new BorderPane();
 			ImageView imageview = new ImageView(new Image("https://ih1.redbubble.net/image.1361936297.3666/tst,small,507x507-pad,600x600,f8f8f8.jpg"));
-			imageview.setFitHeight(200);
-			imageview.setFitWidth(200);
+			imageview.setFitHeight(250);
+			imageview.setFitWidth(250);
 			
 			GridPane loginPane = new GridPane();
 			loginPane.setAlignment(Pos.CENTER);
