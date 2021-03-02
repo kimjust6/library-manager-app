@@ -32,8 +32,6 @@ public abstract class User extends Person
 		return m_email;
 	}
 
-
-
 	public void setM_email(String m_email) {
 		this.m_email = m_email;
 	}
