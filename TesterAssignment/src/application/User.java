@@ -9,11 +9,18 @@ public abstract class User extends Person
 	private String m_username = "";
 	private String m_password = "";
 	
+	
+	boolean login()
+	{
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	
+	//accessor and modifier functions
 	 public String getM_name() {
 		return m_name;
 	}
-
-
 
 	public void setM_name(String m_name) {
 		this.m_name = m_name;
@@ -69,10 +76,6 @@ public abstract class User extends Person
 
 
 
-	boolean login()
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
+
 
 }

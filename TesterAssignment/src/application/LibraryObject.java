@@ -7,6 +7,8 @@ public class LibraryObject
 	private int m_qtyTotal = 0;
 	private int m_qtyOnHand = 0;
 	
+	
+	//accessor and modifier functions
 	public int getM_qtyTotal() {
 		return m_qtyTotal;
 	}
