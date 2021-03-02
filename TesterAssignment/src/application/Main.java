@@ -1,6 +1,7 @@
 package application;
 	
 import javafx.application.Application;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -40,6 +41,8 @@ public class Main extends Application {
 			rootPane.setTop(imageview);
 			rootPane.setCenter(loginPane);
 			Scene scene = new Scene(rootPane);
+			
+			primaryStage.setResizable(false);
 			primaryStage.setTitle("brr"); 
 		    primaryStage.setScene(scene); 
 			primaryStage.show();
