@@ -1,6 +1,6 @@
 package application;
 
-public class Book
+public class Book extends LibraryObject
 {
 	
 }
