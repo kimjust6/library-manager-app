@@ -102,6 +102,10 @@ public class Main extends Application {
 				
 				if(userType.equalsIgnoreCase("Admin")) {
 					System.out.println("You are an admin!");
+					
+					Admin admin = new Admin();
+					
+					
 				} else if(userType.equalsIgnoreCase("Librarian")) {
 					System.out.println("You are a librarian!");
 				} else {
