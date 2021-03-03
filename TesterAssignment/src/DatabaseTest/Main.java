@@ -6,23 +6,20 @@ public class Main {
 	
 	
     public static void main(String[] args) {
-    	postgreSQLHeroku app = new postgreSQLHeroku();
-        Connection conn = app.connect();
-        app.create_table(conn, "admins" );
+    	postgreSQLHeroku db = new postgreSQLHeroku();
+        Connection conn = db.connect();
+        db.create_table(conn, "admins" );
+        
+        db.create_table_1("students", "sid SERIAL", "firstname varchar(50)", "lastname varchar(50)");
         
         
-        String array[] = new String[1];
-        array[0] = "studentID SERIAL";
-        array[1] = " varchar(50)";
         
-        
-        //app.create_table_1("Students",array );
-        //app.insert(conn, app.tableUsers, "johnsnow", "myverysecurepassword", "Librarian");
-        //app.insert(conn, "admins", "harryPotter", "myverysecurepassword", "Admin");
-        //app.select(conn,"admins");
-        //app.update(conn,"admins","harryPotter","myverysecurepassword3");
-        //app.select(conn,"admins");
-        
+//        db.create_table_1("Students",array );
+//        db.insert(conn, db.tableUsers, "johnsnow", "myverysecurepassword", "Librarian");
+//        db.insert(conn, "admins", "harryPotter", "myverysecurepassword", "Admin");
+//        db.select(conn,"admins");
+//        db.update(conn,"admins","harryPotter","myverysecurepassword3");
+//        db.select(conn,"admins");
         
     }
 }

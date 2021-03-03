@@ -11,46 +11,46 @@ import java.sql.Statement;
 public class postgreSQLHeroku{
 
 	//final strings to connect to the database
-    private final String databaseURL = "jdbc:postgresql://ec2-54-209-43-223.compute-1.amazonaws.com:5432/d19rc88931g1bi";
-    private final String databaseUsername = "luwrnpzmqrzvln";
-    private final String databasePassword = "9b76f4cfa5a87feb4cf28e8b90e485b183bca39b2b20c09e323b4a04b524b2ce";
+    private final String DATABASE_URL = "jdbc:postgresql://ec2-54-209-43-223.compute-1.amazonaws.com:5432/d19rc88931g1bi";
+    private final String DATABASE_USERNAME = "luwrnpzmqrzvln";
+    private final String DATABASE_PASSWORD = "9b76f4cfa5a87feb4cf28e8b90e485b183bca39b2b20c09e323b4a04b524b2ce";
     
     //final strings for table names 
-    public final String tableUsers = "users";
-    public final String tableStudents = "students";
-    public final String tableLibrary = "library";
+    public final String TABLE_USERS = "users";
+    public final String TABLE_STUDENTS = "students";
+    public final String TABLE_LIBRARY = "library";
     
     //final strings for column names in table user
-    public final String colUsername = "username"; 
-    public final String colPassword = "password"; 
-    public final String colUsertype = "usertype";
+    public final String COL_USERNAME = "username"; 
+    public final String COL_PASSWORD = "password"; 
+    public final String COL_USERTYPE = "usertype";
     
     //final strings for user types
-    public final String typeAdmin = "admin";
-    public final String typeManager = "manager";
-    public final String typelLibrarian = "librarian";
+    public final String TYPE_ADMIN = "admin";
+    public final String TYPE_MANAGER = "manager";
+    public final String TYPE_LIBRARIAN = "librarian";
     
     //final strings for column names in table library (book)    
-    public final String colTitle = "title";
-    public final String colQtyAvail = "qtyAvailable";
-    public final String colQtyBor = "qtyBorrowed";
-    public final String colType = "type";
-    public final String colPublisher = "publisher";
+    public final String COL_TITLE = "title";
+    public final String COL_QTY_AVAIL = "qtyAvailable";
+    public final String COL_QTY_BOR = "qtyBorrowed";
+    public final String COL_TYPE = "type";
+    public final String COL_PUBLISHER = "publisher";
     
     //final strings for library (book) types
-    public final String typeBook = "book";
-    public final String typeMag = "magazine";
-    public final String typeVid = "video";
+    public final String TYPE_BOOK = "book";
+    public final String TYPE_MAG = "magazine";
+    public final String TYPE_VID = "video";
     
     //final strings for column names in table student
-    public final String colStudentNo = "studentno";
-    public final String colStudentLvl = "studentLvl";
+    public final String COL_STUD_NO = "studentno";
+    public final String COL_STUD_LVL = "studentLvl";
     
     //final strings for student levels
-    public final String typeAlum = "alumni";
-    public final String typeCurr = "current";
-    public final String typeUnder = "undergrad";
-    public final String typeGrad = "graduate";
+    public final String TYPE_ALUM = "alumni";
+    public final String TYPE_CURR = "current";
+    public final String TYPE_UNDER = "undergrad";
+    public final String TYPE_GRAD = "graduate";
     
     
     private Connection m_conn = null;
@@ -72,7 +72,7 @@ public class postgreSQLHeroku{
     public Connection connect() {
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword);
+            conn = DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
             System.out.println("Connected to the PostgreSQL server successfully.");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -105,7 +105,7 @@ public class postgreSQLHeroku{
     }
     
     
-    public boolean create_table_1(String tableName, String ...col)
+    public boolean create_table_1(String tableName, String ... col)
     {
     	Statement statement;
     	boolean returnValue = true;
@@ -129,6 +129,7 @@ public class postgreSQLHeroku{
     		statement.executeUpdate(query);
     		System.out.println("Table Created! (probably)");
     		returnValue = true;
+    		
     	}catch(Exception e)
     	{
     		System.out.println(e);
