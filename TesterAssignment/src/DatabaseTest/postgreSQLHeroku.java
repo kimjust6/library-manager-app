@@ -123,7 +123,7 @@ public class postgreSQLHeroku{
     		{
     			query += ", " + col[i]; 
     		}
-    		query += ");";
+    		query += String.format("PRIMARY KEY( %s );", col[0]);
     		
     		System.out.println(query);
     		statement = this.m_conn.createStatement();
