@@ -61,7 +61,7 @@ public class Main extends Application {
 	    btStu.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try {
-					stage.setScene(studentLoginPage());
+					stage.setScene(studentHomePage());
 					stage.setTitle("Student Login Page");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -101,7 +101,7 @@ public class Main extends Application {
 		return new Scene(pane, 350, 450);
 	}
 	
-	public Scene studentLoginPage() throws Exception {
+	public Scene studentHomePage() throws Exception {
 		GridPane pane = new GridPane();
 		pane.setAlignment(Pos.CENTER);
 		pane.setHgap(5.5);
