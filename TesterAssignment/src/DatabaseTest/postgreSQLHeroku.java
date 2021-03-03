@@ -97,28 +97,7 @@ public class postgreSQLHeroku{
     }
     
     
-    
-//    public boolean create_table(Connection conn, String tableName)
-//    {
-//    	Statement statement;
-//    	boolean returnValue = true;
-//    	try
-//    	{
-//    		String query = "CREATE TABLE IF NOT EXISTS " + tableName + "(userid SERIAL, username varchar(50), password varchar(50), usertype varchar(100), primary key (username));";
-//    		System.out.println(query);
-//    		statement = this.m_conn.createStatement();
-//    		statement.executeUpdate(query);
-//    		System.out.println("Table Created! (probably)");
-//    		returnValue = true;
-//    	}catch(Exception e)
-//    	{
-//    		System.out.println(e);
-//    		returnValue = false;
-//    	}
-//    	
-//    	return returnValue;
-//    }
-    
+   
     
     public boolean create_table(String tableName, String ... col)
     {
@@ -178,7 +157,7 @@ public class postgreSQLHeroku{
     }
     
     
-    public boolean insert_1(String tableName, String ... col)
+    public boolean insert(String tableName, String ... col)
     {
     	Statement statement;
     	boolean returnValue = true;
@@ -212,26 +191,8 @@ public class postgreSQLHeroku{
     	return returnValue;
     }
     
-    public boolean insert(String tableName, String username, String password, String usertype)
-    {
-    	Statement statement;
-    	boolean returnValue = true;
-    	try
-    	{
-    		String query = String.format("INSERT INTO %s(username,password,usertype) VALUES ('%s','%s','%s')",tableName,username,password,usertype);
-    		
-    		System.out.println(query);
-    		statement = this.m_conn.createStatement();
-    		statement.executeUpdate(query);
-    		System.out.println("Inserted values!");
-    		returnValue = true;
-    	}catch(Exception e)
-    	{
-    		System.out.println(e);
-    		returnValue = false;
-    	}
-    	return returnValue;
-    }
+
+    
     
     public ResultSet select(String tableName)
     {
@@ -259,14 +220,14 @@ public class postgreSQLHeroku{
     	
     }
     
-    public boolean update(String tableName, String username, String password)
+    public boolean update(String tableName, String colPK, String PK, String colChange, String newValue)
     {
     	Statement statement;
     	boolean returnValue = true;
     	try
     	{
-    		String query = String.format("UPDATE %s SET password='%s' WHERE username = '%s';",tableName, password, username);
-    		//System.out.println(query);
+    		String query = String.format("UPDATE %s SET %s='%s' WHERE %s = '%s';",tableName, colPK, PK, colChange, newValue);
+    		System.out.println(query);
     		statement = this.m_conn.createStatement();
     		statement.executeUpdate(query);
     		System.out.println("Table updated!");
@@ -278,5 +239,7 @@ public class postgreSQLHeroku{
     	}
     	return returnValue;
     }
+    
+
 }
 
