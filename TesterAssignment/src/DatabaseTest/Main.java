@@ -11,6 +11,8 @@ public class Main {
 
         
         db.create_table("students", "sid SERIAL", "firstname varchar(50)", "lastname varchar(50)");
+        db.insert_1("students","1","justin","kim");
+        
         
 //        db.insert(conn, db.tableUsers, "johnsnow", "myverysecurepassword", "Librarian");
 //        db.insert(conn, "admins", "harryPotter", "myverysecurepassword", "Admin");
