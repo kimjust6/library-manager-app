@@ -196,7 +196,7 @@ public class postgreSQLHeroku{
     	return returnValue;
     }
     
-    public boolean insert(Connection conn, String tableName, String username, String password, String usertype)
+    public boolean insert(String tableName, String username, String password, String usertype)
     {
     	Statement statement;
     	boolean returnValue = true;
@@ -217,7 +217,7 @@ public class postgreSQLHeroku{
     	return returnValue;
     }
     
-    public ResultSet select(Connection conn, String tableName)
+    public ResultSet select(String tableName)
     {
     	Statement statement;
     	ResultSet rs = null;
@@ -243,7 +243,7 @@ public class postgreSQLHeroku{
     	
     }
     
-    public boolean update(Connection conn, String tableName, String username, String password)
+    public boolean update(String tableName, String username, String password)
     {
     	Statement statement;
     	boolean returnValue = true;
