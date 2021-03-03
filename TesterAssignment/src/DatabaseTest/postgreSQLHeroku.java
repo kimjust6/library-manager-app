@@ -82,18 +82,28 @@ public class postgreSQLHeroku{
 
     // temporary method - Harsh K
     
-    public boolean loginQuery(String username, String password) {
+    public String initialize(String username, String password) {
+    	String query = "";
+    	ResultSet queryResult = null;
     	try {
-    		String query = "select * from " + TABLE_USERS + " where " + COL_USERNAME + "='" + username + "' and " + COL_PASSWORD + "='" + password + "';";
-    		Statement statement = this.m_conn.createStatement();
-    		ResultSet queryResult = statement.executeQuery(query); 
+        	Statement statement = this.m_conn.createStatement();
+        	
+    		query = "select * from " + TABLE_USERS + " where " + COL_USERNAME + "='" + username + "';";
+    		queryResult = statement.executeQuery(query); 
     		
-    		return queryResult.next();
+    		if(queryResult.next()) {
+    			if (queryResult.getString(COL_PASSWORD).equals(password)) {  
+    				return queryResult.getString(COL_USERTYPE);
+    			} else {
+    				System.out.println("Invalid password!");
+    			}
+    		} else {
+    			System.out.println("User does not exist!");
+    		}
     	} catch (Exception e) {
     		e.printStackTrace();
-    		return false;
     	}
-    	
+		return null;
     }
     
     
