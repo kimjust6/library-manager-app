@@ -176,22 +176,22 @@ public class postgreSQLHeroku{
     }
     
     
-    public boolean insert(String tableName, String ... col)
+    public boolean insert_1(String tableName, String ... col)
     {
     	Statement statement;
     	boolean returnValue = true;
     	try
     	{
-    		String query = "INSERT INTO " + tableName + "VALUES (";
+    		String query = "INSERT INTO " + tableName + " VALUES (";
     		
     		if (col.length > 0)
     		{
-    			 query += col[0];
+    			 query += "'" + col[0] + "'";
     		}
     		
     		for(int i = 1; i < col.length; ++i)
     		{
-    			query += ", " + col[i]; 
+    			query += ", " + "'" + col[i] + "'"; 
     		}
     		query += ");";
     		
