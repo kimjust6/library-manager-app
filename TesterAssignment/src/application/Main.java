@@ -13,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import DatabaseTest.postgreSQLHeroku;
 
@@ -32,8 +33,8 @@ public class Main extends Application {
 	public Scene homePage() throws Exception {
 		GridPane pane = new GridPane();
 		pane.setAlignment(Pos.CENTER);
-	    pane.setHgap(5.5);
-	    pane.setVgap(10);
+	    pane.setHgap(10);
+	    pane.setVgap(2);
 	    
 	    Image image = new Image(getClass().getResourceAsStream("admin.png"));
 	    ImageView imgV= new ImageView(image);
@@ -46,7 +47,7 @@ public class Main extends Application {
 	    imgV2.setFitWidth(70);
 	    
 	    Label wlcMSG = new Label("Welcome!\nWho are you logging in as...?\n");
-
+	    wlcMSG.setFont(new Font(18));
 		Button btAdmin = new Button("Admin");
 	    Button btStu = new Button("Student");
 
@@ -78,8 +79,44 @@ public class Main extends Application {
 	    pane.add(btStu, 1, 2);
 	    
 	    return new Scene(pane, 350, 450);
+	 
 	}
-	
+	public Scene adminOptionsPage() throws Exception {
+		GridPane pane = new GridPane();
+		pane.setAlignment(Pos.CENTER);
+		pane.setHgap(10);
+		pane.setVgap(20);
+		
+		Image image = new Image(getClass().getResourceAsStream("register.png"));
+	    ImageView imgV= new ImageView(image);
+	    imgV.setFitHeight(40);
+	    imgV.setFitWidth(40);
+		
+	    Image image1 = new Image(getClass().getResourceAsStream("delete.png"));
+	    ImageView imgV1= new ImageView(image1);
+	    imgV1.setFitHeight(40);
+	    imgV1.setFitWidth(40);
+	    
+	    Image image2 = new Image(getClass().getResourceAsStream("view.png"));
+	    ImageView imgV2= new ImageView(image2);
+	    imgV2.setFitHeight(40);
+	    imgV2.setFitWidth(40);
+	    
+		Button btn0 = new Button("Register Librarian");
+		Button btn1 = new Button("Delete Librarian");
+		Button btn2 = new Button("View Librarians");
+		
+		pane.add(imgV, 0, 0);
+		pane.add(btn0, 1, 0);
+		pane.add(imgV1, 0, 1);
+		pane.add(btn1, 1, 1);
+		pane.add(imgV2, 0, 2);
+		pane.add(btn2, 1, 2);
+		
+		Scene scene = new Scene(pane, 350, 450);
+		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+		return scene;
+	}
 	public Scene loginPage() throws Exception {
 		GridPane pane = new GridPane();
 		pane.setAlignment(Pos.CENTER);
@@ -102,6 +139,12 @@ public class Main extends Application {
 				
 				if(userType.equalsIgnoreCase("Admin")) {
 					System.out.println("You are an admin!");
+					try {
+						stage.setScene(adminOptionsPage());
+						stage.setTitle("Admin Page");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				} else if(userType.equalsIgnoreCase("Librarian")) {
 					System.out.println("You are a librarian!");
 				} else {
@@ -111,8 +154,10 @@ public class Main extends Application {
 		});
 		pane.add(btn, 1, 3);
 		
-		return new Scene(pane, 350, 450);
-	}
+		Scene scene = new Scene(pane, 350, 450);
+	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	    return scene;
+		}
 	
 	public Scene studentHomePage() throws Exception {
 		GridPane pane = new GridPane();
@@ -137,7 +182,9 @@ public class Main extends Application {
        pane.add(studentNoField, 1 , 0);
        pane.add(btn, 0, 1);
        
-       return new Scene(pane, 350, 450);
+       Scene scene = new Scene(pane, 350, 450);
+	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	    return scene;
 	}
 	
 	public Scene studentLoginPage(TextField studentNoField) throws Exception {
@@ -149,12 +196,15 @@ public class Main extends Application {
       	Button btn0 = new Button("Search a book");
       	Button btn1 = new Button("Request an issue");
       	Button btn2 = new Button("View borrowed books");
+      	btn2.setWrapText(true);
       	pane.add(heading, 0, 0);
       	pane.add(btn0, 0, 1);
       	pane.add(btn1, 0, 2);
       	pane.add(btn2, 0, 3);
       	
-		return new Scene(pane, 350, 450);
+      	Scene scene = new Scene(pane, 350, 450);
+	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	    return scene;
 	}
 	
 	public static void main(String[] args) {
