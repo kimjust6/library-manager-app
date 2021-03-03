@@ -137,7 +137,9 @@ public class postgreSQLHeroku{
     		{
     			query += ", " + col[i]; 
     		}
-    		query += String.format("PRIMARY KEY( %s );", col[0]);
+    		
+    		String anArray[] = col[0].split(" ");
+    		query += String.format(", PRIMARY KEY( %s ));", anArray[0]);
     		
     		System.out.println(query);
     		statement = this.m_conn.createStatement();
@@ -198,7 +200,7 @@ public class postgreSQLHeroku{
     		System.out.println(query);
     		statement = this.m_conn.createStatement();
     		statement.executeUpdate(query);
-    		System.out.println("Table Created! (probably)");
+    		System.out.println("Table Inserted!");
     		returnValue = true;
     		
     	}catch(Exception e)
