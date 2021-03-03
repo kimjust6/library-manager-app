@@ -8,9 +8,9 @@ public class Main {
     public static void main(String[] args) {
     	postgreSQLHeroku db = new postgreSQLHeroku();
         Connection conn = db.connect();
-        db.create_table(conn, "admins" );
+
         
-        db.create_table_1("students", "sid SERIAL", "firstname varchar(50)", "lastname varchar(50)");
+        db.create_table("students", "sid SERIAL", "firstname varchar(50)", "lastname varchar(50)");
         
         
         

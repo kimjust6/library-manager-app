@@ -83,29 +83,29 @@ public class postgreSQLHeroku{
 
 
     
-    public boolean create_table(Connection conn, String tableName)
-    {
-    	Statement statement;
-    	boolean returnValue = true;
-    	try
-    	{
-    		String query = "CREATE TABLE IF NOT EXISTS " + tableName + "(userid SERIAL, username varchar(50), password varchar(50), usertype varchar(100), primary key (username));";
-    		System.out.println(query);
-    		statement = this.m_conn.createStatement();
-    		statement.executeUpdate(query);
-    		System.out.println("Table Created! (probably)");
-    		returnValue = true;
-    	}catch(Exception e)
-    	{
-    		System.out.println(e);
-    		returnValue = false;
-    	}
-    	
-    	return returnValue;
-    }
+//    public boolean create_table(Connection conn, String tableName)
+//    {
+//    	Statement statement;
+//    	boolean returnValue = true;
+//    	try
+//    	{
+//    		String query = "CREATE TABLE IF NOT EXISTS " + tableName + "(userid SERIAL, username varchar(50), password varchar(50), usertype varchar(100), primary key (username));";
+//    		System.out.println(query);
+//    		statement = this.m_conn.createStatement();
+//    		statement.executeUpdate(query);
+//    		System.out.println("Table Created! (probably)");
+//    		returnValue = true;
+//    	}catch(Exception e)
+//    	{
+//    		System.out.println(e);
+//    		returnValue = false;
+//    	}
+//    	
+//    	return returnValue;
+//    }
     
     
-    public boolean create_table_1(String tableName, String ... col)
+    public boolean create_table(String tableName, String ... col)
     {
     	Statement statement;
     	boolean returnValue = true;
