@@ -6,16 +6,33 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+
+
+
 /**
  *
  * @author postgresqltutorial.com
  */
-public class PostgresqlTest{
+public class postgreSQLHeroku{
 
 	//final strings to connect to the database
-    private final String url = "jdbc:postgresql://ec2-54-209-43-223.compute-1.amazonaws.com:5432/d19rc88931g1bi";
-    private final String user = "luwrnpzmqrzvln";
-    private final String password = "9b76f4cfa5a87feb4cf28e8b90e485b183bca39b2b20c09e323b4a04b524b2ce";
+    private final String databaseURL = "jdbc:postgresql://ec2-54-209-43-223.compute-1.amazonaws.com:5432/d19rc88931g1bi";
+    private final String databaseUsername = "luwrnpzmqrzvln";
+    private final String databasePassword = "9b76f4cfa5a87feb4cf28e8b90e485b183bca39b2b20c09e323b4a04b524b2ce";
+    
+    //final strings for table names and column names
+    public final String tableUsers = "users";
+    public final String tableStudents = "students";
+    public final String tableBooks = "books";
+    private final String sqlUsername = "username"; 
+    private final String sqlPassword = "password"; 
+    private final String sqlAdmin = "password";
+    private final String sqlUsertype = "usertype";
+    private final String sqlBook = "book";
+    private final String sqlBookQty = "bookqty";
+    private final String sqlStudentNo = "studentno";
+    
+    
     
 
 
@@ -27,7 +44,7 @@ public class PostgresqlTest{
     public Connection connect() {
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection(url, user, password);
+            conn = DriverManager.getConnection(databaseURL, databaseUsername, databasePassword);
             System.out.println("Connected to the PostgreSQL server successfully.");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -49,7 +66,7 @@ public class PostgresqlTest{
     		statement = conn.createStatement();
     		statement.executeUpdate(query);
     		System.out.println("Table Created! (probably)");
-    		returnValue = true;;
+    		returnValue = true;
     	}catch(Exception e)
     	{
     		System.out.println(e);
