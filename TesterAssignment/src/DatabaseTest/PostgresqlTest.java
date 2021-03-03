@@ -38,26 +38,30 @@ public class PostgresqlTest{
 
 
     
-    public void create_table(Connection conn, String tableName)
+    public boolean create_table(Connection conn, String tableName)
     {
     	Statement statement;
+    	boolean returnValue = true;
     	try
     	{
     		String query = "CREATE TABLE IF NOT EXISTS " + tableName + "(userid SERIAL, username varchar(50), password varchar(50), usertype varchar(100), primary key (username));";
-    		//String query = "CREATE TABLE IF NOT EXISTS " + tableName + "(username varchar(50), password varchar(50), usertype varchar(100));";
     		System.out.println(query);
     		statement = conn.createStatement();
     		statement.executeUpdate(query);
     		System.out.println("Table Created! (probably)");
+    		returnValue = true;;
     	}catch(Exception e)
     	{
     		System.out.println(e);
+    		returnValue = false;
     	}
+    	return returnValue;
     }
     
-    public void insert(Connection conn, String tableName, String username, String password, String usertype)
+    public boolean insert(Connection conn, String tableName, String username, String password, String usertype)
     {
     	Statement statement;
+    	boolean returnValue = true;
     	try
     	{
     		String query = String.format("INSERT INTO %s(username,password,usertype) VALUES ('%s','%s','%s')",tableName,username,password,usertype);
@@ -66,13 +70,16 @@ public class PostgresqlTest{
     		statement = conn.createStatement();
     		statement.executeUpdate(query);
     		System.out.println("Inserted values!");
+    		returnValue = true;
     	}catch(Exception e)
     	{
     		System.out.println(e);
+    		returnValue = false;
     	}
+    	return returnValue;
     }
     
-    public void select(Connection conn, String tableName)
+    public ResultSet select(Connection conn, String tableName)
     {
     	Statement statement;
     	ResultSet rs = null;
@@ -84,16 +91,38 @@ public class PostgresqlTest{
     		while(rs.next())
     		{
     			System.out.println("Output: ");
-    			System.out.print(rs.getString("username") + " ");
-    			System.out.print(rs.getString("password") + " ");
-    			System.out.print(rs.getString("usertype") + " ");
+    			System.out.println(rs.getString("usertype") + ": ");
+    			System.out.print(rs.getString("username") + " : ");
+    			System.out.println(rs.getString("password") + " ");
+    			
     		}
     	}catch(Exception e)
     	{
     		System.out.println(e);
     	}
     	
+    	return rs;
     	
+    }
+    
+    public boolean update(Connection conn, String tableName, String username, String password)
+    {
+    	Statement statement;
+    	boolean returnValue = true;
+    	try
+    	{
+    		String query = String.format("UPDATE %s SET password='%s' WHERE username = '%s';",tableName, password, username);
+    		//System.out.println(query);
+    		statement = conn.createStatement();
+    		statement.executeUpdate(query);
+    		System.out.println("Table updated!");
+    		returnValue = true;;
+    	}catch(Exception e)
+    	{
+    		System.out.println(e);
+    		returnValue = false;
+    	}
+    	return returnValue;
     }
 }
 
