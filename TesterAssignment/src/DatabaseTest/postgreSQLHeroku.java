@@ -7,10 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 
-/**
- *
- * @author postgresqltutorial.com
- */
+
 public class postgreSQLHeroku{
 
 	//final strings to connect to the database
@@ -24,44 +21,54 @@ public class postgreSQLHeroku{
     public final String tableLibrary = "library";
     
     //final strings for column names in table user
-    private final String colUsername = "username"; 
-    private final String colPassword = "password"; 
-    private final String colUsertype = "usertype";
+    public final String colUsername = "username"; 
+    public final String colPassword = "password"; 
+    public final String colUsertype = "usertype";
     
     //final strings for user types
-    private final String typeAdmin = "admin";
-    private final String typeManager = "manager";
-    private final String typelLibrarian = "librarian";
+    public final String typeAdmin = "admin";
+    public final String typeManager = "manager";
+    public final String typelLibrarian = "librarian";
     
     //final strings for column names in table library (book)    
-    private final String colTitle = "title";
-    private final String colQtyAvail = "qtyAvailable";
-    private final String colQtyBor = "qtyBorrowed";
-    private final String colType = "type";
-    private final String colPublisher = "publisher";
+    public final String colTitle = "title";
+    public final String colQtyAvail = "qtyAvailable";
+    public final String colQtyBor = "qtyBorrowed";
+    public final String colType = "type";
+    public final String colPublisher = "publisher";
     
     //final strings for library (book) types
-    private final String typeBook = "book";
-    private final String typeMag = "magazine";
-    private final String typeVid = "video";
+    public final String typeBook = "book";
+    public final String typeMag = "magazine";
+    public final String typeVid = "video";
     
     //final strings for column names in table student
-    private final String colStudentNo = "studentno";
-    private final String colStudentLvl = "studentLvl";
+    public final String colStudentNo = "studentno";
+    public final String colStudentLvl = "studentLvl";
     
     //final strings for student levels
-    private final String typeAlum = "alumni";
-    private final String typeCurr = "current";
-    private final String typeUnder = "undergrad";
-    private final String typeGrad = "graduate";
+    public final String typeAlum = "alumni";
+    public final String typeCurr = "current";
+    public final String typeUnder = "undergrad";
+    public final String typeGrad = "graduate";
     
     
+    private Connection m_conn = null;
     
+    postgreSQLHeroku()
+    {
+    	m_conn = this.connect();
+    }
     /**
      * Connect to the PostgreSQL database
      *
      * @return a Connection object
      */
+    
+    
+    
+    
+    
     public Connection connect() {
         Connection conn = null;
         try {
@@ -84,9 +91,65 @@ public class postgreSQLHeroku{
     	{
     		String query = "CREATE TABLE IF NOT EXISTS " + tableName + "(userid SERIAL, username varchar(50), password varchar(50), usertype varchar(100), primary key (username));";
     		System.out.println(query);
-    		statement = conn.createStatement();
+    		statement = this.m_conn.createStatement();
     		statement.executeUpdate(query);
     		System.out.println("Table Created! (probably)");
+    		returnValue = true;
+    	}catch(Exception e)
+    	{
+    		System.out.println(e);
+    		returnValue = false;
+    	}
+    	
+    	return returnValue;
+    }
+    
+    
+    public boolean create_table_1(String tableName, String ...col)
+    {
+    	Statement statement;
+    	boolean returnValue = true;
+    	try
+    	{
+    		String query = "CREATE TABLE IF NOT EXISTS " + tableName + "(";
+    		
+    		if (col.length > 0)
+    		{
+    			 query += col[0];
+    		}
+    		
+    		for(int i = 1; i < col.length; ++i)
+    		{
+    			query += ", " + col[i]; 
+    		}
+    		query += ");";
+    		
+    		System.out.println(query);
+    		statement = this.m_conn.createStatement();
+    		statement.executeUpdate(query);
+    		System.out.println("Table Created! (probably)");
+    		returnValue = true;
+    	}catch(Exception e)
+    	{
+    		System.out.println(e);
+    		returnValue = false;
+    	}
+    	
+    	return returnValue;
+    }
+    
+    public boolean insert_librarian(String tableName, String username, String password, String usertype)
+    {
+    	Statement statement;
+    	boolean returnValue = true;
+    	try
+    	{
+    		String query = String.format("INSERT INTO %s(username,password,usertype) VALUES ('%s','%s','%s')",tableName,username,password,usertype);
+    		
+    		System.out.println(query);
+    		statement = this.m_conn.createStatement();
+    		statement.executeUpdate(query);
+    		System.out.println("Inserted values!");
     		returnValue = true;
     	}catch(Exception e)
     	{
@@ -105,7 +168,7 @@ public class postgreSQLHeroku{
     		String query = String.format("INSERT INTO %s(username,password,usertype) VALUES ('%s','%s','%s')",tableName,username,password,usertype);
     		
     		System.out.println(query);
-    		statement = conn.createStatement();
+    		statement = this.m_conn.createStatement();
     		statement.executeUpdate(query);
     		System.out.println("Inserted values!");
     		returnValue = true;
@@ -124,7 +187,7 @@ public class postgreSQLHeroku{
     	try
     	{
     		String query = String.format("SELECT * FROM %s;", tableName);
-    		statement = conn.createStatement();
+    		statement = this.m_conn.createStatement();
     		rs = statement.executeQuery(query);
     		while(rs.next())
     		{
@@ -151,7 +214,7 @@ public class postgreSQLHeroku{
     	{
     		String query = String.format("UPDATE %s SET password='%s' WHERE username = '%s';",tableName, password, username);
     		//System.out.println(query);
-    		statement = conn.createStatement();
+    		statement = this.m_conn.createStatement();
     		statement.executeUpdate(query);
     		System.out.println("Table updated!");
     		returnValue = true;;
