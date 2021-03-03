@@ -60,9 +60,6 @@ public class postgreSQLHeroku{
     {
     	m_conn = this.connect();
     }
-
-    
-    
     
     
     /**
@@ -83,6 +80,23 @@ public class postgreSQLHeroku{
     }
 
 
+    // temporary method - Harsh K
+    
+    public boolean loginQuery(String username, String password) {
+    	try {
+    		String query = "select * from " + TABLE_USERS + " where " + COL_USERNAME + "='" + username + "' and " + COL_PASSWORD + "='" + password + "';";
+    		Statement statement = this.m_conn.createStatement();
+    		ResultSet queryResult = statement.executeQuery(query); 
+    		
+    		return queryResult.next();
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		return false;
+    	}
+    	
+    }
+    
+    
     
 //    public boolean create_table(Connection conn, String tableName)
 //    {
