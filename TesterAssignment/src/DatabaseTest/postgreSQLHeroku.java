@@ -167,6 +167,60 @@ public class postgreSQLHeroku{
     }
     
     
+    //****************************************************************************
+    //BASIC CRUD OPERATIONS
+    //****************************************************************************
+    public ResultSet selectAll(String tableName)
+    {
+    	Statement statement;
+    	ResultSet rs = null;
+    	try
+    	{
+    		String query = String.format("SELECT * FROM %s;", tableName);
+    		statement = this.m_conn.createStatement();
+    		rs = statement.executeQuery(query);
+    		while(rs.next())
+    		{
+    			System.out.println("Output: ");
+    			System.out.println(rs.getString("usertype") + ": ");
+    			System.out.print(rs.getString("username") + " : ");
+    			System.out.println(rs.getString("password") + " ");
+    			
+    		}
+    	}catch(Exception e)
+    	{
+    		System.out.println(e);
+    	}
+    	
+    	return rs;
+    	
+    }
+    
+    public ResultSet select(String tableName, String col, String operator, String tupleMatch )
+    {
+    	Statement statement;
+    	ResultSet rs = null;
+    	try
+    	{
+    		String query = String.format("SELECT * FROM %s;", tableName);
+    		statement = this.m_conn.createStatement();
+    		rs = statement.executeQuery(query);
+    		while(rs.next())
+    		{
+    			System.out.println("Output: ");
+    			System.out.println(rs.getString("usertype") + ": ");
+    			System.out.print(rs.getString("username") + " : ");
+    			System.out.println(rs.getString("password") + " ");
+    			
+    		}
+    	}catch(Exception e)
+    	{
+    		System.out.println(e);
+    	}
+    	
+    	return rs;
+    }
+    
     public boolean insert(String tableName, String ... col)
     {
     	Statement statement;
@@ -203,33 +257,6 @@ public class postgreSQLHeroku{
     
 
     
-    
-    public ResultSet select(String tableName)
-    {
-    	Statement statement;
-    	ResultSet rs = null;
-    	try
-    	{
-    		String query = String.format("SELECT * FROM %s;", tableName);
-    		statement = this.m_conn.createStatement();
-    		rs = statement.executeQuery(query);
-    		while(rs.next())
-    		{
-    			System.out.println("Output: ");
-    			System.out.println(rs.getString("usertype") + ": ");
-    			System.out.print(rs.getString("username") + " : ");
-    			System.out.println(rs.getString("password") + " ");
-    			
-    		}
-    	}catch(Exception e)
-    	{
-    		System.out.println(e);
-    	}
-    	
-    	return rs;
-    	
-    }
-    
     public boolean update(String tableName, String colPK, String PK, String colChange, String newValue)
     {
     	Statement statement;
@@ -241,6 +268,27 @@ public class postgreSQLHeroku{
     		statement = this.m_conn.createStatement();
     		statement.executeUpdate(query);
     		System.out.println("Table updated!");
+    		returnValue = true;;
+    	}catch(Exception e)
+    	{
+    		System.out.println(e);
+    		returnValue = false;
+    	}
+    	return returnValue;
+    }
+    
+    
+    public boolean delete(String tableName, String colPK, String PK)
+    {
+    	Statement statement;
+    	boolean returnValue = true;
+    	try
+    	{
+    		String query = String.format("DELETE %s FROM %s WHERE %s = '%s';",tableName, colPK, PK);
+    		System.out.println(query);
+    		statement = this.m_conn.createStatement();
+    		statement.executeUpdate(query);
+    		System.out.println("tuple deleted!");
     		returnValue = true;;
     	}catch(Exception e)
     	{
