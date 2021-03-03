@@ -7,8 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 
-
-
 /**
  *
  * @author postgresqltutorial.com
@@ -20,22 +18,45 @@ public class postgreSQLHeroku{
     private final String databaseUsername = "luwrnpzmqrzvln";
     private final String databasePassword = "9b76f4cfa5a87feb4cf28e8b90e485b183bca39b2b20c09e323b4a04b524b2ce";
     
-    //final strings for table names and column names
+    //final strings for table names 
     public final String tableUsers = "users";
     public final String tableStudents = "students";
-    public final String tableBooks = "books";
-    private final String sqlUsername = "username"; 
-    private final String sqlPassword = "password"; 
-    private final String sqlAdmin = "password";
-    private final String sqlUsertype = "usertype";
-    private final String sqlBook = "book";
-    private final String sqlBookQty = "bookqty";
-    private final String sqlStudentNo = "studentno";
+    public final String tableLibrary = "library";
+    
+    //final strings for column names in table user
+    private final String colUsername = "username"; 
+    private final String colPassword = "password"; 
+    private final String colUsertype = "usertype";
+    
+    //final strings for user types
+    private final String typeAdmin = "admin";
+    private final String typeManager = "manager";
+    private final String typelLibrarian = "librarian";
+    
+    //final strings for column names in table library (book)    
+    private final String colTitle = "title";
+    private final String colQtyAvail = "qtyAvailable";
+    private final String colQtyBor = "qtyBorrowed";
+    private final String colType = "type";
+    private final String colPublisher = "publisher";
+    
+    //final strings for library (book) types
+    private final String typeBook = "book";
+    private final String typeMag = "magazine";
+    private final String typeVid = "video";
+    
+    //final strings for column names in table student
+    private final String colStudentNo = "studentno";
+    private final String colStudentLvl = "studentLvl";
+    
+    //final strings for student levels
+    private final String typeAlum = "alumni";
+    private final String typeCurr = "current";
+    private final String typeUnder = "undergrad";
+    private final String typeGrad = "graduate";
     
     
     
-
-
     /**
      * Connect to the PostgreSQL database
      *
