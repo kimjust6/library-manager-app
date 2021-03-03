@@ -14,9 +14,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import DatabaseTest.postgreSQLHeroku;
 
 public class Main extends Application {
-	User user = new User();
+	private postgreSQLHeroku DB = new postgreSQLHeroku();
 	private Stage stage;
 	
 	@Override
@@ -87,7 +88,7 @@ public class Main extends Application {
 		pane.setVgap(5.5);
 			
 		TextField username = new TextField();
-		TextField password = new TextField();
+		PasswordField password = new PasswordField();
 		
 		pane.add(new Label("Username:"), 0, 1);
 		pane.add(username, 1, 1);
@@ -97,17 +98,19 @@ public class Main extends Application {
 		Button btn = new Button("Login");
 		btn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
-				boolean loginStatus = user.login(username.getText(), password.getText());
+				String userType = DB.initialize(username.getText(), password.getText());
 				
-				if(loginStatus) {
-					System.out.println("Success! You logged in.");
+				if(userType.equalsIgnoreCase("Admin")) {
+					System.out.println("You are an admin!");
+				} else if(userType.equalsIgnoreCase("Librarian")) {
+					System.out.println("You are a librarian!");
 				} else {
-					System.out.println("Error! Invalid information.");
+					System.out.println("You are not an admin or librarian!");
 				}
 			}
 		});
 		pane.add(btn, 1, 3);
-			
+		
 		return new Scene(pane, 350, 450);
 	}
 	
