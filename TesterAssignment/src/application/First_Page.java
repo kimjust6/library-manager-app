@@ -32,7 +32,7 @@ public class First_Page extends Application {
 	    imgV2.setFitHeight(70);
 	    imgV2.setFitWidth(70);
 	    
-	    Label wlcMSG = new Label("Welcome!\nPlease choose an option:\n");
+	    Label wlcMSG = new Label("Welcome!\nWho are you logging as...?\n");
 	    
 	    pane.add(wlcMSG, 0 , 0);
 	    pane.add(imgV, 0 ,1);
@@ -40,7 +40,8 @@ public class First_Page extends Application {
 	    pane.add(btAdmin, 0, 2);
 	    pane.add(btStu, 1, 2);
 	    
-	    btAdmin.setOnAction(e -> {System.out.println("Admin button is clicked");});
+	    Admin_Login_Page adminHandler = new Admin_Login_Page();
+	    btAdmin.setOnAction(adminHandler);
 	    btStu.setOnAction(e -> {System.out.println("Student button is clicked");});
 	    
 	    Scene scene = new Scene(pane, 400, 400);
@@ -53,3 +54,5 @@ public class First_Page extends Application {
 		launch(args);
 	}
 }
+
+
