@@ -16,6 +16,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
+	User user = new User();
 	private Stage stage;
 	
 	@Override
@@ -85,15 +86,24 @@ public class Main extends Application {
 		pane.setHgap(5.5);
 		pane.setVgap(5.5);
 			
+		TextField username = new TextField();
+		TextField password = new TextField();
+		
 		pane.add(new Label("Username:"), 0, 1);
-		pane.add(new TextField(), 1, 1);
+		pane.add(username, 1, 1);
 		pane.add(new Label("Password:"), 0, 2);
-		pane.add(new PasswordField(), 1, 2);
+		pane.add(password, 1, 2);
 			
 		Button btn = new Button("Login");
 		btn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
-				System.out.println("You tried to login as an admin.");
+				boolean loginStatus = user.login(username.getText(), password.getText());
+				
+				if(loginStatus) {
+					System.out.println("Success! You logged in.");
+				} else {
+					System.out.println("Error! Invalid information.");
+				}
 			}
 		});
 		pane.add(btn, 1, 3);
@@ -108,12 +118,12 @@ public class Main extends Application {
 	    pane.setVgap(10);
 	    
 		Label userLabel = new Label("Enter Student ID:");
-        final TextField userField = new TextField();
+        TextField studentNoField = new TextField();
         Button btn = new Button("Login");
         btn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try {
-					stage.setScene(studentLoginPage(userField));
+					stage.setScene(studentLoginPage(studentNoField));
 					stage.setTitle("Student Home Page");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -121,18 +131,18 @@ public class Main extends Application {
 			}
        });
        pane.add(userLabel, 0 , 0);
-       pane.add(userField, 1 , 0);
+       pane.add(studentNoField, 1 , 0);
        pane.add(btn, 0, 1);
        
        return new Scene(pane, 350, 450);
 	}
 	
-	public Scene studentLoginPage(TextField userField) throws Exception {
+	public Scene studentLoginPage(TextField studentNoField) throws Exception {
 		GridPane pane = new GridPane();
       	pane.setAlignment(Pos.CENTER);
       	pane.setHgap(5.5);
     	pane.setVgap(10);
-      	Label heading = new Label("Welcome student " + userField.getText() + "\nWhat would you like to do today?\n");
+      	Label heading = new Label("Welcome student " + studentNoField.getText() + "\nWhat would you like to do today?\n");
       	Button btn0 = new Button("Search a book");
       	Button btn1 = new Button("Request an issue");
       	Button btn2 = new Button("View borrowed books");
