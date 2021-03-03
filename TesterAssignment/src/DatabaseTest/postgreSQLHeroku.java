@@ -52,24 +52,25 @@ public class postgreSQLHeroku{
     public final String TYPE_UNDER = "undergrad";
     public final String TYPE_GRAD = "graduate";
     
-    
+    //private variable that connects to database
     private Connection m_conn = null;
     
-    postgreSQLHeroku()
+    //constructor
+    public postgreSQLHeroku()
     {
     	m_conn = this.connect();
     }
+
+    
+    
+    
+    
     /**
      * Connect to the PostgreSQL database
      *
      * @return a Connection object
-     */
-    
-    
-    
-    
-    
-    public Connection connect() {
+     */ 
+    private Connection connect() {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
@@ -157,6 +158,41 @@ public class postgreSQLHeroku{
     		System.out.println(e);
     		returnValue = false;
     	}
+    	return returnValue;
+    }
+    
+    
+    public boolean insert(String tableName, String ... col)
+    {
+    	Statement statement;
+    	boolean returnValue = true;
+    	try
+    	{
+    		String query = "INSERT INTO " + tableName + "VALUES (";
+    		
+    		if (col.length > 0)
+    		{
+    			 query += col[0];
+    		}
+    		
+    		for(int i = 1; i < col.length; ++i)
+    		{
+    			query += ", " + col[i]; 
+    		}
+    		query += ");";
+    		
+    		System.out.println(query);
+    		statement = this.m_conn.createStatement();
+    		statement.executeUpdate(query);
+    		System.out.println("Table Created! (probably)");
+    		returnValue = true;
+    		
+    	}catch(Exception e)
+    	{
+    		System.out.println(e);
+    		returnValue = false;
+    	}
+    	
     	return returnValue;
     }
     
