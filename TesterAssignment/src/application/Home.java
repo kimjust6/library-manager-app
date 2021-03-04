@@ -45,8 +45,8 @@ public class Home {
 
 	    btAdmin.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
-				try {
-//					stage.setScene(adminLogin());
+				try (AdminLogin adminLogin = new AdminLogin(stage, scene)) {
+					stage.setScene(adminLogin.showLoginPage());
 					stage.setTitle("Admin Login Page");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -56,8 +56,8 @@ public class Home {
 	    
 	    btStu.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
-				try {
-//					stage.setScene(studentLogin());
+				try (StudentLogin studentLogin = new StudentLogin(stage, scene)) {
+					stage.setScene(studentLogin.showLoginPage());
 					stage.setTitle("Student Login Page");
 				} catch (Exception e) {
 					e.printStackTrace();

@@ -22,15 +22,13 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import javafx.scene.control.ComboBox;
 
-public class AddBook {
+public class AddBook implements AutoCloseable{
 	private Stage stage;
 	private Scene scene;
-	private postgreSQLHeroku DB;
 	
-	AddBook(Stage stage, Scene scene, postgreSQLHeroku DB){
+	AddBook(Stage stage, Scene scene){
 		this.stage = stage;
 		this.scene = scene;
-		this.DB = DB;
 	}
 	public Scene addBook() throws Exception {
 		GridPane pane = new GridPane();
@@ -72,11 +70,11 @@ public class AddBook {
 		//String selected_media = (String) media_type.getValue();
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent arg0) {
-				try (Connection connection = DriverManager.getConnection(DB.DATABASE_URL, DB.DATABASE_USERNAME, DB.DATABASE_PASSWORD)) {
+				try (Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
 
 					Statement statement = connection.createStatement();
 		    		
-					String query1 = String.format("insert into %s values('%s','%s','%s','%s', %d, %d, %d);", DB.TABLE_LIBRARY, title.getText(), author.getText(), publisher.getText(), (String) media_type.getValue(), 1, 0 ,0);
+					String query1 = String.format("insert into %s values('%s','%s','%s','%s', %d, %d, %d);", postgreSQLHeroku.TABLE_LIBRARY, title.getText(), author.getText(), publisher.getText(), (String) media_type.getValue(), 1, 0 ,0);
 					
 					
 						if(statement.executeUpdate(query1) == 1) {
@@ -101,5 +99,10 @@ public class AddBook {
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	    return scene;
 	}
-	
+	@Override
+	public void close() throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }
+
