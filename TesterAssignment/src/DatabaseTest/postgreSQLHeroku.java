@@ -23,8 +23,6 @@ public class postgreSQLHeroku {
     public static final String TABLE_WAITLIST_OBJECTS = "waitlistobjects";
     
     //final strings for column names in table user
-    
-    //final strings for column names in table user
     public static final String COL_USERNAME = "username"; 
     public static final String COL_PASSWORD = "password"; 
     public static final String COL_ADMINTYPE = "admintype";
@@ -53,7 +51,6 @@ public class postgreSQLHeroku {
     public static final String COL_STUD_FNAME = "fname";
     public static final String COL_STUD_LNAME = "lname";
 
-    
     //final strings for student levels
     public static final String TYPE_ALUM = "alumni";
     public static final String TYPE_CURR = "current";

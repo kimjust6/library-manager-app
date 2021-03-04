@@ -12,7 +12,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class Home {
+public class Home implements AutoCloseable {
 	
 	private Stage stage;
 	private Scene scene;
@@ -72,5 +72,11 @@ public class Home {
 	    pane.add(btStu, 1, 2);
 	    
 	    return new Scene(pane, 350, 450);
+	}
+
+	@Override
+	public void close() throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 }

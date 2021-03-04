@@ -25,9 +25,14 @@ public class StudentMenu implements AutoCloseable {
       	pane.setHgap(5.5);
     	pane.setVgap(10);
       	Label heading = new Label("Welcome student " + studentNoField + "\nWhat would you like to do today?\n");
-      	Button backBtn = new Button("Back");
       	
-      	Button searchBtn = new Button("Search a book");
+      	
+      	Button searchBtn = new Button("Find a book");
+      	Button reqIssueBtn = new Button("Request a book");
+      	Button viewBorrowedBtn = new Button("Borrow books");
+      	Button backBtn = new Button("Logout");
+      	
+      	viewBorrowedBtn.setMaxWidth(200);
       	searchBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try {
@@ -38,7 +43,7 @@ public class StudentMenu implements AutoCloseable {
 				}
 			}
       	});
-      	Button reqIssueBtn = new Button("Request an issue");
+      	
       	reqIssueBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try {
@@ -49,12 +54,12 @@ public class StudentMenu implements AutoCloseable {
 				}
 			}
       	});
-      	Button viewBorrowedBtn = new Button("View borrowed books");
+      	
       	viewBorrowedBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try {
 //					stage.setScene(pagegoeshere);
-					stage.setTitle("Borrowed Books");
+					stage.setTitle("Borrowed");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -64,10 +69,10 @@ public class StudentMenu implements AutoCloseable {
       	backBtn.setOnAction(e-> 
 		{
 			
-			try (StudentLogin studentLogin = new StudentLogin(stage, scene)) {
+			try (Home homePage = new Home(stage, scene)) {
 				
-					stage.setScene(studentLogin.showLoginPage());
-					stage.setTitle("Student Login Page");
+    			stage.setScene(homePage.showHomePage()); 
+    			stage.setTitle("Library");
 			} catch (Exception e2) {
 				e2.printStackTrace();
 			}
@@ -75,8 +80,8 @@ public class StudentMenu implements AutoCloseable {
 		}); 
       	
       	
-      	viewBorrowedBtn.setMinSize(150, 40);
-      	viewBorrowedBtn.setMaxWidth(200);
+      	//viewBorrowedBtn.setMinSize(150, 40);
+      	
       	pane.add(heading, 0, 0);
       	pane.add(searchBtn, 0, 1);
       	pane.add(reqIssueBtn, 0, 2);
