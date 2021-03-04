@@ -25,9 +25,9 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	private postgreSQLHeroku DB = new postgreSQLHeroku();
 	private Stage stage;
-	private Admin admin;
-	private Librarian librarian;
-	private Student student;
+//	private Admin admin;
+//	private Librarian librarian;
+//	private Student student;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -69,10 +69,10 @@ public class Main extends Application {
 				}
 			}
 	    });
+	    
 	    btStu.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try {
-//					person = new Student();
 					stage.setScene(studentLoginPage());
 					stage.setTitle("Student Login Page");
 				} catch (Exception e) {
@@ -88,7 +88,6 @@ public class Main extends Application {
 	    pane.add(btStu, 1, 2);
 	    
 	    return new Scene(pane, 350, 450);
-	 
 	}
 	
 	public Scene loginPage() throws Exception {
@@ -116,26 +115,18 @@ public class Main extends Application {
 						String userType = userInfo.getString(DB.COL_ADMINTYPE);
 						
 						if(userType.equalsIgnoreCase("Admin")) {
-							
 							System.out.println("You are an Admin!");
-							admin = new Admin();
-							admin.display();
 							stage.setScene(adminHomePage());
 							stage.setTitle("Admin Page");
 							
 						} else if(userType.equalsIgnoreCase("Librarian")) {
-
 							System.out.println("You are a librarian!");
-							librarian = new Librarian();
 //							stage.setScene(librarianHomePage());
 //							stage.setTitle("Librarian Page");
 							
 						} else {
-							
 							System.out.println("You are not an admin or librarian!");
-							
 						}
-						
 					} catch (SQLException e1) {
 						e1.printStackTrace();
 					} catch (Exception e) {
@@ -179,20 +170,8 @@ public class Main extends Application {
 		regBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try (Scanner in = new Scanner(System.in)) {
-					
-					// need some foolproofing
-					
-					stage.setScene(new Scene(new Group(new Text("check console!")), 350, 450));
+					stage.setScene(registerLibrarianPage());
 					stage.setTitle("Registering Librarian");
-					
-					if(admin.addLibrarian(in, DB)) {
-						System.out.println("Added librarian successfully!");
-					} else {
-						System.out.println("Failed!");
-					}
-					
-					// getting details
-					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -202,19 +181,8 @@ public class Main extends Application {
 		delBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try (Scanner in = new Scanner(System.in)) {
-					
-					// need some foolproofing
-					
-					stage.setScene(new Scene(new Group(new Text("check console!")), 350, 450));
+					stage.setScene(deleteLibrarianPage());
 					stage.setTitle("Removing Librarian");
-					System.out.println("Trying to delete librarian(s).");
-					
-					if(admin.delLibrarian(in, DB)) {
-						System.out.println("Deleted librarian successfully!");
-					} else {
-						System.out.println("Failed!");
-					}
-					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -224,15 +192,8 @@ public class Main extends Application {
 		viewBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try (Scanner in = new Scanner(System.in)) {
-					
-					// need some foolproofing
-					
-					stage.setScene(new Scene(new Group(new Text("check console"))));
+					stage.setScene(librarianListPage());
 					stage.setTitle("Viewing Librarians");
-					System.out.println("Trying to view librarian(s).");
-					
-					admin.viewLibrarians();
-					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -250,6 +211,115 @@ public class Main extends Application {
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		return scene;
 	}
+
+	public Scene registerLibrarianPage() throws Exception {
+		GridPane pane = new GridPane();
+		pane.setAlignment(Pos.CENTER);
+		pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
+		pane.setHgap(5.5);
+		pane.setVgap(5.5);
+			
+		TextField username = new TextField();
+		PasswordField password = new PasswordField();
+		TextField name = new TextField();
+		TextField email = new TextField();
+		TextField phone = new TextField();
+		
+		pane.add(new Label("Username:"), 0, 1);
+		pane.add(username, 1, 1);
+		pane.add(new Label("Password:"), 0, 2);
+		pane.add(password, 1, 2);
+		pane.add(new Label("Name:"), 0, 3);
+		pane.add(name, 1, 3);
+		pane.add(new Label("Email:"), 0, 4);
+		pane.add(email, 1, 4);
+		pane.add(new Label("Phone No:"), 0, 5);
+		pane.add(phone, 1, 5);
+
+		Button btn = new Button("Submit");
+		pane.add(btn, 1, 6);
+		btn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override public void handle(ActionEvent arg0) {
+				try (Scanner in = new Scanner(System.in)) {
+					if(DB.insert(DB.TABLE_USERS, username.getText(), password.getText())) {
+						if(DB.insert(DB.TABLE_ADMINS, username.getText(), name.getText(), email.getText(), phone.getText(), "Librarian")) {
+							System.out.println("Added librarian successfully!");
+						} else {
+							System.out.println("Failed!");
+						}
+					} else {
+						System.out.println("Failed!");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		Scene scene = new Scene(pane, 350, 450);
+	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	    return scene;
+	}
+	
+	public Scene deleteLibrarianPage() throws Exception {
+		GridPane pane = new GridPane();
+		pane.setAlignment(Pos.CENTER);
+		pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
+		pane.setHgap(5.5);
+		pane.setVgap(5.5);
+			
+		TextField username = new TextField();
+		
+		pane.add(new Label("Username:"), 0, 1);
+		pane.add(username, 1, 1);
+		
+		Button btn = new Button("Submit");
+		pane.add(btn, 1, 2);
+		btn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override public void handle(ActionEvent arg0) {
+				try {
+					if(DB.delete(DB.TABLE_USERS, DB.COL_USERNAME, username.getText())) {
+						if(DB.delete(DB.TABLE_ADMINS, DB.COL_USERNAME, username.getText())) {
+							System.out.println("Added librarian successfully!");
+						} else {
+							System.out.println("Failed!");
+						}
+					} else {
+						System.out.println("Failed!");
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		Scene scene = new Scene(pane, 350, 450);
+	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	    return scene;
+	}
+	
+	public Scene librarianListPage() throws Exception {
+		GridPane pane = new GridPane();
+		pane.setAlignment(Pos.CENTER);
+		pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
+		pane.setHgap(5.5);
+		pane.setVgap(5.5);
+
+//		pane.add(something, 1, 1);
+
+		ResultSet librarians = DB.select(DB.TABLE_ADMINS, DB.COL_ADMINTYPE, "=", "Librarian");
+		
+		int cols = librarians.getMetaData().getColumnCount();
+		
+		while(librarians.next()) {
+			for(int i = 1; i <= cols; i++) {
+				System.out.print(librarians.getString(i) + ", ");
+			}
+			System.out.println();
+		}
+		
+		Scene scene = new Scene(pane, 350, 450);
+	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	    return scene;
+	}
 	
 	public Scene studentLoginPage() throws Exception {
 		GridPane pane = new GridPane();
@@ -265,8 +335,6 @@ public class Main extends Application {
 			@Override public void handle(ActionEvent arg0) {
 				
 				String studentNo = studentNoField.getText();
-				
-//				DB.selectAll()
 				
 				try {
 					stage.setScene(studentHomePage(studentNo));

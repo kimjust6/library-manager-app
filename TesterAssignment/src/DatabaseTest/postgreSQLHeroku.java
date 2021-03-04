@@ -190,7 +190,6 @@ public class postgreSQLHeroku{
     		statement = this.m_conn.createStatement();
     		rs = statement.executeQuery(query);
     		int colCount = rs.getMetaData().getColumnCount();
-    		System.out.println("test");
     		while(rs.next())
     		{
     			for (int i = 1; i <= colCount; ++i )
@@ -214,7 +213,8 @@ public class postgreSQLHeroku{
     	ResultSet rs = null;
     	try
     	{
-    		String query = String.format("SELECT * FROM %s WHERE %s %s %s;", tableName, col, operator, tupleMatch);
+    		String query = String.format("SELECT * FROM %s WHERE %s %s '%s';", tableName, col, operator, tupleMatch);
+    		System.out.println(query);
     		statement = this.m_conn.createStatement();
     		rs = statement.executeQuery(query);
 //    		while(rs.next())
