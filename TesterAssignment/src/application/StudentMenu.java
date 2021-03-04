@@ -25,7 +25,7 @@ public class StudentMenu implements AutoCloseable {
       	pane.setHgap(5.5);
     	pane.setVgap(10);
       	Label heading = new Label("Welcome student " + studentNoField + "\nWhat would you like to do today?\n");
-      	
+      	Button backBtn = new Button("Back");
       	
       	Button searchBtn = new Button("Search a book");
       	searchBtn.setOnAction(new EventHandler<ActionEvent>(){
@@ -61,6 +61,19 @@ public class StudentMenu implements AutoCloseable {
 			}
       	});
       	
+      	backBtn.setOnAction(e-> 
+		{
+			
+			try (StudentLogin studentLogin = new StudentLogin(stage, scene)) {
+				
+					stage.setScene(studentLogin.showLoginPage());
+					stage.setTitle("Student Login Page");
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+			
+		}); 
+      	
       	
       	viewBorrowedBtn.setMinSize(150, 40);
       	viewBorrowedBtn.setMaxWidth(200);
@@ -68,6 +81,7 @@ public class StudentMenu implements AutoCloseable {
       	pane.add(searchBtn, 0, 1);
       	pane.add(reqIssueBtn, 0, 2);
       	pane.add(viewBorrowedBtn, 0, 3);
+      	pane.add(backBtn, 0, 4);
       	
       	Scene scene = new Scene(pane, 350, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
