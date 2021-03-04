@@ -67,11 +67,11 @@ public class AddBook implements AutoCloseable{
 		Button btn = new Button("Add");
 		pane.add(btn, 1, 5);
 		
-		String selected_media = (String) media_type.getValue();
+		
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent arg0) {
 				try (Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
-
+					String selected_media = (String) media_type.getValue();
 					Statement statement = connection.createStatement();
 		    		
 					String query1 = String.format("insert into %s values('%s','%s','%s','%s', %d, %d);", postgreSQLHeroku.TABLE_LIBRARY, title.getText(), author.getText(), publisher.getText(), selected_media, 1, 0);
