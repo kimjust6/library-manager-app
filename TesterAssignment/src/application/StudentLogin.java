@@ -28,7 +28,7 @@ public class StudentLogin implements AutoCloseable {
 	    
 		Label userLabel = new Label("Enter Student ID:");
         TextField studentNoField = new TextField();
-        Button backBtn = new Button("Back");
+        Button backBtn = new Button("Logout");
         Button btn = new Button("Login");
         
         btn.setOnAction(new EventHandler<ActionEvent>(){
@@ -36,20 +36,28 @@ public class StudentLogin implements AutoCloseable {
 				
 				// need to authenticate student as well
 				String studentNo = studentNoField.getText();
-				
-				try (StudentMenu studentMenu = new StudentMenu(stage, scene)) {
-					stage.setScene(studentMenu.showMenu(studentNo));
-					stage.setTitle("Student Home Page");
-				} catch (Exception e) {
-					e.printStackTrace();
+				if (studentNo == "")
+				{
+					System.out.println("Please enter a valid Student Number!");
+					AlertBox.display("Error!", "Please enter a valid Student Number!");
 				}
+				else
+				{
+					try (StudentMenu studentMenu = new StudentMenu(stage, scene)) {
+						stage.setScene(studentMenu.showMenu(studentNo));
+						stage.setTitle("Student Home Page");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}	
+				}
+				
 			}
        });
         backBtn.setOnAction(e-> 
         		{
         			
-    				try (StudentMenu studentMenu = new StudentMenu(stage, scene)) {
-    					Home homePage = new Home(stage, scene);
+    				try (Home homePage = new Home(stage, scene);) {
+    					
             			stage.setScene(homePage.showHomePage()); 
             			stage.setTitle("Library");
     				} catch (Exception e2) {

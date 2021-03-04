@@ -27,7 +27,7 @@ public class StudentMenu implements AutoCloseable {
       	Label heading = new Label("Welcome student " + studentNoField + "\nWhat would you like to do today?\n");
       	
       	
-      	Button searchBtn = new Button("Find a book");
+      	Button searchBtn = new Button("Find Books");
       	Button reqIssueBtn = new Button("Request a book");
       	Button viewBorrowedBtn = new Button("Borrow books");
       	Button backBtn = new Button("Logout");
@@ -84,8 +84,8 @@ public class StudentMenu implements AutoCloseable {
       	
       	pane.add(heading, 0, 0);
       	pane.add(searchBtn, 0, 1);
-      	pane.add(reqIssueBtn, 0, 2);
-      	pane.add(viewBorrowedBtn, 0, 3);
+      	//pane.add(reqIssueBtn, 0, 2);
+      	//pane.add(viewBorrowedBtn, 0, 3);
       	pane.add(backBtn, 0, 4);
       	
       	Scene scene = new Scene(pane, 350, 450);
