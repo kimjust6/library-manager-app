@@ -1,8 +1,14 @@
 package application;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
+
+import org.postgresql.util.PSQLException;
+
 import DatabaseTest.postgreSQLHeroku;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
@@ -323,16 +329,42 @@ public class Main extends Application {
 		pane.add(btn, 1, 6);
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent arg0) {
-				try (Scanner in = new Scanner(System.in)) {
-					if(DB.insert(DB.TABLE_USERS, username.getText(), password.getText())) {
-						if(DB.insert(DB.TABLE_ADMINS, username.getText(), name.getText(), email.getText(), phone.getText(), "Librarian")) {
-							System.out.println("Added librarian successfully!");
+//				try {
+//					if(DB.insert(DB.TABLE_USERS, username.getText(), password.getText())) {
+//						if(DB.insert(DB.TABLE_ADMINS, username.getText(), name.getText(), email.getText(), phone.getText(), "Librarian")) {
+//							System.out.println("Added librarian successfully!");
+//						} else {
+//							System.out.println("Failed!");
+//						}
+//					} else {
+//						System.out.println("Failed!");
+//					}
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+				
+				try (Connection connection = DriverManager.getConnection(DB.DATABASE_URL, DB.DATABASE_USERNAME, DB.DATABASE_PASSWORD)) {
+
+					Statement statement = connection.createStatement();
+		    		
+					String query1 = String.format("insert into %s values('%s','%s');", DB.TABLE_USERS, username.getText(), password.getText());
+					String query2 = String.format("insert into %s values('%s','%s','%s',%s,'%s');", DB.TABLE_ADMINS, username.getText(), name.getText(), email.getText(), phone.getText(), "Librarian");
+					
+					if(statement.executeUpdate(query1) == 1) {
+						if(statement.executeUpdate(query2) == 1) {
+							System.out.println("Librarian created!");
 						} else {
 							System.out.println("Failed!");
 						}
+						
 					} else {
 						System.out.println("Failed!");
 					}
+					
+				} catch (PSQLException e) {
+					e.printStackTrace();
+				} catch (SQLException e) {
+					e.printStackTrace();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -375,6 +407,15 @@ public class Main extends Application {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				
+//				try (Connection connection = DriverManager.getConnection(DB.DATABASE_URL, DB.DATABASE_USERNAME, DB.DATABASE_PASSWORD)) {
+//
+//					Statement statement = connection.createStatement();
+//
+//					
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
 			}
 		});
 		Scene scene = new Scene(pane, 350, 450);

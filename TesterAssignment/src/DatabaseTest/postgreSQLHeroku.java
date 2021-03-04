@@ -12,9 +12,9 @@ import java.sql.Statement;
 public class postgreSQLHeroku{
 
 	//final strings to connect to the database
-    private final String DATABASE_URL = "jdbc:postgresql://ec2-54-209-43-223.compute-1.amazonaws.com:5432/d19rc88931g1bi";
-    private final String DATABASE_USERNAME = "luwrnpzmqrzvln";
-    private final String DATABASE_PASSWORD = "9b76f4cfa5a87feb4cf28e8b90e485b183bca39b2b20c09e323b4a04b524b2ce";
+    public final String DATABASE_URL = "jdbc:postgresql://ec2-54-209-43-223.compute-1.amazonaws.com:5432/d19rc88931g1bi";
+    public final String DATABASE_USERNAME = "luwrnpzmqrzvln";
+    public final String DATABASE_PASSWORD = "9b76f4cfa5a87feb4cf28e8b90e485b183bca39b2b20c09e323b4a04b524b2ce";
     
     //final strings for table names 
     public final String TABLE_ADMINS = "admins";
@@ -82,6 +82,8 @@ public class postgreSQLHeroku{
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        
+        // connection closes automatically
 
         return conn;
     }
