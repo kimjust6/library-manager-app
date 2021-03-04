@@ -32,8 +32,8 @@ public class LibrarianMenu implements AutoCloseable {
 			
 		addBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
-				try (Scanner in = new Scanner(System.in)) {
-//					stage.setScene(pagegoeshere);
+				try (AddBook book = new AddBook(stage, scene)) {
+					stage.setScene(book.addBook());
 					stage.setTitle("Adding Book");
 				} catch (Exception e) {
 					e.printStackTrace();
