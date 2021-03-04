@@ -65,7 +65,7 @@ public class postgreSQLHeroku{
     //constructor
     public postgreSQLHeroku()
     {
-    	m_conn = this.connect();
+    	connect();
     }
     
     
@@ -74,16 +74,31 @@ public class postgreSQLHeroku{
      *
      * @return a Connection object
      */ 
-    private Connection connect() {
-        Connection conn = null;
+    public void connect() {
+    	
         try {
-            conn = DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASSWORD);
+        	
+            this.m_conn = DriverManager.getConnection(this.DATABASE_URL, this.DATABASE_USERNAME, this.DATABASE_PASSWORD);
             System.out.println("Connected to the PostgreSQL server successfully.");
+        
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-        return conn;
+
+    }
+    
+    public void disconnect() {
+        try {
+        	
+            this.m_conn = DriverManager.getConnection(this.DATABASE_URL, this.DATABASE_USERNAME, this.DATABASE_PASSWORD);
+            System.out.println("Connected to the PostgreSQL server successfully.");
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return;
     }
 
 
@@ -147,9 +162,9 @@ public class postgreSQLHeroku{
     //****************************************************************************
     
     
-    
+  
     //****************************************************************************
-    //LIBRARY OBJECT (BOOK) CRUD OPERATIONS
+    //LIBRARY OBJECT TABLE (BOOK) CRUD OPERATIONS
     //****************************************************************************
     public boolean insert_lib(String title, String author, String publisher, String mediatype, String qty)
     {
@@ -158,19 +173,28 @@ public class postgreSQLHeroku{
     }
     
     
-    public boolean return_lib(String id)
+    public boolean return_lib(String id, String username)
     {
+    	//increment the available qty of the  book
     	boolean returnValue1 = update(this.TABLE_LIBRARY, this.COL_QTY_AVAIL, this.COL_QTY_AVAIL + "+ 1",this.COL_ID, id );
+    	//decrement the borrowed qty of the  book
     	boolean returnValue2 = update(this.TABLE_LIBRARY, this.COL_QTY_BOR, this.COL_QTY_BOR + "- 1", this.COL_ID, id );;
+    	//remove the book from the borrowed table
     	
     	return returnValue1 && returnValue2;
     }
     
-    public boolean checkout_lib(String id)
+    public boolean checkout_lib(String id, String username)
     {
     	//String query = String.format("UPDATE %s SET %s='%s' WHERE %s = '%s';",tableName, colChange, newValue, colPK, PK);
+    	
+    	//decrement the available qty of the  book
     	boolean returnValue1 = update(this.TABLE_LIBRARY, this.COL_QTY_AVAIL, this.COL_QTY_AVAIL + "- 1",this.COL_ID, id );
+    	//increment the borrowed qty of the book
     	boolean returnValue2 = update(this.TABLE_LIBRARY, this.COL_QTY_BOR, this.COL_QTY_BOR + "+ 1", this.COL_ID, id );
+    	//add the book the borrowed table
+    	insert(this.TABLE_BORROWED_OBJECTS, username, id);
+    	
     	
     	return returnValue1 && returnValue2;
     }
@@ -195,6 +219,8 @@ public class postgreSQLHeroku{
     //****************************************************************************
     //BASIC CRUD OPERATIONS
     //****************************************************************************
+    
+ 
     
     
     public ResultSet select_all(String tableName, String colOrder)

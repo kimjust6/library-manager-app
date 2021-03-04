@@ -36,7 +36,7 @@ public class Main {
     	//db.return_lib("1");
     	
     	//db.update("users","password","'myverysecurepassword3'","username","'harryPotter'");
-    	ResultSet value = db.search_lib_exact("id","1");
+    	ResultSet value = db.search_lib_exact("libid","1");
     	
         
     }
