@@ -58,7 +58,6 @@ public class AdminMenu implements AutoCloseable {
 			}
 	    });
 		
-		
 		delBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try (DeleteLibrarian delLibrarian = new DeleteLibrarian(stage, scene)) {

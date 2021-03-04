@@ -10,6 +10,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import org.postgresql.util.PSQLException;
+
 import DatabaseTest.postgreSQLHeroku;
 
 public class DeleteLibrarian implements AutoCloseable {
@@ -38,28 +46,30 @@ public class DeleteLibrarian implements AutoCloseable {
 		pane.add(btn, 1, 2);
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent arg0) {
-//				try {
-//					if(DB.delete(DB.TABLE_USERS, DB.COL_USERNAME, username.getText())) {
-//						if(DB.delete(DB.TABLE_ADMINS, DB.COL_USERNAME, username.getText())) {
-//							System.out.println("Added librarian successfully!");
-//						} else {
-//							System.out.println("Failed!");
-//						}
-//					} else {
-//						System.out.println("Failed!");
-//					}
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-				
-//				try (Connection connection = DriverManager.getConnection(DB.DATABASE_URL, DB.DATABASE_USERNAME, DB.DATABASE_PASSWORD)) {
-//
-//					Statement statement = connection.createStatement();
-//
-//					
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
+				try (Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
+
+					Statement statement = connection.createStatement();
+		    		
+					String query1 = String.format("delete from %s where %s = '%s' and %s = '%s'", postgreSQLHeroku.TABLE_USERS, postgreSQLHeroku.COL_USERNAME, username.getText(), postgreSQLHeroku.COL_ADMINTYPE, postgreSQLHeroku.TYPE_LIBRARIAN);
+					String query2 = String.format("delete from %s where %s = '%s' and %s = '%s'", postgreSQLHeroku.TABLE_ADMINS, postgreSQLHeroku.COL_USERNAME, username.getText(), postgreSQLHeroku.COL_ADMINTYPE, postgreSQLHeroku.TYPE_LIBRARIAN);
+					
+					if(statement.executeUpdate(query1) == 1) {
+						if(statement.executeUpdate(query2) == 1) {
+							System.out.println("Libarian deleted!");
+						} else {
+							System.out.println("Failed!");
+						}
+					} else {
+						System.out.println("Failed!");
+					}
+					
+				} catch (PSQLException e) {
+					e.printStackTrace();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		});
 		Scene scene = new Scene(pane, 350, 450);

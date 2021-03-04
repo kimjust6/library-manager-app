@@ -24,7 +24,7 @@ public class StudentMenu implements AutoCloseable {
       	pane.setAlignment(Pos.CENTER);
       	pane.setHgap(5.5);
     	pane.setVgap(10);
-      	Label heading = new Label("Welcome student " + studentNoField + "\nWhat would you like to do today?\n");
+      	Label heading = new Label("Welcome, " + studentNoField + "\nWhat would you like to do today?\n");
       	Button backBtn = new Button("Back");
       	
       	Button searchBtn = new Button("Search a book");

@@ -318,7 +318,7 @@ public class postgreSQLHeroku {
     		statement.executeUpdate(query);
     		System.out.println("tuple deleted!");
     		returnValue = true;
-    	}catch(Exception e)
+    	} catch(Exception e)
     	{
     		System.out.println(e);
     		returnValue = false;
