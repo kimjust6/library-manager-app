@@ -79,6 +79,12 @@ public class AddBook implements AutoCloseable{
 					
 						if(statement.executeUpdate(query1) == 1) {
 							System.out.println("Book added");
+							try (LibrarianMenu librarianMenu = new LibrarianMenu(stage, scene)) {
+								stage.setScene(librarianMenu.showMenu());
+								stage.setTitle("Librarian Menu");
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
 						} else {
 							System.out.println("Failed!");
 						}
