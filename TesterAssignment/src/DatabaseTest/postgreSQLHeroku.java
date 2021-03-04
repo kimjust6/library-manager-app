@@ -23,17 +23,11 @@ public class postgreSQLHeroku {
     public static final String TABLE_WAITLIST_OBJECTS = "waitlistobjects";
     
     //final strings for column names in table user
-<<<<<<< HEAD
     
     //final strings for column names in table user
     public static final String COL_USERNAME = "username"; 
     public static final String COL_PASSWORD = "password"; 
     public static final String COL_ADMINTYPE = "admintype";
-=======
-    public final String COL_USERNAME = "username"; 
-    public final String COL_PASSWORD = "password"; 
-    public final String COL_ADMINTYPE = "admintype";
->>>>>>> branch 'master' of https://github.com/hershk17/BTP400_Assignment-1.git
     
     //final strings for user types
     public static final String TYPE_ADMIN = "admin";
