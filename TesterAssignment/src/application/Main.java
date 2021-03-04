@@ -318,6 +318,8 @@ public class Main extends Application {
 		TextField email = new TextField();
 		TextField phone = new TextField();
 		
+		pane.add(new Label("SIGN UP"), 0, 0);
+		
 		pane.add(new Label("Username:"), 0, 1);
 		pane.add(username, 1, 1);
 		pane.add(new Label("Password:"), 0, 2);
