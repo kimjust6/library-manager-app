@@ -5,40 +5,46 @@ import java.sql.SQLException;
 import java.util.Scanner;
 import DatabaseTest.postgreSQLHeroku;
 import javafx.application.Application;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 public class Main extends Application {
-	private postgreSQLHeroku DB = new postgreSQLHeroku();
+	private final postgreSQLHeroku DB = new postgreSQLHeroku();
 	private Stage stage;
-//	private Admin admin;
-//	private Librarian librarian;
-//	private Student student;
+	private Scene scene;
 	
-	@Override
-	public void start(Stage primaryStage) throws Exception {
+	@Override public void start(Stage primaryStage) throws Exception {
 		stage = primaryStage;
 		stage.setTitle("First Page");
-		Scene scene = homePage();
+		scene = home();
 		stage.setScene(scene); 
 		stage.show(); 
 	}
 	
-	public Scene homePage() throws Exception {
+	
+	// user can choose ADMIN or STUDENT
+	
+	public Scene home() throws Exception {
 		GridPane pane = new GridPane();
 		pane.setAlignment(Pos.CENTER);
 	    pane.setHgap(10);
@@ -62,7 +68,7 @@ public class Main extends Application {
 	    btAdmin.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try {
-					stage.setScene(loginPage());
+					stage.setScene(adminLogin());
 					stage.setTitle("Admin Login Page");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -73,7 +79,7 @@ public class Main extends Application {
 	    btStu.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try {
-					stage.setScene(studentLoginPage());
+					stage.setScene(studentLogin());
 					stage.setTitle("Student Login Page");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -90,7 +96,10 @@ public class Main extends Application {
 	    return new Scene(pane, 350, 450);
 	}
 	
-	public Scene loginPage() throws Exception {
+	
+	// if ADMIN, then LOGIN using details
+	
+	public Scene adminLogin() throws Exception {
 		GridPane pane = new GridPane();
 		pane.setAlignment(Pos.CENTER);
 		pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
@@ -116,7 +125,7 @@ public class Main extends Application {
 						
 						if(userType.equalsIgnoreCase("Admin")) {
 							System.out.println("You are an Admin!");
-							stage.setScene(adminHomePage());
+							stage.setScene(adminMenu());
 							stage.setTitle("Admin Page");
 							
 						} else if(userType.equalsIgnoreCase("Librarian")) {
@@ -142,7 +151,10 @@ public class Main extends Application {
 	    return scene;
 	}
 
-	public Scene adminHomePage() throws Exception {
+	
+	// if ADMIN is LOGGED IN, show MENU OPTIONS
+	
+	public Scene adminMenu() throws Exception {
 		GridPane pane = new GridPane();
 		pane.setAlignment(Pos.CENTER);
 		pane.setHgap(10);
@@ -170,7 +182,7 @@ public class Main extends Application {
 		regBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try (Scanner in = new Scanner(System.in)) {
-					stage.setScene(registerLibrarianPage());
+					stage.setScene(regLibrarian());
 					stage.setTitle("Registering Librarian");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -181,7 +193,7 @@ public class Main extends Application {
 		delBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try (Scanner in = new Scanner(System.in)) {
-					stage.setScene(deleteLibrarianPage());
+					stage.setScene(delLibrariane());
 					stage.setTitle("Removing Librarian");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -192,7 +204,7 @@ public class Main extends Application {
 		viewBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try (Scanner in = new Scanner(System.in)) {
-					stage.setScene(librarianListPage());
+					stage.setScene(getLibrarians());
 					stage.setTitle("Viewing Librarians");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -211,8 +223,11 @@ public class Main extends Application {
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		return scene;
 	}
-
-	public Scene registerLibrarianPage() throws Exception {
+	
+	
+	// ADMIN chooses to REGISTER LIBRARIAN
+	
+	public Scene regLibrarian() throws Exception {
 		GridPane pane = new GridPane();
 		pane.setAlignment(Pos.CENTER);
 		pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
@@ -260,7 +275,10 @@ public class Main extends Application {
 	    return scene;
 	}
 	
-	public Scene deleteLibrarianPage() throws Exception {
+	
+	// ADMIN chooses to DELETE LIBRARIAN
+	
+	public Scene delLibrariane() throws Exception {
 		GridPane pane = new GridPane();
 		pane.setAlignment(Pos.CENTER);
 		pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
@@ -296,32 +314,45 @@ public class Main extends Application {
 	    return scene;
 	}
 	
-	public Scene librarianListPage() throws Exception {
-		GridPane pane = new GridPane();
-		pane.setAlignment(Pos.CENTER);
-		pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
-		pane.setHgap(5.5);
-		pane.setVgap(5.5);
+	
+	// ADMIN chooses to VIEW ALL LIBRARIANS
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })		// is this bad ... ?
+	public Scene getLibrarians() throws Exception {
+		ResultSet rs = DB.select(DB.TABLE_ADMINS, DB.COL_ADMINTYPE, "=", "Librarian");
+		
+		ObservableList<ObservableList> data = FXCollections.observableArrayList();
+		TableView tableview = new TableView();
 
-//		pane.add(something, 1, 1);
-
-		ResultSet librarians = DB.select(DB.TABLE_ADMINS, DB.COL_ADMINTYPE, "=", "Librarian");
+		for (int i = 0; i < rs.getMetaData().getColumnCount() - 1; i++) {
+            final int j = i;
+            TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i + 1));
+            col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
+                public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
+                    return new SimpleStringProperty(param.getValue().get(j).toString());
+                }
+            });
+            tableview.getColumns().addAll(col);
+        }
 		
-		int cols = librarians.getMetaData().getColumnCount();
+		while (rs.next()) {
+            ObservableList<String> row = FXCollections.observableArrayList();
+            for (int i = 1; i < rs.getMetaData().getColumnCount(); i++) {
+                row.add(rs.getString(i));
+            }
+            data.add(row);
+        }
+		tableview.setItems(data);
 		
-		while(librarians.next()) {
-			for(int i = 1; i <= cols; i++) {
-				System.out.print(librarians.getString(i) + ", ");
-			}
-			System.out.println();
-		}
-		
-		Scene scene = new Scene(pane, 350, 450);
+		Scene scene = new Scene(tableview, 445, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	    return scene;
 	}
 	
-	public Scene studentLoginPage() throws Exception {
+	
+	// if STUDENT, then AUTHENTICATE using STUDENTNO
+	
+	public Scene studentLogin() throws Exception {
 		GridPane pane = new GridPane();
 		pane.setAlignment(Pos.CENTER);
 		pane.setHgap(5.5);
@@ -334,6 +365,7 @@ public class Main extends Application {
         btn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				
+				// need to authenticate student as well
 				String studentNo = studentNoField.getText();
 				
 				try {
@@ -346,12 +378,15 @@ public class Main extends Application {
        });
        pane.add(userLabel, 0 , 0);
        pane.add(studentNoField, 1 , 0);
-       pane.add(btn, 0, 1);
+       pane.add(btn, 1, 1);
        
-       Scene scene = new Scene(pane, 450, 450);
-	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-	    return scene;
+       Scene scene = new Scene(pane, 350, 450);
+	   scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	   return scene;
 	}
+	
+	
+	// if STUDENT is LOGGED IN, show MENU OPTIONS
 	
 	public Scene studentHomePage(String studentNoField) throws Exception {
 		GridPane pane = new GridPane();
@@ -359,15 +394,49 @@ public class Main extends Application {
       	pane.setHgap(5.5);
     	pane.setVgap(10);
       	Label heading = new Label("Welcome student " + studentNoField + "\nWhat would you like to do today?\n");
-      	Button btn0 = new Button("Search a book");
-      	Button btn1 = new Button("Request an issue");
-      	Button btn2 = new Button("View borrowed books");
-      	btn2.setMinSize(150, 40);
-      	btn2.setMaxWidth(200);
+      	
+      	
+      	Button searchBtn = new Button("Search a book");
+      	searchBtn.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent arg0) {
+				try {
+//					stage.setScene(pagegoeshere);
+					stage.setTitle("Book Search");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+      	});
+      	Button reqIssueBtn = new Button("Request an issue");
+      	reqIssueBtn.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent arg0) {
+				try {
+//					stage.setScene(pagegoeshere);
+					stage.setTitle("Book Issue Request");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+      	});
+      	Button viewBorrowedBtn = new Button("View borrowed books");
+      	viewBorrowedBtn.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent arg0) {
+				try {
+//					stage.setScene(pagegoeshere);
+					stage.setTitle("Borrowed Books");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+      	});
+      	
+      	
+      	viewBorrowedBtn.setMinSize(150, 40);
+      	viewBorrowedBtn.setMaxWidth(200);
       	pane.add(heading, 0, 0);
-      	pane.add(btn0, 0, 1);
-      	pane.add(btn1, 0, 2);
-      	pane.add(btn2, 0, 3);
+      	pane.add(searchBtn, 0, 1);
+      	pane.add(reqIssueBtn, 0, 2);
+      	pane.add(viewBorrowedBtn, 0, 3);
       	
       	Scene scene = new Scene(pane, 350, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());

@@ -216,7 +216,6 @@ public class postgreSQLHeroku{
     	try
     	{
     		String query = String.format("SELECT * FROM %s WHERE %s %s '%s';", tableName, col, operator, tupleMatch);
-    		System.out.println(query);
     		statement = this.m_conn.createStatement();
     		rs = statement.executeQuery(query);
 //    		while(rs.next())
