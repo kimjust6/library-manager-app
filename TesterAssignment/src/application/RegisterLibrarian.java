@@ -4,9 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import org.postgresql.util.PSQLException;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -94,5 +92,4 @@ public class RegisterLibrarian implements AutoCloseable {
 		// TODO Auto-generated method stub
 		
 	}
-
 }
