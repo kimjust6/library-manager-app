@@ -110,29 +110,185 @@ public class postgreSQLHeroku{
 		return null;
     }
     
+     
+    
+    public boolean insert_librarian(String tableName, String username, String password, String usertype)
+    {
+    	Statement statement;
+    	boolean returnValue = true;
+    	try
+    	{
+    		String query = String.format("INSERT INTO %s(username,password,usertype) VALUES ('%s','%s','%s')",tableName,username,password,usertype);
+    		
+    		System.out.println(query);
+    		statement = this.m_conn.createStatement();
+    		statement.executeUpdate(query);
+    		System.out.println("Inserted values!");
+    		returnValue = true;
+    	}catch(Exception e)
+    	{
+    		System.out.println(e);
+    		returnValue = false;
+    	}
+    	return returnValue;
+    }
     
     
-//    public boolean create_table(Connection conn, String tableName)
-//    {
-//    	Statement statement;
-//    	boolean returnValue = true;
-//    	try
-//    	{
-//    		String query = "CREATE TABLE IF NOT EXISTS " + tableName + "(userid SERIAL, username varchar(50), password varchar(50), usertype varchar(100), primary key (username));";
-//    		System.out.println(query);
-//    		statement = this.m_conn.createStatement();
-//    		statement.executeUpdate(query);
-//    		System.out.println("Table Created! (probably)");
-//    		returnValue = true;
-//    	}catch(Exception e)
-//    	{
-//    		System.out.println(e);
-//    		returnValue = false;
-//    	}
-//    	
-//    	return returnValue;
-//    }
+    //****************************************************************************
+    //USER CRUD OPERATIONS
+    //****************************************************************************
     
+    
+    
+    //****************************************************************************
+    //LIBRARY OBJECT (BOOK) CRUD OPERATIONS
+    //****************************************************************************
+    public boolean insert_library(String title, String author, String publisher, String mediatype)
+    {
+    	//get library length
+    	
+    	return insert(this.TABLE_LIBRARY,title,author,publisher, mediatype);
+
+    }
+    
+    
+    //****************************************************************************
+    //BASIC CRUD OPERATIONS
+    //****************************************************************************
+    
+    
+    public ResultSet selectAll(String tableName, String colOrder)
+    {
+    	Statement statement;
+    	ResultSet rs = null;
+    	
+    	try
+    	{
+    		String query = String.format("SELECT * FROM %s ORDER BY %s;", tableName, colOrder);
+    		statement = this.m_conn.createStatement();
+    		rs = statement.executeQuery(query);
+    		int colCount = rs.getMetaData().getColumnCount();
+    		System.out.println("test");
+    		while(rs.next())
+    		{
+    			for (int i = 1; i <= colCount; ++i )
+    			{
+    				System.out.print(rs.getString(i) + " ");
+    			}
+    			System.out.println("");
+
+    			
+    		}
+    	}catch(Exception e)
+    	{
+    		System.out.println(e);
+    	}
+    	
+    	return rs;
+    	
+    }
+    
+    public ResultSet select(String tableName, String col, String operator, String tupleMatch )
+    {
+    	Statement statement;
+    	ResultSet rs = null;
+    	try
+    	{
+    		String query = String.format("SELECT * FROM %s;", tableName);
+    		statement = this.m_conn.createStatement();
+    		rs = statement.executeQuery(query);
+    		while(rs.next())
+    		{
+    			System.out.println("Output: ");
+    			System.out.println(rs.getString("usertype") + ": ");
+    			System.out.print(rs.getString("username") + " : ");
+    			System.out.println(rs.getString("password") + " ");
+    			
+    		}
+    	}catch(Exception e)
+    	{
+    		System.out.println(e);
+    	}
+    	
+    	return rs;
+    }
+    
+    public boolean insert(String tableName, String ... col)
+    {
+    	Statement statement;
+    	boolean returnValue = true;
+    	try
+    	{
+    		String query = "INSERT INTO " + tableName + " VALUES (";
+    		
+    		if (col.length > 0)
+    		{
+    			 query += "'" + col[0] + "'";
+    		}
+    		
+    		for(int i = 1; i < col.length; ++i)
+    		{
+    			query += ", " + "'" + col[i] + "'"; 
+    		}
+    		query += ");";
+    		
+    		System.out.println(query);
+    		statement = this.m_conn.createStatement();
+    		statement.executeUpdate(query);
+    		System.out.println("Table Inserted!");
+    		returnValue = true;
+    		
+    	}catch(Exception e)
+    	{
+    		System.out.println(e);
+    		returnValue = false;
+    	}
+    	
+    	return returnValue;
+    }
+    
+
+    
+    public boolean update(String tableName, String colPK, String PK, String colChange, String newValue)
+    {
+    	Statement statement;
+    	boolean returnValue = true;
+    	try
+    	{
+    		String query = String.format("UPDATE %s SET %s='%s' WHERE %s = '%s';",tableName, colPK, PK, colChange, newValue);
+    		System.out.println(query);
+    		statement = this.m_conn.createStatement();
+    		statement.executeUpdate(query);
+    		System.out.println("Table updated!");
+    		returnValue = true;;
+    	}catch(Exception e)
+    	{
+    		System.out.println(e);
+    		returnValue = false;
+    	}
+    	return returnValue;
+    }
+    
+    
+    public boolean delete(String tableName, String colPK, String PK)
+    {
+    	Statement statement;
+    	boolean returnValue = true;
+    	try
+    	{
+    		String query = String.format("DELETE FROM %s WHERE %s = '%s';",tableName, colPK, PK);
+    		System.out.println(query);
+    		statement = this.m_conn.createStatement();
+    		statement.executeUpdate(query);
+    		System.out.println("tuple deleted!");
+    		returnValue = true;;
+    	}catch(Exception e)
+    	{
+    		System.out.println(e);
+    		returnValue = false;
+    	}
+    	return returnValue;
+    }
     
     public boolean create_table(String tableName, String ... col)
     {
@@ -167,129 +323,6 @@ public class postgreSQLHeroku{
     		returnValue = false;
     	}
     	
-    	return returnValue;
-    }
-    
-    public boolean insert_librarian(String tableName, String username, String password, String usertype)
-    {
-    	Statement statement;
-    	boolean returnValue = true;
-    	try
-    	{
-    		String query = String.format("INSERT INTO %s(username,password,usertype) VALUES ('%s','%s','%s')",tableName,username,password,usertype);
-    		
-    		System.out.println(query);
-    		statement = this.m_conn.createStatement();
-    		statement.executeUpdate(query);
-    		System.out.println("Inserted values!");
-    		returnValue = true;
-    	}catch(Exception e)
-    	{
-    		System.out.println(e);
-    		returnValue = false;
-    	}
-    	return returnValue;
-    }
-    
-    
-    public boolean insert_1(String tableName, String ... col)
-    {
-    	Statement statement;
-    	boolean returnValue = true;
-    	try
-    	{
-    		String query = "INSERT INTO " + tableName + " VALUES (";
-    		
-    		if (col.length > 0)
-    		{
-    			 query += "'" + col[0] + "'";
-    		}
-    		
-    		for(int i = 1; i < col.length; ++i)
-    		{
-    			query += ", " + "'" + col[i] + "'"; 
-    		}
-    		query += ");";
-    		
-    		System.out.println(query);
-    		statement = this.m_conn.createStatement();
-    		statement.executeUpdate(query);
-    		System.out.println("Table Inserted!");
-    		returnValue = true;
-    		
-    	}catch(Exception e)
-    	{
-    		System.out.println(e);
-    		returnValue = false;
-    	}
-    	
-    	return returnValue;
-    }
-    
-    public boolean insert(String tableName, String username, String password, String usertype)
-    {
-    	Statement statement;
-    	boolean returnValue = true;
-    	try
-    	{
-    		String query = String.format("INSERT INTO %s(username,password,usertype) VALUES ('%s','%s','%s')",tableName,username,password,usertype);
-    		
-    		System.out.println(query);
-    		statement = this.m_conn.createStatement();
-    		statement.executeUpdate(query);
-    		System.out.println("Inserted values!");
-    		returnValue = true;
-    	}catch(Exception e)
-    	{
-    		System.out.println(e);
-    		returnValue = false;
-    	}
-    	return returnValue;
-    }
-    
-    public ResultSet select(String tableName)
-    {
-    	Statement statement;
-    	ResultSet rs = null;
-    	try
-    	{
-    		String query = String.format("SELECT * FROM %s;", tableName);
-    		statement = this.m_conn.createStatement();
-    		rs = statement.executeQuery(query);
-    		while(rs.next())
-    		{
-    			System.out.println("Output: ");
-    			System.out.println(rs.getString("usertype") + ": ");
-    			System.out.print(rs.getString("username") + " : ");
-    			System.out.println(rs.getString("password") + " ");
-    			
-    		}
-    	}catch(Exception e)
-    	{
-    		System.out.println(e);
-    	}
-    	
-    	return rs;
-    	
-    }
-    
-    public boolean update(String tableName, String username, String password)
-    {
-    	Statement statement;
-    	boolean returnValue = true;
-    	try
-    	{
-    		String query = String.format("UPDATE %s SET password='%s' WHERE username = '%s';",tableName, password, username);
-    		//System.out.println(query);
-    		statement = this.m_conn.createStatement();
-    		statement.executeUpdate(query);
-    		System.out.println("Table updated!");
-    		returnValue = true;;
-    	}catch(Exception e)
-    	{
-    		System.out.println(e);
-    		returnValue = false;
-    	}
     	return returnValue;
     }
 }
