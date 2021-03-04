@@ -1,24 +1,39 @@
 package application;
 
-public class Librarian extends User
-{
-	private String title = "";
-	private String author = "";
-	private String publisher = "";
-	private String media_type = "";
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Scanner;
+
+public class Librarian extends Person {
+//	private String username = "";
 	
-	public Librarian() {
+	public Librarian() throws SQLException {
+//		super(userInfo.getString(1), userInfo.getString(2), userInfo.getString(3));
+
+//		this.username = userInfo.getString(0);
+	}
+
+	@Override
+	protected void display() {
+		// TODO Auto-generated method stub
 		
 	}
 	
-	boolean addBook(Book aBook) {
-		return false;
-	}
+//	public Librarian(Scanner in) {
+//		System.out.println("Please enter details for librarian: ");
+//		System.out.print("Username: ");
+//		
+//	}
 	
-	void getBooks() {
-
-	}
-	void addBook() {
-
-	}
+//	boolean addBook(Book aBook) {
+//		return false;
+//	}
+//	
+//	void getBooks() {
+//
+//	}
+//	
+//	void addBook() {
+//
+//	}
 }

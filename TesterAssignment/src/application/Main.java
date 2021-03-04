@@ -25,7 +25,9 @@ import javafx.stage.Stage;
 public class Main extends Application {
 	private postgreSQLHeroku DB = new postgreSQLHeroku();
 	private Stage stage;
-	private Person person;
+	private Admin admin;
+	private Librarian librarian;
+	private Student student;
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -70,8 +72,8 @@ public class Main extends Application {
 	    btStu.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try {
-					person = new Student();
-					stage.setScene(studentHomePage());
+//					person = new Student();
+					stage.setScene(studentLoginPage());
 					stage.setTitle("Student Login Page");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -116,14 +118,15 @@ public class Main extends Application {
 						if(userType.equalsIgnoreCase("Admin")) {
 							
 							System.out.println("You are an Admin!");
-							person = new Admin();
+							admin = new Admin();
+							admin.display();
 							stage.setScene(adminHomePage());
 							stage.setTitle("Admin Page");
 							
 						} else if(userType.equalsIgnoreCase("Librarian")) {
 
 							System.out.println("You are a librarian!");
-							person = new Librarian();
+							librarian = new Librarian();
 //							stage.setScene(librarianHomePage());
 //							stage.setTitle("Librarian Page");
 							
@@ -181,7 +184,12 @@ public class Main extends Application {
 					
 					stage.setScene(new Scene(new Group(new Text("check console!")), 350, 450));
 					stage.setTitle("Registering Librarian");
-					Librarian librarian = new Librarian();
+					
+					if(admin.addLibrarian(in)) {
+						System.out.println("Added librarian successfully!");
+					} else {
+						System.out.println("Failed!");
+					}
 					
 					// getting details
 					
@@ -201,7 +209,11 @@ public class Main extends Application {
 					stage.setTitle("Removing Librarian");
 					System.out.println("Trying to delete librarian(s).");
 					
-					
+					if(admin.delLibrarian()) {
+						System.out.println("Deleted librarian successfully!");
+					} else {
+						System.out.println("Failed!");
+					}
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -219,7 +231,7 @@ public class Main extends Application {
 					stage.setTitle("Viewing Librarians");
 					System.out.println("Trying to view librarian(s).");
 					
-					
+					admin.viewLibrarians();
 					
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -239,7 +251,7 @@ public class Main extends Application {
 		return scene;
 	}
 	
-	public Scene studentHomePage() throws Exception {
+	public Scene studentLoginPage() throws Exception {
 		GridPane pane = new GridPane();
 		pane.setAlignment(Pos.CENTER);
 		pane.setHgap(5.5);
@@ -247,11 +259,17 @@ public class Main extends Application {
 	    
 		Label userLabel = new Label("Enter Student ID:");
         TextField studentNoField = new TextField();
+        
         Button btn = new Button("Login");
         btn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
+				
+				String studentNo = studentNoField.getText();
+				
+//				DB.selectAll()
+				
 				try {
-					stage.setScene(studentLoginPage(studentNoField));
+					stage.setScene(studentHomePage(studentNo));
 					stage.setTitle("Student Home Page");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -267,12 +285,12 @@ public class Main extends Application {
 	    return scene;
 	}
 	
-	public Scene studentLoginPage(TextField studentNoField) throws Exception {
+	public Scene studentHomePage(String studentNoField) throws Exception {
 		GridPane pane = new GridPane();
       	pane.setAlignment(Pos.CENTER);
       	pane.setHgap(5.5);
     	pane.setVgap(10);
-      	Label heading = new Label("Welcome student " + studentNoField.getText() + "\nWhat would you like to do today?\n");
+      	Label heading = new Label("Welcome student " + studentNoField + "\nWhat would you like to do today?\n");
       	Button btn0 = new Button("Search a book");
       	Button btn1 = new Button("Request an issue");
       	Button btn2 = new Button("View borrowed books");

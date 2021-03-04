@@ -1,28 +1,52 @@
 package application;
 
-public class Admin extends User{
+import java.util.Scanner;
+
+public class Admin extends Person {
+
+//	private String username = "";
+
+	public Admin() {
+//		super(userInfo.getString(2), userInfo.getString(3), userInfo.getString(4));
+
+//		this.username = userInfo.getString(1);
+	}
 	
-	boolean addLibrarian(Librarian aLibrarian)
-	{
-		// TODO Auto-generated method stub
+	// method to verify if admin info is being read
+	public void display() {
+//		System.out.println(this.username + " : " + this.getM_name() + " : " + this.getM_email() + " : " + this.getM_phoneNo());
+	}
+	
+	public boolean addLibrarian(Scanner in) {
+	
+		System.out.println("Enter information for new librarian: ");
+		System.out.print("Username: ");
+		String username = in.nextLine();
+		
+		// update table structure to accommodate for password reset for first login
+		System.out.print("Password: ");
+		String password = in.nextLine();
+		System.out.print("Name: ");
+		String name = in.nextLine();
+		System.out.print("Email: ");
+		String email = in.nextLine();
+		System.out.print("Phone: ");
+		String phone = in.nextLine();
+		
+		
+		
 		return false;
 	}
 	
-	boolean delLibrarian(Librarian aLibrarian)
-	{
-		// TODO Auto-generated method stub
+	public boolean delLibrarian() {
 		return false;
 	}
 	
-	String viewLibrarians()
-	{
-		// TODO Auto-generated method stub
+	public String viewLibrarians() {
 		return "";
 	}
 	
-	void getLibrariansReport()
-	{
-		// TODO Auto-generated method stub
+	public void getLibrariansReport() {
+		
 	}
-
 }
