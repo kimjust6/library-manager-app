@@ -1,22 +1,12 @@
 package application;
 
+import java.sql.ResultSet;
 import java.util.Scanner;
 import DatabaseTest.postgreSQLHeroku;
 
 public class Admin extends Person {
 
-//	private String username = "";
-
-	public Admin() {
-//		super(userInfo.getString(2), userInfo.getString(3), userInfo.getString(4));
-
-//		this.username = userInfo.getString(1);
-	}
-	
-	// method to verify if admin info is being read
-	public void display() {
-//		System.out.println(this.username + " : " + this.getM_name() + " : " + this.getM_email() + " : " + this.getM_phoneNo());
-	}
+	public Admin() {}
 	
 	public boolean addLibrarian(Scanner in, postgreSQLHeroku DB) {
 	
@@ -40,12 +30,21 @@ public class Admin extends Person {
 		return false;
 	}
 	
-	public boolean delLibrarian() {
+	public boolean delLibrarian(Scanner in, postgreSQLHeroku DB) {
+		System.out.print("Enter username of librarian to remove: ");
+		String username = in.nextLine();
+		
+		if(DB.delete(DB.TABLE_USERS, DB.COL_USERNAME, username)) {
+			return DB.delete(DB.TABLE_ADMINS, DB.COL_USERNAME, username);
+		}
 		return false;
 	}
 	
-	public String viewLibrarians() {
-		return "";
+	public ResultSet viewLibrarians() {
+		
+		
+		
+		return null;
 	}
 	
 	public void getLibrariansReport() {

@@ -209,7 +209,7 @@ public class Main extends Application {
 					stage.setTitle("Removing Librarian");
 					System.out.println("Trying to delete librarian(s).");
 					
-					if(admin.delLibrarian()) {
+					if(admin.delLibrarian(in, DB)) {
 						System.out.println("Deleted librarian successfully!");
 					} else {
 						System.out.println("Failed!");

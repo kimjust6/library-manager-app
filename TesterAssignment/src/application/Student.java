@@ -18,13 +18,4 @@ public class Student extends Person {
 		// TODO Auto-generated method stub
 		return "";
 	}
-
-	@Override
-	protected void display() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-	
 }

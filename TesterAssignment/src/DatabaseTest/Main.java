@@ -18,7 +18,7 @@ public class Main {
         db.update(db.TABLE_STUDENTS, "sid", "1", "lastname", "anewlastname");
         db.update(db.TABLE_STUDENTS, "sid", "1", "lastname", "anewerlastname");
         
-        db.selectAll("students","firstname");
+        db.select_all("students","firstname");
         db.delete("students","sid","1");
         
 //        db.insert(conn, db.tableUsers, "johnsnow", "myverysecurepassword", "Librarian");
