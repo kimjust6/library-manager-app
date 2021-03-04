@@ -37,6 +37,7 @@ public class postgreSQLHeroku{
     public final String COL_QTY_BOR = "qtyBorrowed";
     public final String COL_TYPE = "type";
     public final String COL_PUBLISHER = "publisher";
+    public final String COL_ID = "id";
     
     //final strings for library (book) types
     public final String TYPE_BOOK = "book";
@@ -153,16 +154,17 @@ public class postgreSQLHeroku{
     
     public boolean return_lib(String id)
     {
-    	boolean returnValue1 = update(this.TABLE_LIBRARY, this.COL_QTY_AVAIL, this.COL_QTY_AVAIL + "+ 1",this.COL_QTY_AVAIL, id );
-    	boolean returnValue2 = update(this.TABLE_LIBRARY, this.COL_QTY_BOR, this.COL_QTY_BOR + "- 1", this.COL_QTY_BOR, id );;
+    	boolean returnValue1 = update(this.TABLE_LIBRARY, this.COL_QTY_AVAIL, this.COL_QTY_AVAIL + "+ 1",this.COL_ID, id );
+    	boolean returnValue2 = update(this.TABLE_LIBRARY, this.COL_QTY_BOR, this.COL_QTY_BOR + "- 1", this.COL_ID, id );;
     	
     	return returnValue1 && returnValue2;
     }
     
     public boolean checkout_lib(String id)
     {
-    	boolean returnValue1 = update(this.TABLE_LIBRARY, this.COL_QTY_AVAIL, this.COL_QTY_AVAIL + "- 1",this.COL_QTY_AVAIL, id );
-    	boolean returnValue2 = update(this.TABLE_LIBRARY, this.COL_QTY_BOR, this.COL_QTY_BOR + "+ 1", this.COL_QTY_BOR, id );;
+    	//String query = String.format("UPDATE %s SET %s='%s' WHERE %s = '%s';",tableName, colChange, newValue, colPK, PK);
+    	boolean returnValue1 = update(this.TABLE_LIBRARY, this.COL_QTY_AVAIL, this.COL_QTY_AVAIL + "- 1",this.COL_ID, id );
+    	boolean returnValue2 = update(this.TABLE_LIBRARY, this.COL_QTY_BOR, this.COL_QTY_BOR + "+ 1", this.COL_ID, id );
     	
     	return returnValue1 && returnValue2;
     }
@@ -275,7 +277,8 @@ public class postgreSQLHeroku{
     	boolean returnValue = true;
     	try
     	{
-    		String query = String.format("UPDATE %s SET %s='%s' WHERE %s = '%s';",tableName, colChange, newValue, colPK, PK);
+    		//String query = String.format("UPDATE %s SET %s='%s' WHERE %s = '%s';",tableName, colChange, newValue, colPK, PK);
+    		String query = String.format("UPDATE %s SET %s=%s WHERE %s = %s;",tableName, colChange, newValue, colPK, PK);
     		System.out.println(query);
     		statement = this.m_conn.createStatement();
     		statement.executeUpdate(query);
