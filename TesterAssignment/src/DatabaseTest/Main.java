@@ -1,6 +1,6 @@
 package DatabaseTest;
 
-import java.sql.Connection;
+import java.sql.ResultSet;
 
 public class Main {
 	
@@ -28,8 +28,13 @@ public class Main {
 //        db.select(conn,"admins");
     	
 //    	db.insert_library("harry potter","j.k. rowling","a publisher", db.TYPE_BOOK, "20");
-    	//db.checkout_lib("1");
-    	db.return_lib("1");
+    	//db.insert_lib("harry potter and the order of mcdonalds","j.k. rowling","a publisher", db.TYPE_BOOK, "10");
+    	//db.insert_lib("ron weasley and the deathly gingers","j.k. rowling","a publisher", db.TYPE_BOOK, "10");
+    	//db.checkout_lib("2");
+    	//db.return_lib("1");
+    	
+    	//db.update("users","password","'myverysecurepassword3'","username","'harryPotter'");
+    	ResultSet value = db.search_lib_exact("id","1");
     	
         
     }

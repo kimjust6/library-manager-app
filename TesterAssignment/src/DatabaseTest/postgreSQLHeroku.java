@@ -19,6 +19,8 @@ public class postgreSQLHeroku{
     public final String TABLE_USERS = "users";
     public final String TABLE_STUDENTS = "students";
     public final String TABLE_LIBRARY = "library";
+    public final String TABLE_BORROWED_OBJECTS = "borrowedobjects";
+    public final String TABLE_WAITLIST_OBJECTS = "waitlistobjects";
     
     //final strings for column names in table user
     public final String COL_USERNAME = "username"; 
@@ -93,8 +95,8 @@ public class postgreSQLHeroku{
     		queryResult = statement.executeQuery(query); 
     		
     		if(queryResult.next()) {
-    			if (queryResult.getString(COL_PASSWORD).equals(password)) {  
-    				return queryResult.getString(COL_USERTYPE);
+    			if (queryResult.getString(this.COL_PASSWORD).equals(password)) {  
+    				return queryResult.getString(this.COL_USERTYPE);
     			} else {
     				System.out.println("Invalid password!");
     			}
@@ -141,7 +143,7 @@ public class postgreSQLHeroku{
     //****************************************************************************
     //LIBRARY OBJECT (BOOK) CRUD OPERATIONS
     //****************************************************************************
-    public boolean insert_library(String title, String author, String publisher, String mediatype, String qty)
+    public boolean insert_lib(String title, String author, String publisher, String mediatype, String qty)
     {
     	//get library length
     	return insert(this.TABLE_LIBRARY, title, author, publisher, mediatype, qty, "0");
@@ -165,12 +167,22 @@ public class postgreSQLHeroku{
     	return returnValue1 && returnValue2;
     }
     
-    public boolean delete_library(String colId, String id)
+    public boolean delete_lib(String colId, String id)
     {
-    	//get library length
     	return delete(this.TABLE_LIBRARY, colId, id);
     }
     
+    //use this to find matching id
+    public ResultSet search_lib_exact(String colId, String id)
+    {
+    	return select(this.TABLE_LIBRARY, colId, "=", id);
+    }
+    
+    //use this for searching similar titles
+    public ResultSet search_lib_partial(String colId, String id)
+    {
+    	return select(this.TABLE_LIBRARY, colId, " like ", "%" + id + "%");
+    }
     
     //****************************************************************************
     //BASIC CRUD OPERATIONS
@@ -266,7 +278,9 @@ public class postgreSQLHeroku{
     }
     
 
-    
+    //this method is a little hacky
+    //right now it works well if the update values are integers, but not if they are strings.
+    //if newValue and PK are strings, you will need to add additiona single quotations around them for it to work
     public boolean update(String tableName, String colChange, String newValue, String colPK, String PK)
     {
     	Statement statement;
