@@ -106,44 +106,7 @@ public class postgreSQLHeroku{
 		return null;
     }
     
-    
-   
-    
-    public boolean create_table(String tableName, String ... col)
-    {
-    	Statement statement;
-    	boolean returnValue = true;
-    	try
-    	{
-    		String query = "CREATE TABLE IF NOT EXISTS " + tableName + "(";
-    		
-    		if (col.length > 0)
-    		{
-    			 query += col[0];
-    		}
-    		
-    		for(int i = 1; i < col.length; ++i)
-    		{
-    			query += ", " + col[i]; 
-    		}
-    		
-    		String anArray[] = col[0].split(" ");
-    		query += String.format(", PRIMARY KEY( %s ));", anArray[0]);
-    		
-    		System.out.println(query);
-    		statement = this.m_conn.createStatement();
-    		statement.executeUpdate(query);
-    		System.out.println("Table Created! (probably)");
-    		returnValue = true;
-    		
-    	}catch(Exception e)
-    	{
-    		System.out.println(e);
-    		returnValue = false;
-    	}
-    	
-    	return returnValue;
-    }
+     
     
     public boolean insert_librarian(String tableName, String username, String password, String usertype)
     {
@@ -168,23 +131,48 @@ public class postgreSQLHeroku{
     
     
     //****************************************************************************
+    //USER CRUD OPERATIONS
+    //****************************************************************************
+    
+    
+    
+    //****************************************************************************
+    //LIBRARY OBJECT (BOOK) CRUD OPERATIONS
+    //****************************************************************************
+    public boolean insert_library(String title, String author, String publisher, String mediatype)
+    {
+    	//get library length
+    	
+    	return insert(this.TABLE_LIBRARY,title,author,publisher, mediatype);
+
+    }
+    
+    
+    //****************************************************************************
     //BASIC CRUD OPERATIONS
     //****************************************************************************
-    public ResultSet selectAll(String tableName)
+    
+    
+    public ResultSet selectAll(String tableName, String colOrder)
     {
     	Statement statement;
     	ResultSet rs = null;
+    	
     	try
     	{
-    		String query = String.format("SELECT * FROM %s;", tableName);
+    		String query = String.format("SELECT * FROM %s ORDER BY %s;", tableName, colOrder);
     		statement = this.m_conn.createStatement();
     		rs = statement.executeQuery(query);
+    		int colCount = rs.getMetaData().getColumnCount();
+    		System.out.println("test");
     		while(rs.next())
     		{
-    			System.out.println("Output: ");
-    			System.out.println(rs.getString("usertype") + ": ");
-    			System.out.print(rs.getString("username") + " : ");
-    			System.out.println(rs.getString("password") + " ");
+    			for (int i = 1; i <= colCount; ++i )
+    			{
+    				System.out.print(rs.getString(i) + " ");
+    			}
+    			System.out.println("");
+
     			
     		}
     	}catch(Exception e)
@@ -284,7 +272,7 @@ public class postgreSQLHeroku{
     	boolean returnValue = true;
     	try
     	{
-    		String query = String.format("DELETE %s FROM %s WHERE %s = '%s';",tableName, colPK, PK);
+    		String query = String.format("DELETE FROM %s WHERE %s = '%s';",tableName, colPK, PK);
     		System.out.println(query);
     		statement = this.m_conn.createStatement();
     		statement.executeUpdate(query);
@@ -298,6 +286,40 @@ public class postgreSQLHeroku{
     	return returnValue;
     }
     
-
+    public boolean create_table(String tableName, String ... col)
+    {
+    	Statement statement;
+    	boolean returnValue = true;
+    	try
+    	{
+    		String query = "CREATE TABLE IF NOT EXISTS " + tableName + "(";
+    		
+    		if (col.length > 0)
+    		{
+    			 query += col[0];
+    		}
+    		
+    		for(int i = 1; i < col.length; ++i)
+    		{
+    			query += ", " + col[i]; 
+    		}
+    		
+    		String anArray[] = col[0].split(" ");
+    		query += String.format(", PRIMARY KEY( %s ));", anArray[0]);
+    		
+    		System.out.println(query);
+    		statement = this.m_conn.createStatement();
+    		statement.executeUpdate(query);
+    		System.out.println("Table Created! (probably)");
+    		returnValue = true;
+    		
+    	}catch(Exception e)
+    	{
+    		System.out.println(e);
+    		returnValue = false;
+    	}
+    	
+    	return returnValue;
+    }
 }
 
