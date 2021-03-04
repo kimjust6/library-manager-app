@@ -26,7 +26,7 @@ public class StudentMenu implements AutoCloseable {
     	pane.setVgap(10);
       	Label heading = new Label("Welcome, " + studentName + "\nWhat would you like to do today?\n");
       	
-      	Button searchBtn = new Button("Find a book");
+      	Button searchBtn = new Button("Find Books");
       	Button reqIssueBtn = new Button("Request a book");
       	Button viewBorrowedBtn = new Button("Borrow books");
       	Button backBtn = new Button("Logout");

@@ -5,6 +5,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import org.postgresql.util.PSQLException;
+
 import DatabaseTest.postgreSQLHeroku;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -34,13 +37,12 @@ public class StudentLogin implements AutoCloseable {
 	    
 		Label userLabel = new Label("Enter Student ID:");
         TextField studentNoField = new TextField();
-        Button backBtn = new Button("Back");
+        Button backBtn = new Button("Logout");
         Button btn = new Button("Login");
         
         btn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
-				
-				// need to authenticate student as well
+	
 				String studentNo = studentNoField.getText();
 				
 				try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
@@ -49,37 +51,43 @@ public class StudentLogin implements AutoCloseable {
 					
 					String query = "select * from " + postgreSQLHeroku.TABLE_STUDENTS + " where " + postgreSQLHeroku.COL_STUD_NO + "=" + studentNo + ";";
 					ResultSet queryResult = statement.executeQuery(query); 
-					
-					if(queryResult.next()) {
-						System.out.println("Student is " + queryResult.getString(postgreSQLHeroku.COL_STUD_LVL));
-						try (StudentMenu studentMenu = new StudentMenu(stage, scene)) {
-							stage.setScene(studentMenu.showMenu(queryResult.getString(postgreSQLHeroku.COL_STUD_FNAME)));
-							stage.setTitle("Student Home Page");
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					} else {
-						System.out.println("Student not found!");
+
+					if (studentNo == "") {
+						System.out.println("Please enter a valid Student Number!");
+						AlertBox.display("Error!", "Please enter a valid Student Number!");
 					}
+					else {
+						if(queryResult.next()) {
+							System.out.println("Student is " + queryResult.getString(postgreSQLHeroku.COL_STUD_LVL));
+							try (StudentMenu studentMenu = new StudentMenu(stage, scene)) {
+								stage.setScene(studentMenu.showMenu(queryResult.getString(postgreSQLHeroku.COL_STUD_FNAME)));
+								stage.setTitle("Student Home Page");
+							} catch (Exception e) {
+								e.printStackTrace();
+							}
+						} else {
+							System.out.println("Student not found!");
+						}
+					}
+				} catch (PSQLException e2) {
+					e2.printStackTrace();
 				} catch (SQLException e1) {
 					e1.printStackTrace();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				
 			}
        });
-        backBtn.setOnAction(e-> 
-        		{
-        			
-    				try (StudentMenu studentMenu = new StudentMenu(stage, scene)) {
-    					Home homePage = new Home(stage, scene);
-            			stage.setScene(homePage.showHomePage()); 
-            			stage.setTitle("Library");
-    				} catch (Exception e2) {
-    					e2.printStackTrace();
-    				}
-        			
-        		}); 
+        
+       backBtn.setOnAction(e-> {
+        	try (Home homePage = new Home(stage, scene);) {
+    			stage.setScene(homePage.showHomePage()); 
+            	stage.setTitle("Library");
+    		} catch (Exception e2) {
+    			e2.printStackTrace();
+    		}
+       }); 
        pane.add(userLabel, 0 , 0);
        pane.add(studentNoField, 1 , 0);
        pane.add(btn, 1, 1);
@@ -95,5 +103,4 @@ public class StudentLogin implements AutoCloseable {
 		// TODO Auto-generated method stub
 		
 	}
-	
 }
