@@ -72,8 +72,8 @@ public class AdminMenu implements AutoCloseable {
 		
 		viewBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
-				try (Scanner in = new Scanner(System.in)) {
-//					stage.setScene(getLibrarians());
+				try (LibrarianList librarianList = new LibrarianList(stage, scene)) {
+					stage.setScene(librarianList.display());
 					stage.setTitle("Viewing Librarians");
 				} catch (Exception e) {
 					e.printStackTrace();
