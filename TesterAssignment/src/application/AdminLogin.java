@@ -93,7 +93,21 @@ public class AdminLogin implements AutoCloseable {
 				}
 			}
 		});
+        
+        Button backBtn = new Button("Back");
+        backBtn.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent arg0) {
+				try (Home homePage = new Home(stage, scene)) {
+					stage.setScene(homePage.showHomePage()); 
+					stage.setTitle("Library");
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		}); 
+        
 		pane.add(btn, 1, 3);
+		pane.add(backBtn, 1, 5);
 		
 		Scene scene = new Scene(pane, 350, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());

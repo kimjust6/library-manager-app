@@ -53,7 +53,6 @@ public class RegisterLibrarian implements AutoCloseable {
 		pane.add(phone, 1, 5);
 
 		Button btn = new Button("Submit");
-		pane.add(btn, 1, 6);
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent arg0) {
 				try (Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
@@ -82,6 +81,22 @@ public class RegisterLibrarian implements AutoCloseable {
 				}
 			}
 		});
+		
+        Button backBtn = new Button("Back");
+        backBtn.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent arg0) {
+				try (AdminMenu adminMenu = new AdminMenu(stage, scene)) {
+					stage.setScene(adminMenu.showMenu()); 
+					stage.setTitle("Admin Menu");
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		}); 
+
+		pane.add(btn, 1, 6);
+		pane.add(backBtn, 1, 8);
+		
 		Scene scene = new Scene(pane, 350, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	    return scene;

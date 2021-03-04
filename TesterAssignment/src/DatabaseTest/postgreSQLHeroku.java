@@ -28,9 +28,9 @@ public class postgreSQLHeroku {
     public static final String COL_ADMINTYPE = "admintype";
     
     //final strings for user types
-    public static final String TYPE_ADMIN = "admin";
-    public static final String TYPE_MANAGER = "manager";
-    public static final String TYPE_LIBRARIAN = "librarian";
+    public static final String TYPE_ADMIN = "Admin";
+    public static final String TYPE_MANAGER = "Manager";
+    public static final String TYPE_LIBRARIAN = "Librarian";
     
     //final strings for column names in table library (book)    
     public static final String COL_TITLE = "title";

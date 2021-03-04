@@ -43,15 +43,14 @@ public class DeleteLibrarian implements AutoCloseable {
 		pane.add(username, 1, 1);
 		
 		Button btn = new Button("Submit");
-		pane.add(btn, 1, 2);
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent arg0) {
 				try (Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
 
 					Statement statement = connection.createStatement();
 		    		
-					String query1 = String.format("delete from %s where %s = '%s' and %s = '%s'", postgreSQLHeroku.TABLE_USERS, postgreSQLHeroku.COL_USERNAME, username.getText(), postgreSQLHeroku.COL_ADMINTYPE, postgreSQLHeroku.TYPE_LIBRARIAN);
-					String query2 = String.format("delete from %s where %s = '%s' and %s = '%s'", postgreSQLHeroku.TABLE_ADMINS, postgreSQLHeroku.COL_USERNAME, username.getText(), postgreSQLHeroku.COL_ADMINTYPE, postgreSQLHeroku.TYPE_LIBRARIAN);
+					String query1 = String.format("delete from %s where %s = '%s' and %s = '%s'", postgreSQLHeroku.TABLE_ADMINS, postgreSQLHeroku.COL_USERNAME, username.getText(), postgreSQLHeroku.COL_ADMINTYPE, postgreSQLHeroku.TYPE_LIBRARIAN);
+					String query2 = String.format("delete from %s where %s = '%s'", postgreSQLHeroku.TABLE_USERS, postgreSQLHeroku.COL_USERNAME, username.getText());
 					
 					if(statement.executeUpdate(query1) == 1) {
 						if(statement.executeUpdate(query2) == 1) {
@@ -72,6 +71,22 @@ public class DeleteLibrarian implements AutoCloseable {
 				}
 			}
 		});
+		
+        Button backBtn = new Button("Back");
+        backBtn.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent arg0) {
+				try (AdminMenu adminMenu = new AdminMenu(stage, scene)) {
+					stage.setScene(adminMenu.showMenu()); 
+					stage.setTitle("Admin Menu");
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		}); 
+        
+		pane.add(btn, 1, 2);
+		pane.add(backBtn, 1, 4);
+		
 		Scene scene = new Scene(pane, 350, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	    return scene;

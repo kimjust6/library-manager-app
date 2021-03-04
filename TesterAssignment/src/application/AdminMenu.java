@@ -44,9 +44,6 @@ public class AdminMenu implements AutoCloseable {
 	    imgV2.setFitWidth(40);
 	    
 		Button regBtn = new Button("Register Librarian");
-		Button delBtn = new Button("Delete Librarian");
-		Button viewBtn = new Button("View Librarians");
-		
 		regBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try (RegisterLibrarian regLibrarian = new RegisterLibrarian(stage, scene)) {
@@ -57,7 +54,8 @@ public class AdminMenu implements AutoCloseable {
 				}
 			}
 	    });
-		
+
+		Button delBtn = new Button("Delete Librarian");
 		delBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try (DeleteLibrarian delLibrarian = new DeleteLibrarian(stage, scene)) {
@@ -68,7 +66,8 @@ public class AdminMenu implements AutoCloseable {
 				}
 			}
 	    });
-		
+
+		Button viewBtn = new Button("View Librarians");
 		viewBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try (LibrarianList librarianList = new LibrarianList(stage, scene)) {
@@ -79,6 +78,18 @@ public class AdminMenu implements AutoCloseable {
 				}
 			}
 	    });
+
+		Button logoutBtn = new Button("Log out");
+		logoutBtn.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent arg0) {
+				try (Home homePage= new Home(stage, scene)) {
+					stage.setScene(homePage.showHomePage()); 
+					stage.setTitle("Library");
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}	
+			}
+        }); 
 		
 		pane.add(imgV, 0, 0);
 		pane.add(regBtn, 1, 0);
@@ -86,6 +97,7 @@ public class AdminMenu implements AutoCloseable {
 		pane.add(delBtn, 1, 1);
 		pane.add(imgV2, 0, 2);
 		pane.add(viewBtn, 1, 2);
+		pane.add(logoutBtn, 1, 4);
 		
 		Scene scene = new Scene(pane, 350, 450);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());

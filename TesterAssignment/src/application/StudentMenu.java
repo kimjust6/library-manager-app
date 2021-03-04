@@ -65,11 +65,9 @@ public class StudentMenu implements AutoCloseable {
 			}
       	});
       	
-      	backBtn.setOnAction(e-> 
-		{
+      	backBtn.setOnAction(e-> {
 			
 			try (Home homePage = new Home(stage, scene)) {
-				
     			stage.setScene(homePage.showHomePage()); 
     			stage.setTitle("Library");
 			} catch (Exception e2) {
@@ -85,7 +83,7 @@ public class StudentMenu implements AutoCloseable {
       	pane.add(searchBtn, 0, 1);
       	pane.add(reqIssueBtn, 0, 2);
       	pane.add(viewBorrowedBtn, 0, 3);
-      	pane.add(backBtn, 0, 4);
+      	pane.add(backBtn, 0, 5);
       	
       	Scene scene = new Scene(pane, 350, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
