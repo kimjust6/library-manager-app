@@ -16,6 +16,7 @@ public class postgreSQLHeroku{
     private final String DATABASE_PASSWORD = "9b76f4cfa5a87feb4cf28e8b90e485b183bca39b2b20c09e323b4a04b524b2ce";
     
     //final strings for table names 
+    public final String TABLE_ADMINS = "admins";
     public final String TABLE_USERS = "users";
     public final String TABLE_STUDENTS = "students";
     public final String TABLE_LIBRARY = "library";
@@ -25,7 +26,7 @@ public class postgreSQLHeroku{
     //final strings for column names in table user
     public final String COL_USERNAME = "username"; 
     public final String COL_PASSWORD = "password"; 
-    public final String COL_USERTYPE = "usertype";
+    public final String COL_ADMINTYPE = "admintype";
     
     //final strings for user types
     public final String TYPE_ADMIN = "admin";
@@ -85,7 +86,7 @@ public class postgreSQLHeroku{
 
     // temporary method - Harsh K
     
-    public String initialize(String username, String password) {
+    public ResultSet initialize(String username, String password) {
     	String query = "";
     	ResultSet queryResult = null;
     	try {
@@ -95,8 +96,12 @@ public class postgreSQLHeroku{
     		queryResult = statement.executeQuery(query); 
     		
     		if(queryResult.next()) {
-    			if (queryResult.getString(this.COL_PASSWORD).equals(password)) {  
-    				return queryResult.getString(this.COL_USERTYPE);
+
+    			if (queryResult.getString(COL_PASSWORD).equals(password)) { 
+    				ResultSet userInfo = statement.executeQuery("select * from " + TABLE_ADMINS + " where " + COL_USERNAME + "='" + username + "';");
+    				
+    				if(userInfo.next()) return userInfo;
+    				
     			} else {
     				System.out.println("Invalid password!");
     			}
@@ -200,7 +205,6 @@ public class postgreSQLHeroku{
     		statement = this.m_conn.createStatement();
     		rs = statement.executeQuery(query);
     		int colCount = rs.getMetaData().getColumnCount();
-    		System.out.println("test");
     		while(rs.next())
     		{
     			for (int i = 1; i <= colCount; ++i )
@@ -224,7 +228,8 @@ public class postgreSQLHeroku{
     	ResultSet rs = null;
     	try
     	{
-    		String query = String.format("SELECT * FROM %s WHERE %s %s %s;", tableName, col, operator, tupleMatch);
+    		String query = String.format("SELECT * FROM %s WHERE %s %s '%s';", tableName, col, operator, tupleMatch);
+    		System.out.println(query);
     		statement = this.m_conn.createStatement();
     		rs = statement.executeQuery(query);
 //    		while(rs.next())
