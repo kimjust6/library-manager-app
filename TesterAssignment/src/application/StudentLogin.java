@@ -1,5 +1,11 @@
 package application;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import DatabaseTest.postgreSQLHeroku;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -36,9 +42,26 @@ public class StudentLogin implements AutoCloseable {
 				// need to authenticate student as well
 				String studentNo = studentNoField.getText();
 				
-				try (StudentMenu studentMenu = new StudentMenu(stage, scene)) {
-					stage.setScene(studentMenu.showMenu(studentNo));
-					stage.setTitle("Student Home Page");
+				try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
+
+					Statement statement = connection.createStatement();
+					
+					String query = "select * from " + postgreSQLHeroku.TABLE_STUDENTS + " where " + postgreSQLHeroku.COL_STUD_NO + "=" + studentNo + ";";
+					ResultSet queryResult = statement.executeQuery(query); 
+					
+					if(queryResult.next()) {
+						System.out.println("Student is " + queryResult.getString(postgreSQLHeroku.COL_STUD_LVL));
+						try (StudentMenu studentMenu = new StudentMenu(stage, scene)) {
+							stage.setScene(studentMenu.showMenu(studentNo));
+							stage.setTitle("Student Home Page");
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					} else {
+						System.out.println("Student not found!");
+					}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
