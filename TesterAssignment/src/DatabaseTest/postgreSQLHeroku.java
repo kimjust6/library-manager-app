@@ -112,7 +112,7 @@ public class postgreSQLHeroku{
     
      
     
-    public boolean insert_librarian(String tableName, String username, String password, String usertype)
+    public boolean insert_librarian(String tableName, String username, String password, String usertype, String onHandQty, String borrowedQty)
     {
     	Statement statement;
     	boolean returnValue = true;
@@ -130,6 +130,7 @@ public class postgreSQLHeroku{
     		System.out.println(e);
     		returnValue = false;
     	}
+    	
     	return returnValue;
     }
     
@@ -143,12 +144,33 @@ public class postgreSQLHeroku{
     //****************************************************************************
     //LIBRARY OBJECT (BOOK) CRUD OPERATIONS
     //****************************************************************************
-    public boolean insert_library(String title, String author, String publisher, String mediatype)
+    public boolean insert_library(String title, String author, String publisher, String mediatype, String qty)
     {
     	//get library length
+    	return insert(this.TABLE_LIBRARY, title, author, publisher, mediatype, qty, "0");
+    }
+    
+    
+    public boolean return_lib(String id)
+    {
+    	boolean returnValue1 = update(this.TABLE_LIBRARY, this.COL_QTY_AVAIL, this.COL_QTY_AVAIL + "+ 1",this.COL_QTY_AVAIL, id );
+    	boolean returnValue2 = update(this.TABLE_LIBRARY, this.COL_QTY_BOR, this.COL_QTY_BOR + "- 1", this.COL_QTY_BOR, id );;
     	
-    	return insert(this.TABLE_LIBRARY,title,author,publisher, mediatype);
-
+    	return returnValue1 && returnValue2;
+    }
+    
+    public boolean checkout_lib(String id)
+    {
+    	boolean returnValue1 = update(this.TABLE_LIBRARY, this.COL_QTY_AVAIL, this.COL_QTY_AVAIL + "- 1",this.COL_QTY_AVAIL, id );
+    	boolean returnValue2 = update(this.TABLE_LIBRARY, this.COL_QTY_BOR, this.COL_QTY_BOR + "+ 1", this.COL_QTY_BOR, id );;
+    	
+    	return returnValue1 && returnValue2;
+    }
+    
+    public boolean delete_library(String colId, String id)
+    {
+    	//get library length
+    	return delete(this.TABLE_LIBRARY, colId, id);
     }
     
     
@@ -157,7 +179,7 @@ public class postgreSQLHeroku{
     //****************************************************************************
     
     
-    public ResultSet selectAll(String tableName, String colOrder)
+    public ResultSet select_all(String tableName, String colOrder)
     {
     	Statement statement;
     	ResultSet rs = null;
@@ -176,8 +198,6 @@ public class postgreSQLHeroku{
     				System.out.print(rs.getString(i) + " ");
     			}
     			System.out.println("");
-
-    			
     		}
     	}catch(Exception e)
     	{
@@ -194,17 +214,17 @@ public class postgreSQLHeroku{
     	ResultSet rs = null;
     	try
     	{
-    		String query = String.format("SELECT * FROM %s;", tableName);
+    		String query = String.format("SELECT * FROM %s WHERE %s %s %s;", tableName, col, operator, tupleMatch);
     		statement = this.m_conn.createStatement();
     		rs = statement.executeQuery(query);
-    		while(rs.next())
-    		{
-    			System.out.println("Output: ");
-    			System.out.println(rs.getString("usertype") + ": ");
-    			System.out.print(rs.getString("username") + " : ");
-    			System.out.println(rs.getString("password") + " ");
-    			
-    		}
+//    		while(rs.next())
+//    		{
+//    			System.out.println("Output: ");
+//    			System.out.println(rs.getString("usertype") + ": ");
+//    			System.out.print(rs.getString("username") + " : ");
+//    			System.out.println(rs.getString("password") + " ");
+//    			
+//    		}
     	}catch(Exception e)
     	{
     		System.out.println(e);
@@ -249,13 +269,13 @@ public class postgreSQLHeroku{
     
 
     
-    public boolean update(String tableName, String colPK, String PK, String colChange, String newValue)
+    public boolean update(String tableName, String colChange, String newValue, String colPK, String PK)
     {
     	Statement statement;
     	boolean returnValue = true;
     	try
     	{
-    		String query = String.format("UPDATE %s SET %s='%s' WHERE %s = '%s';",tableName, colPK, PK, colChange, newValue);
+    		String query = String.format("UPDATE %s SET %s='%s' WHERE %s = '%s';",tableName, colChange, newValue, colPK, PK);
     		System.out.println(query);
     		statement = this.m_conn.createStatement();
     		statement.executeUpdate(query);
