@@ -25,8 +25,6 @@ public class postgreSQLHeroku{
     public final String TABLE_WAITLIST_OBJECTS = "waitlistobjects";
     
     //final strings for column names in table user
-    
-    //final strings for column names in table user
     public final String COL_USERNAME = "username"; 
     public final String COL_PASSWORD = "password"; 
     public final String COL_ADMINTYPE = "admintype";
@@ -349,7 +347,7 @@ public class postgreSQLHeroku{
     		statement = this.m_conn.createStatement();
     		statement.executeUpdate(query);
     		System.out.println("tuple deleted!");
-    		returnValue = true;;
+    		returnValue = true;
     	}catch(Exception e)
     	{
     		System.out.println(e);
