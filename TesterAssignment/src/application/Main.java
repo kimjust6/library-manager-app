@@ -1,8 +1,12 @@
 package application;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
+import org.postgresql.util.PSQLException;
 import DatabaseTest.postgreSQLHeroku;
 import javafx.application.Application;
 import javafx.beans.property.SimpleStringProperty;
@@ -180,16 +184,19 @@ public class Main extends Application {
 		Button delBtn = new Button("Delete Librarian");
 		Button viewBtn = new Button("View Librarians");
 		
-		regBtn.setOnAction(new EventHandler<ActionEvent>(){
-			@Override public void handle(ActionEvent arg0) {
-				try (Scanner in = new Scanner(System.in)) {
-					stage.setScene(regLibrarian());
-					stage.setTitle("Registering Librarian");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-	    });
+//		regBtn.setOnAction(new EventHandler<ActionEvent>(){
+//			@Override public void handle(ActionEvent arg0) {
+//				try (Scanner in = new Scanner(System.in)) {
+//					stage.setScene(regLibrarian());
+//					stage.setTitle("Registering Librarian");
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//	    });
+		
+		regBtn.setOnAction(new RegisterLibrarian(stage, scene, DB));
+		
 		
 		delBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
@@ -296,53 +303,64 @@ public class Main extends Application {
 	
 	// ADMIN chooses to REGISTER LIBRARIAN
 	
-	public Scene regLibrarian() throws Exception {
-		GridPane pane = new GridPane();
-		pane.setAlignment(Pos.CENTER);
-		pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
-		pane.setHgap(5.5);
-		pane.setVgap(5.5);
-			
-		TextField username = new TextField();
-		PasswordField password = new PasswordField();
-		TextField name = new TextField();
-		TextField email = new TextField();
-		TextField phone = new TextField();
-		
-		pane.add(new Label("Username:"), 0, 1);
-		pane.add(username, 1, 1);
-		pane.add(new Label("Password:"), 0, 2);
-		pane.add(password, 1, 2);
-		pane.add(new Label("Name:"), 0, 3);
-		pane.add(name, 1, 3);
-		pane.add(new Label("Email:"), 0, 4);
-		pane.add(email, 1, 4);
-		pane.add(new Label("Phone No:"), 0, 5);
-		pane.add(phone, 1, 5);
-
-		Button btn = new Button("Submit");
-		pane.add(btn, 1, 6);
-		btn.setOnAction(new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent arg0) {
-				try (Scanner in = new Scanner(System.in)) {
-					if(DB.insert(DB.TABLE_USERS, username.getText(), password.getText())) {
-						if(DB.insert(DB.TABLE_ADMINS, username.getText(), name.getText(), email.getText(), phone.getText(), "Librarian")) {
-							System.out.println("Added librarian successfully!");
-						} else {
-							System.out.println("Failed!");
-						}
-					} else {
-						System.out.println("Failed!");
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		Scene scene = new Scene(pane, 350, 450);
-	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-	    return scene;
-	}
+//	public Scene regLibrarian() throws Exception {
+//		GridPane pane = new GridPane();
+//		pane.setAlignment(Pos.CENTER);
+//		pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
+//		pane.setHgap(5.5);
+//		pane.setVgap(5.5);
+//			
+//		TextField username = new TextField();
+//		PasswordField password = new PasswordField();
+//		TextField name = new TextField();
+//		TextField email = new TextField();
+//		TextField phone = new TextField();
+//		
+//		pane.add(new Label("Username:"), 0, 1);
+//		pane.add(username, 1, 1);
+//		pane.add(new Label("Password:"), 0, 2);
+//		pane.add(password, 1, 2);
+//		pane.add(new Label("Name:"), 0, 3);
+//		pane.add(name, 1, 3);
+//		pane.add(new Label("Email:"), 0, 4);
+//		pane.add(email, 1, 4);
+//		pane.add(new Label("Phone No:"), 0, 5);
+//		pane.add(phone, 1, 5);
+//
+//		Button btn = new Button("Submit");
+//		pane.add(btn, 1, 6);
+//		btn.setOnAction(new EventHandler<ActionEvent>() {
+//			@Override public void handle(ActionEvent arg0) {
+//				try (Connection connection = DriverManager.getConnection(DB.DATABASE_URL, DB.DATABASE_USERNAME, DB.DATABASE_PASSWORD)) {
+//
+//					Statement statement = connection.createStatement();
+//		    		
+//					String query1 = String.format("insert into %s values('%s','%s');", DB.TABLE_USERS, username.getText(), password.getText());
+//					String query2 = String.format("insert into %s values('%s','%s','%s',%s,'%s');", DB.TABLE_ADMINS, username.getText(), name.getText(), email.getText(), phone.getText(), "Librarian");
+//					
+//					if(statement.executeUpdate(query1) == 1) {
+//						if(statement.executeUpdate(query2) == 1) {
+//							System.out.println("Librarian created!");
+//						} else {
+//							System.out.println("Failed!");
+//						}
+//					} else {
+//						System.out.println("Failed!");
+//					}
+//					
+//				} catch (PSQLException e) {
+//					e.printStackTrace();
+//				} catch (SQLException e) {
+//					e.printStackTrace();
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//		Scene scene = new Scene(pane, 350, 450);
+//	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+//	    return scene;
+//	}
 	
 	
 	// ADMIN chooses to DELETE LIBRARIAN
@@ -376,6 +394,15 @@ public class Main extends Application {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+				
+//				try (Connection connection = DriverManager.getConnection(DB.DATABASE_URL, DB.DATABASE_USERNAME, DB.DATABASE_PASSWORD)) {
+//
+//					Statement statement = connection.createStatement();
+//
+//					
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
 			}
 		});
 		Scene scene = new Scene(pane, 350, 450);
