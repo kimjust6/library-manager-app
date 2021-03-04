@@ -28,8 +28,9 @@ public class StudentLogin implements AutoCloseable {
 	    
 		Label userLabel = new Label("Enter Student ID:");
         TextField studentNoField = new TextField();
-        
+        Button backBtn = new Button("Back");
         Button btn = new Button("Login");
+        
         btn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				
@@ -44,9 +45,14 @@ public class StudentLogin implements AutoCloseable {
 				}
 			}
        });
+        backBtn.setOnAction(e-> 
+        		{
+
+        		}); 
        pane.add(userLabel, 0 , 0);
        pane.add(studentNoField, 1 , 0);
        pane.add(btn, 1, 1);
+       pane.add(backBtn, 1, 2);
        
        Scene scene = new Scene(pane, 350, 450);
 	   scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
