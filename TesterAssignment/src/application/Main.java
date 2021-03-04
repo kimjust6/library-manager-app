@@ -280,7 +280,7 @@ public class Main extends Application {
        pane.add(studentNoField, 1 , 0);
        pane.add(btn, 0, 1);
        
-       Scene scene = new Scene(pane, 350, 450);
+       Scene scene = new Scene(pane, 450, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	    return scene;
 	}
@@ -294,7 +294,8 @@ public class Main extends Application {
       	Button btn0 = new Button("Search a book");
       	Button btn1 = new Button("Request an issue");
       	Button btn2 = new Button("View borrowed books");
-      	btn2.setWrapText(true);
+      	btn2.setMinSize(150, 40);
+      	btn2.setMaxWidth(200);
       	pane.add(heading, 0, 0);
       	pane.add(btn0, 0, 1);
       	pane.add(btn1, 0, 2);
