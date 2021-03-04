@@ -185,7 +185,7 @@ public class Main extends Application {
 					stage.setScene(new Scene(new Group(new Text("check console!")), 350, 450));
 					stage.setTitle("Registering Librarian");
 					
-					if(admin.addLibrarian(in)) {
+					if(admin.addLibrarian(in, DB)) {
 						System.out.println("Added librarian successfully!");
 					} else {
 						System.out.println("Failed!");

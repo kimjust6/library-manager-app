@@ -3,7 +3,7 @@ package application;
 public class Student extends Person {
 
 	public Student() {
-		
+		super();
 		// TODO Auto-generated constructor stub
 	}
 

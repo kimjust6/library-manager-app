@@ -1,6 +1,7 @@
 package application;
 
 import java.util.Scanner;
+import DatabaseTest.postgreSQLHeroku;
 
 public class Admin extends Person {
 
@@ -17,7 +18,7 @@ public class Admin extends Person {
 //		System.out.println(this.username + " : " + this.getM_name() + " : " + this.getM_email() + " : " + this.getM_phoneNo());
 	}
 	
-	public boolean addLibrarian(Scanner in) {
+	public boolean addLibrarian(Scanner in, postgreSQLHeroku DB) {
 	
 		System.out.println("Enter information for new librarian: ");
 		System.out.print("Username: ");
@@ -33,8 +34,9 @@ public class Admin extends Person {
 		System.out.print("Phone: ");
 		String phone = in.nextLine();
 		
-		
-		
+		if(DB.insert(DB.TABLE_USERS, username, password)) {
+			return DB.insert(DB.TABLE_ADMINS, username, name, email, phone, "Librarian");
+		}
 		return false;
 	}
 	
