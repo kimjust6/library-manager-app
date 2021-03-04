@@ -18,7 +18,7 @@ public class LibrarianList implements AutoCloseable {
 	}
 	
 //	@SuppressWarnings({ "unchecked", "rawtypes" })		// is this bad ... ?
-	public Scene getLibrarians() throws Exception {
+	public Scene display() throws Exception {
 //		ResultSet rs = DB.select(DB.TABLE_ADMINS, DB.COL_ADMINTYPE, "=", "Librarian");
 //		
 //		ObservableList<ObservableList> data = FXCollections.observableArrayList();
