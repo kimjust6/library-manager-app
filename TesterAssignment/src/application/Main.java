@@ -10,7 +10,7 @@ public class Main extends Application {
 	
 	@Override public void start(Stage primaryStage) throws Exception {
 		stage = primaryStage;
-		stage.setTitle("First Page");
+		stage.setTitle("Library");
 		
 		Home homePage = new Home(stage, scene);
 		stage.setScene(homePage.showHomePage()); 

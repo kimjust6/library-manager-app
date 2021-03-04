@@ -47,7 +47,15 @@ public class StudentLogin implements AutoCloseable {
        });
         backBtn.setOnAction(e-> 
         		{
-
+        			
+    				try (StudentMenu studentMenu = new StudentMenu(stage, scene)) {
+    					Home homePage = new Home(stage, scene);
+            			stage.setScene(homePage.showHomePage()); 
+            			stage.setTitle("Library");
+    				} catch (Exception e2) {
+    					e2.printStackTrace();
+    				}
+        			
         		}); 
        pane.add(userLabel, 0 , 0);
        pane.add(studentNoField, 1 , 0);
