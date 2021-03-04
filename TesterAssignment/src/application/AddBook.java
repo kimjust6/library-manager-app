@@ -51,7 +51,7 @@ public class AddBook implements AutoCloseable{
 		TextField title = new TextField();
 		TextField author = new TextField();
 		TextField publisher = new TextField();
-
+		TextField qty = new TextField();
 		
 		pane.add(new Label("ADD A BOOK"), 0, 0);
 		pane.add(imgV, 1, 0);
@@ -63,9 +63,11 @@ public class AddBook implements AutoCloseable{
 		pane.add(publisher, 1, 3);
 		pane.add(new Label("Media Type:"), 0, 4);
 		pane.add(media_type, 1, 4);
-
+		pane.add(new Label("Quantity:"), 0, 5);
+		pane.add(qty, 1, 5);
+		
 		Button btn = new Button("Add");
-		pane.add(btn, 1, 5);
+		pane.add(btn, 1, 6);
 		
 		
 		btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -73,8 +75,8 @@ public class AddBook implements AutoCloseable{
 				try (Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
 					String selected_media = (String) media_type.getValue();
 					Statement statement = connection.createStatement();
-		    		
-					String query1 = String.format("insert into %s values('%s','%s','%s','%s', %d, %d);", postgreSQLHeroku.TABLE_LIBRARY, title.getText(), author.getText(), publisher.getText(), selected_media, 1, 0);
+		    					
+					String query1 = String.format("insert into %s values('%s','%s','%s','%s', '%s', %d);", postgreSQLHeroku.TABLE_LIBRARY, title.getText(), author.getText(), publisher.getText(), selected_media, qty.getText(), 0);
 					
 					
 						if(statement.executeUpdate(query1) == 1) {
