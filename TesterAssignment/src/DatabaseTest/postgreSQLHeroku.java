@@ -50,6 +50,8 @@ public class postgreSQLHeroku{
     //final strings for column names in table student
     public final String COL_STUD_NO = "studentno";
     public final String COL_STUD_LVL = "studentLvl";
+    public final String COL_STUD_FNAME = "fname";
+    public final String COL_STUD_LNAME = "lname";
     
     //final strings for student levels
     public final String TYPE_ALUM = "alumni";
@@ -426,5 +428,14 @@ public class postgreSQLHeroku{
 //		  libid INT GENERATED ALWAYS AS IDENTITY,
 //		  PRIMARY KEY(libid)
 //		);
+
+//create table students (
+//		fname VARCHAR(20) NOT NULL,
+//		lname VARCHAR(20) NOT NULL,
+//		studentLvl VARCHAR(20) NOT NULL,
+//		studentno INT GENERATED ALWAYS AS IDENTITY,
+//		PRIMARY KEY(studentno)
+//		);
 //
-//
+
+
