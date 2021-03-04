@@ -48,10 +48,10 @@ public class postgreSQLHeroku {
     public static final String TYPE_VID = "video";
     
     //final strings for column names in table student
-    public final String COL_STUD_NO = "studentno";
-    public final String COL_STUD_LVL = "studentLvl";
-    public final String COL_STUD_FNAME = "fname";
-    public final String COL_STUD_LNAME = "lname";
+    public static final String COL_STUD_NO = "studentno";
+    public static final String COL_STUD_LVL = "studentLvl";
+    public static final String COL_STUD_FNAME = "fname";
+    public static final String COL_STUD_LNAME = "lname";
 
     
     //final strings for student levels
