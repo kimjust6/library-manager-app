@@ -12,8 +12,12 @@ public class Main extends Application {
 		stage = primaryStage;
 		stage.setTitle("Library");
 		
-		Home homePage = new Home(stage, scene);
-		stage.setScene(homePage.showHomePage()); 
+		try (Home homePage = new Home(stage, scene)) {
+			
+			stage.setScene(homePage.showHomePage()); 
+		} catch (Exception e2) {
+			e2.printStackTrace();
+		}
 		
 		stage.show(); 
 	}
