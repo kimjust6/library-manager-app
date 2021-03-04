@@ -8,6 +8,7 @@ import java.sql.Statement;
 
 
 
+
 public class postgreSQLHeroku{
 
 	//final strings to connect to the database
@@ -22,6 +23,8 @@ public class postgreSQLHeroku{
     public final String TABLE_LIBRARY = "library";
     public final String TABLE_BORROWED_OBJECTS = "borrowedobjects";
     public final String TABLE_WAITLIST_OBJECTS = "waitlistobjects";
+    
+    //final strings for column names in table user
     
     //final strings for column names in table user
     public final String COL_USERNAME = "username"; 
@@ -39,7 +42,7 @@ public class postgreSQLHeroku{
     public final String COL_QTY_BOR = "qtyBorrowed";
     public final String COL_TYPE = "type";
     public final String COL_PUBLISHER = "publisher";
-    public final String COL_ID = "id";
+    public final String COL_ID = "libid";
     
     //final strings for library (book) types
     public final String TYPE_BOOK = "book";
@@ -97,7 +100,7 @@ public class postgreSQLHeroku{
     		
     		if(queryResult.next()) {
 
-    			if (queryResult.getString(COL_PASSWORD).equals(password)) { 
+    			if (queryResult.getString(this.COL_PASSWORD).equals(password)) { 
     				ResultSet userInfo = statement.executeQuery("select * from " + TABLE_ADMINS + " where " + COL_USERNAME + "='" + username + "';");
     				
     				if(userInfo.next()) return userInfo;
@@ -364,3 +367,38 @@ public class postgreSQLHeroku{
     }
 }
 
+
+//****************************************************************************
+//SQL Create Table Commands
+//****************************************************************************
+
+
+
+//create table borrowedobjects (
+//		  username varchar(50),
+//		  libid INT,
+//		  PRIMARY KEY(username,libid)
+//		);
+
+
+//create table waitlistobjects (
+//		  username varchar(50) NOT NULL,
+//		  libid INT NOT NULL,
+//		  waitid INT GENERATED ALWAYS AS IDENTITY,
+//		  PRIMARY KEY(waitid)
+//		);
+
+
+//create table library (
+//		  title            VARCHAR(20)        NOT NULL,
+//		  author            VARCHAR(20)        NOT NULL,
+//		  publisher        VARCHAR(20),
+//		  media_type        VARCHAR(20)        NOT NULL,
+//		  qtyAvailable INT NOT NULL,
+//		  qtyBorrowed INT NOT NULL,
+//		    
+//		  libid INT GENERATED ALWAYS AS IDENTITY,
+//		  PRIMARY KEY(libid)
+//		);
+//
+//
