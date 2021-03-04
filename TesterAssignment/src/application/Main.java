@@ -30,6 +30,7 @@ import javafx.util.Callback;
 
 public class Main extends Application {
 	private final postgreSQLHeroku DB = new postgreSQLHeroku();
+	
 	private Stage stage;
 	private Scene scene;
 	
