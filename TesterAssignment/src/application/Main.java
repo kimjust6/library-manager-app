@@ -106,6 +106,22 @@ public class Main extends Application {
 		Button btn1 = new Button("Delete Librarian");
 		Button btn2 = new Button("View Librarians");
 		
+		btn0.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				// TODO Auto-generated method stub
+				try {
+					stage.setScene(registerLibrarianP());
+					stage.setTitle("Register Librarian");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+			
+		});
 		pane.add(imgV, 0, 0);
 		pane.add(btn0, 1, 0);
 		pane.add(imgV1, 0, 1);
@@ -116,6 +132,43 @@ public class Main extends Application {
 		Scene scene = new Scene(pane, 350, 450);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		return scene;
+	}
+	public Scene registerLibrarianP() throws Exception {
+		GridPane pane = new GridPane();
+		pane.setAlignment(Pos.CENTER);
+		pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
+		pane.setHgap(5.5);
+		pane.setVgap(5.5);
+			
+		TextField username = new TextField();
+		PasswordField password = new PasswordField();
+		TextField email = new TextField();
+		TextField phone = new TextField();
+		
+		pane.add(new Label("Username:"), 0, 1);
+		pane.add(username, 1, 1);
+		pane.add(new Label("Password:"), 0, 2);
+		pane.add(password, 1, 2);
+		pane.add(new Label("Email:"), 0, 3);
+		pane.add(email, 1, 3);
+		pane.add(new Label("Phone No:"), 0, 4);
+		pane.add(phone, 1, 4);
+		
+		//should redirect to inside, no need to log in, and add librarian to DB
+		Button btn = new Button("Submit");
+		pane.add(btn, 1, 5);
+		btn.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				// TODO
+				System.out.println("You are registered successfully");
+				// call Register Librarian here
+			}
+			
+		});
+		Scene scene = new Scene(pane, 350, 450);
+	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+	    return scene;
 	}
 	public Scene loginPage() throws Exception {
 		GridPane pane = new GridPane();
