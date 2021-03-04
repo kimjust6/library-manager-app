@@ -20,12 +20,6 @@ public class Home {
 	public Home(Stage stage, Scene scene) {
 		this.stage = stage;
 		this.scene = scene;
-		
-		try {
-			this.showHomePage();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 	
 	public Scene showHomePage() throws Exception {
