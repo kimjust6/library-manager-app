@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 import org.postgresql.util.PSQLException;
 
+import DatabaseTest.postgreSQLHeroku;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -19,7 +20,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import DatabaseTest.postgreSQLHeroku;
 
 public class RegisterLibrarian implements EventHandler<ActionEvent> {
 
