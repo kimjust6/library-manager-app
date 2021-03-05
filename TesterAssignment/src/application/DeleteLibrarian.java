@@ -47,19 +47,19 @@ public class DeleteLibrarian implements AutoCloseable {
 			@Override public void handle(ActionEvent arg0) {
 				try (Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
 
+					connection.setAutoCommit(false);
+					
 					Statement statement = connection.createStatement();
 		    		
 					String query1 = String.format("delete from %s where %s = '%s' and %s = '%s'", postgreSQLHeroku.TABLE_ADMINS, postgreSQLHeroku.COL_USERNAME, username.getText(), postgreSQLHeroku.COL_ADMINTYPE, postgreSQLHeroku.TYPE_LIBRARIAN);
 					String query2 = String.format("delete from %s where %s = '%s'", postgreSQLHeroku.TABLE_USERS, postgreSQLHeroku.COL_USERNAME, username.getText());
 					
-					if(statement.executeUpdate(query1) == 1) {
-						if(statement.executeUpdate(query2) == 1) {
-							System.out.println("Libarian deleted!");
-						} else {
-							System.out.println("Failed!");
-						}
+					if(statement.executeUpdate(query2) == 1 && statement.executeUpdate(query1) == 1) {
+						System.out.println("Libarian deleted!");
+						connection.commit();
 					} else {
 						System.out.println("Failed!");
+						connection.rollback();
 					}
 					
 				} catch (PSQLException e) {

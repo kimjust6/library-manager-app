@@ -57,19 +57,25 @@ public class RegisterLibrarian implements AutoCloseable {
 			@Override public void handle(ActionEvent arg0) {
 				try (Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
 
+					connection.setAutoCommit(false);
 					Statement statement = connection.createStatement();
 		    		
 					String query1 = String.format("insert into %s values('%s','%s');", postgreSQLHeroku.TABLE_USERS, username.getText(), password.getText());
 					String query2 = String.format("insert into %s values('%s','%s','%s',%s,'%s');", postgreSQLHeroku.TABLE_ADMINS, username.getText(), name.getText(), email.getText(), phone.getText(), "Librarian");
 					
-					if(statement.executeUpdate(query1) == 1) {
-						if(statement.executeUpdate(query2) == 1) {
-							System.out.println("Librarian created!");
-						} else {
-							System.out.println("Failed!");
+					if(statement.executeUpdate(query1) == 1 && statement.executeUpdate(query2) == 1) {
+						System.out.println("Librarian created!");
+						connection.commit();
+						
+						try (AdminMenu adminMenu = new AdminMenu(stage, scene)) {
+							stage.setScene(adminMenu.showMenu()); 
+							stage.setTitle("Admin Menu");
+						} catch (Exception e2) {
+							e2.printStackTrace();
 						}
 					} else {
 						System.out.println("Failed!");
+						connection.rollback();
 					}
 					
 				} catch (PSQLException e) {

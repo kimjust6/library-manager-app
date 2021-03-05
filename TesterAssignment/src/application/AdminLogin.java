@@ -60,7 +60,7 @@ public class AdminLogin implements AutoCloseable {
 		    				
 		    				if(userInfo.next()) {
 		    					String userType = userInfo.getString(postgreSQLHeroku.COL_ADMINTYPE);
-								if(userType.equalsIgnoreCase("Admin")) {
+								if(userType.equalsIgnoreCase(postgreSQLHeroku.TYPE_ADMIN)) {
 									stage.setTitle("Admin Menu");
 									try (AdminMenu adminMenu = new AdminMenu(stage, scene)) {
 										stage.setScene(adminMenu.showMenu());
@@ -68,7 +68,7 @@ public class AdminLogin implements AutoCloseable {
 										e.printStackTrace();
 									}
 									
-								} else if(userType.equalsIgnoreCase("Librarian")) {
+								} else if(userType.equalsIgnoreCase(postgreSQLHeroku.TYPE_LIBRARIAN)) {
 									stage.setTitle("Librarian Menu");
 									try (LibrarianMenu librarianMenu = new LibrarianMenu(stage, scene)) {
 										stage.setScene(librarianMenu.showMenu());

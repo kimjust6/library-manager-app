@@ -34,8 +34,6 @@ public class LibrarianList implements AutoCloseable {
 	public Scene display() {
 		try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
 			
-			
-			
 			Statement statement = connection.createStatement();
 			
 			String query = String.format("select * from %s where %s='%s';", postgreSQLHeroku.TABLE_ADMINS, postgreSQLHeroku.COL_ADMINTYPE, postgreSQLHeroku.TYPE_LIBRARIAN);

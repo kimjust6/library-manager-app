@@ -78,7 +78,6 @@ public class StudentLogin implements AutoCloseable {
 								e.printStackTrace();
 							}
 						} else {
-							System.out.println("Student not found!");
 							AlertBox.display("Error!", "Student not found!");
 						}
 					} catch (PSQLException e2) {

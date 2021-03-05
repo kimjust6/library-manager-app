@@ -48,7 +48,7 @@ public class AdminMenu implements AutoCloseable {
 			@Override public void handle(ActionEvent arg0) {
 				try (RegisterLibrarian regLibrarian = new RegisterLibrarian(stage, scene)) {
 					stage.setScene(regLibrarian.register());
-					stage.setTitle("Registering Librarian");
+					stage.setTitle("Register Librarian");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -60,7 +60,7 @@ public class AdminMenu implements AutoCloseable {
 			@Override public void handle(ActionEvent arg0) {
 				try (DeleteLibrarian delLibrarian = new DeleteLibrarian(stage, scene)) {
 					stage.setScene(delLibrarian.delete());
-					stage.setTitle("Removing Librarian");
+					stage.setTitle("Remove Librarian");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -72,7 +72,7 @@ public class AdminMenu implements AutoCloseable {
 			@Override public void handle(ActionEvent arg0) {
 				try (LibrarianList librarianList = new LibrarianList(stage, scene)) {
 					stage.setScene(librarianList.display());
-					stage.setTitle("Viewing Librarians");
+					stage.setTitle("View Librarians");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
