@@ -1,5 +1,6 @@
 package application;
 
+import classes.Student;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -37,44 +38,56 @@ public class StudentLogin implements AutoCloseable {
 	    
 		Label userLabel = new Label("Enter Student ID:");
         TextField studentNoField = new TextField();
-        Button backBtn = new Button("Logout");
+        Button backBtn = new Button("Back");
         Button btn = new Button("Login");
         
         btn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 	
 				String studentNo = studentNoField.getText();
-				
-				try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
-
-					Statement statement = connection.createStatement();
+				if (studentNo == "") 
+				{
 					
-					String query = "select * from " + postgreSQLHeroku.TABLE_STUDENTS + " where " + postgreSQLHeroku.COL_STUD_NO + "=" + studentNo + ";";
-					ResultSet queryResult = statement.executeQuery(query); 
+					System.out.println("Please enter a valid Student Number!");
+					AlertBox.display("Error!", "Please enter a valid Student Number!");
+				}
+				else
+				{
+					try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
 
-					if (studentNo == "") {
-						System.out.println("Please enter a valid Student Number!");
-						AlertBox.display("Error!", "Please enter a valid Student Number!");
-					}
-					else {
+						Statement statement = connection.createStatement();
+						
+						String query = "select * from " + postgreSQLHeroku.TABLE_STUDENTS + " where " + postgreSQLHeroku.COL_STUD_NO + "=" + studentNo + ";";
+						ResultSet queryResult = statement.executeQuery(query); 
+
 						if(queryResult.next()) {
-							System.out.println("Student is " + queryResult.getString(postgreSQLHeroku.COL_STUD_LVL));
-							try (StudentMenu studentMenu = new StudentMenu(stage, scene)) {
-								stage.setScene(studentMenu.showMenu(queryResult.getString(postgreSQLHeroku.COL_STUD_FNAME)));
+							//System.out.println("Student is " + queryResult.getString(postgreSQLHeroku.COL_STUD_LVL));
+							
+							try (StudentMenu studentMenu = new StudentMenu(stage, scene)) 
+							{
+								//create new Student object
+								Student stud = new Student(
+										queryResult.getString(postgreSQLHeroku.COL_STUD_FNAME),
+										queryResult.getString(postgreSQLHeroku.COL_STUD_LNAME),
+										queryResult.getString(postgreSQLHeroku.COL_STUD_LVL),
+										Integer.parseInt(queryResult.getString(postgreSQLHeroku.COL_STUD_NO))
+										);
+								stage.setScene(studentMenu.showMenu(stud));
 								stage.setTitle("Student Home Page");
 							} catch (Exception e) {
 								e.printStackTrace();
 							}
 						} else {
 							System.out.println("Student not found!");
+							AlertBox.display("Error!", "Student not found!");
 						}
+					} catch (PSQLException e2) {
+						e2.printStackTrace();
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
-				} catch (PSQLException e2) {
-					e2.printStackTrace();
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				} catch (Exception e) {
-					e.printStackTrace();
 				}
 				
 			}

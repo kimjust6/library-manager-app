@@ -1,5 +1,6 @@
 package application;
 
+import classes.Student;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -11,6 +12,7 @@ import javafx.stage.Stage;
 
 public class StudentMenu implements AutoCloseable {
 
+	final int WIDTH = 250;
 	private Stage stage;
 	private Scene scene;
 	
@@ -19,23 +21,29 @@ public class StudentMenu implements AutoCloseable {
 		this.scene = scene;
 	}
 	
-	public Scene showMenu(String studentName) throws Exception {
+	
+	public Scene showMenu(Student stud)  {
 		GridPane pane = new GridPane();
       	pane.setAlignment(Pos.CENTER);
       	pane.setHgap(5.5);
     	pane.setVgap(10);
-      	Label heading = new Label("Welcome, " + studentName + "\nWhat would you like to do today?\n");
+      	Label heading = new Label("Welcome, " + stud.getfName() + "\nWhat would you like to do today?\n");
       	
       	Button searchBtn = new Button("Find Books");
       	Button reqIssueBtn = new Button("Request a book");
       	Button viewBorrowedBtn = new Button("Borrow books");
       	Button backBtn = new Button("Logout");
       	
-      	viewBorrowedBtn.setMaxWidth(200);
+      	searchBtn.setMaxWidth(WIDTH);
+      	reqIssueBtn.setMaxWidth(WIDTH);
+      	viewBorrowedBtn.setMaxWidth(WIDTH);
+      	backBtn.setMaxWidth(WIDTH);
+      	
+      	
       	searchBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
-				try {
-//					stage.setScene(pagegoeshere);
+				try (BookSearchMenu bsm = new BookSearchMenu(stage, scene)) {
+					stage.setScene(bsm.showMenu());
 					stage.setTitle("Book Search");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -83,7 +91,7 @@ public class StudentMenu implements AutoCloseable {
       	pane.add(searchBtn, 0, 1);
       	pane.add(reqIssueBtn, 0, 2);
       	pane.add(viewBorrowedBtn, 0, 3);
-      	pane.add(backBtn, 0, 5);
+      	pane.add(backBtn, 0, 4);
       	
       	Scene scene = new Scene(pane, 350, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -95,5 +103,9 @@ public class StudentMenu implements AutoCloseable {
 		// TODO Auto-generated method stub
 		
 	}
+
+
+
+
 
 }
