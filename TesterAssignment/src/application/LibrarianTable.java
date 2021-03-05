@@ -12,20 +12,25 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import DatabaseTest.postgreSQLHeroku;
 
-public class LibrarianList implements AutoCloseable {
+public class LibrarianTable implements AutoCloseable {
 
 	private Stage stage;
 	private Scene scene;
+	private final int WIDTH = 250;
+	private final int PADDING = 10;
 	
-	public LibrarianList(Stage stage, Scene scene) {
+	public LibrarianTable(Stage stage, Scene scene) {
 		this.stage = stage;
 		this.scene = scene;
 	}
@@ -35,14 +40,18 @@ public class LibrarianList implements AutoCloseable {
 		try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
 			
 			Statement statement = connection.createStatement();
-			
-			String query = String.format("select * from %s where %s='%s';", postgreSQLHeroku.TABLE_ADMINS, postgreSQLHeroku.COL_ADMINTYPE, postgreSQLHeroku.TYPE_LIBRARIAN);
+			String query = String.format("select * from %s where %s='%s';", postgreSQLHeroku.TABLE_USERS, postgreSQLHeroku.COL_USERS_ADMINTYPE, postgreSQLHeroku.TYPE_LIBRARIAN);
 			ResultSet rs = statement.executeQuery(query);
+
+			VBox vbox = new VBox();
+	    	HBox hbox = new HBox();
+	    	hbox.setPadding(new Insets(PADDING,PADDING,PADDING,PADDING));
+	    	hbox.setSpacing(PADDING);
+	    	
+			ObservableList<ObservableList> data = FXCollections.observableArrayList();
+			TableView tableview = new TableView();
 			
 			if(rs != null) {
-				ObservableList<ObservableList> data = FXCollections.observableArrayList();
-				TableView tableview = new TableView();
-
 				for (int i = 0; i < rs.getMetaData().getColumnCount() - 1; i++) {
 		            final int j = i;
 		            TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i + 1));
@@ -61,13 +70,14 @@ public class LibrarianList implements AutoCloseable {
 		            }
 		            data.add(row);
 		        }
-				tableview.setItems(data);
 				
 				scene = new Scene(tableview, 445, 450);
 			    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			} else {
 				System.out.println("No Librarians in database.");
 			}
+			
+			tableview.setItems(data);
 			
 		} catch (PSQLException e) {
 			e.printStackTrace();

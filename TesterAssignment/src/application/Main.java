@@ -13,7 +13,6 @@ public class Main extends Application {
 		stage.setTitle("Library");
 		
 		try (Home homePage = new Home(stage, scene)) {
-			
 			stage.setScene(homePage.showHomePage()); 
 		} catch (Exception e2) {
 			e2.printStackTrace();

@@ -70,7 +70,7 @@ public class AdminMenu implements AutoCloseable {
 		Button viewBtn = new Button("View Librarians");
 		viewBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
-				try (LibrarianList librarianList = new LibrarianList(stage, scene)) {
+				try (LibrarianTable librarianList = new LibrarianTable(stage, scene)) {
 					stage.setScene(librarianList.display());
 					stage.setTitle("View Librarians");
 				} catch (Exception e) {

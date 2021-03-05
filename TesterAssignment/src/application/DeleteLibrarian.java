@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -45,23 +46,28 @@ public class DeleteLibrarian implements AutoCloseable {
 		Button btn = new Button("Submit");
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent arg0) {
-				try (Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
+				String query1 = String.format("delete from %s where %s = ?;", postgreSQLHeroku.TABLE_USERLOGINS, postgreSQLHeroku.COL_USERNAME);
+				String query2 = String.format("delete from %s where %s = ? and %s = ?;", postgreSQLHeroku.TABLE_USERS, postgreSQLHeroku.COL_USERNAME, postgreSQLHeroku.COL_USERS_ADMINTYPE);
+				
+				try (Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD);
+						PreparedStatement deleteUserLogin = connection.prepareStatement(query1);
+						PreparedStatement deleteUser = connection.prepareStatement(query2)) {
 
 					connection.setAutoCommit(false);
-					
-					Statement statement = connection.createStatement();
 		    		
-					String query1 = String.format("delete from %s where %s = '%s' and %s = '%s'", postgreSQLHeroku.TABLE_ADMINS, postgreSQLHeroku.COL_USERNAME, username.getText(), postgreSQLHeroku.COL_ADMINTYPE, postgreSQLHeroku.TYPE_LIBRARIAN);
-					String query2 = String.format("delete from %s where %s = '%s'", postgreSQLHeroku.TABLE_USERS, postgreSQLHeroku.COL_USERNAME, username.getText());
+					deleteUserLogin.setString(1, username.getText());
 					
-					if(statement.executeUpdate(query2) == 1 && statement.executeUpdate(query1) == 1) {
-						System.out.println("Libarian deleted!");
+					deleteUser.setString(1, username.getText());
+					deleteUser.setString(2, postgreSQLHeroku.TYPE_LIBRARIAN);
+					
+					if(deleteUserLogin.executeUpdate() == 1 && deleteUser.executeUpdate() == 1) {
+						AlertBox.display("Success", "Librarian deleted!");
 						connection.commit();
 					} else {
-						System.out.println("Failed!");
+						AlertBox.display("Error", "Librarian does not exist!");
 						connection.rollback();
 					}
-					
+
 				} catch (PSQLException e) {
 					e.printStackTrace();
 				} catch (SQLException e) {

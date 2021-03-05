@@ -35,61 +35,70 @@ public class AdminLogin implements AutoCloseable {
 		pane.setHgap(5.5);
 		pane.setVgap(5.5);
 			
-		TextField username = new TextField();
-		PasswordField password = new PasswordField();
+		TextField usernameField = new TextField();
+		PasswordField passwordField = new PasswordField();
 		
 		pane.add(new Label("Username:"), 0, 1);
-		pane.add(username, 1, 1);
+		pane.add(usernameField, 1, 1);
 		pane.add(new Label("Password:"), 0, 2);
-		pane.add(password, 1, 2);
+		pane.add(passwordField, 1, 2);
 			
 		Button btn = new Button("Login");
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent arg0) {
-				try (Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
-					
-					Statement statement = connection.createStatement();
-					String query = "select * from " + postgreSQLHeroku.TABLE_USERS + " where " + postgreSQLHeroku.COL_USERNAME + "='" + username.getText() + "';";
+				String username = usernameField.getText();
+				String password = passwordField.getText();
+				
+				if(username != "" && password != "") {
+					try (Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
+						
+						Statement statement = connection.createStatement();
+						String query = "select * from " + postgreSQLHeroku.TABLE_USERLOGINS + " where " + postgreSQLHeroku.COL_USERNAME + "='" + username + "';";
+											
+						ResultSet queryResult = statement.executeQuery(query); 
+						
+						if(queryResult.next()) {
+			    			if (queryResult.getString(postgreSQLHeroku.COL_PASSWORD).equals(password)) { 
+			    				String query2 = "select * from " + postgreSQLHeroku.TABLE_USERS + " where " + postgreSQLHeroku.COL_USERNAME + "='" + username + "';";
+			    				ResultSet userInfo = statement.executeQuery(query2);
+			    				
+			    				if(userInfo.next()) {
+			    					String userType = userInfo.getString(postgreSQLHeroku.COL_USERS_ADMINTYPE);
+									if(userType.equalsIgnoreCase(postgreSQLHeroku.TYPE_ADMIN)) {
+										stage.setTitle("Admin Menu");
+										try (AdminMenu adminMenu = new AdminMenu(stage, scene)) {
+											stage.setScene(adminMenu.showMenu());
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
 										
-					ResultSet queryResult = statement.executeQuery(query); 
-					
-					if(queryResult.next()) {
-		    			if (queryResult.getString(postgreSQLHeroku.COL_PASSWORD).equals(password.getText())) { 
-		    				String query2 = "select * from " + postgreSQLHeroku.TABLE_ADMINS + " where " + postgreSQLHeroku.COL_USERNAME + "='" + username.getText() + "';";
-		    				ResultSet userInfo = statement.executeQuery(query2);
-		    				
-		    				if(userInfo.next()) {
-		    					String userType = userInfo.getString(postgreSQLHeroku.COL_ADMINTYPE);
-								if(userType.equalsIgnoreCase(postgreSQLHeroku.TYPE_ADMIN)) {
-									stage.setTitle("Admin Menu");
-									try (AdminMenu adminMenu = new AdminMenu(stage, scene)) {
-										stage.setScene(adminMenu.showMenu());
-									} catch (Exception e) {
-										e.printStackTrace();
+									} else if(userType.equalsIgnoreCase(postgreSQLHeroku.TYPE_LIBRARIAN)) {
+										stage.setTitle("Librarian Menu");
+										try (LibrarianMenu librarianMenu = new LibrarianMenu(stage, scene)) {
+											stage.setScene(librarianMenu.showMenu());
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+										
+									} else {
+										System.out.println("You are not an admin or librarian!");
 									}
-									
-								} else if(userType.equalsIgnoreCase(postgreSQLHeroku.TYPE_LIBRARIAN)) {
-									stage.setTitle("Librarian Menu");
-									try (LibrarianMenu librarianMenu = new LibrarianMenu(stage, scene)) {
-										stage.setScene(librarianMenu.showMenu());
-									} catch (Exception e) {
-										e.printStackTrace();
-									}
-									
-								} else {
-									System.out.println("You are not an admin or librarian!");
-								}
-		    				}
-		    			} else {
-		    				System.out.println("Invalid password!");
-		    			}
-		    		} else {
-		    			System.out.println("User does not exist!");
-		    		}
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				} catch (Exception e) {
-					e.printStackTrace();
+			    				}
+			    			} else {
+			    				AlertBox.display("Error", "Invalid password!");
+			    			}
+			    		} else {
+			    			AlertBox.display("Error", "User does not exist!");
+			    		}
+					} catch (SQLException e1) {
+						e1.printStackTrace();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				} else if (username == "") {
+					AlertBox.display("Error", "Please enter a username!");
+				} else if (password == "") {
+					AlertBox.display("Error", "Please enter a password!");
 				}
 			}
 		});

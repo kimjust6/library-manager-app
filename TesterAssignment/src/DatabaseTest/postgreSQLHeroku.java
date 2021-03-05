@@ -15,8 +15,8 @@ public class postgreSQLHeroku {
     public static final String DATABASE_PASSWORD = "9b76f4cfa5a87feb4cf28e8b90e485b183bca39b2b20c09e323b4a04b524b2ce";
     
     //final strings for table names 
-    public static final String TABLE_ADMINS = "admins";
     public static final String TABLE_USERS = "users";
+    public static final String TABLE_USERLOGINS = "userlogins";
     public static final String TABLE_STUDENTS = "students";
     public static final String TABLE_LIBRARY = "library";
     public static final String TABLE_BORROWED_OBJECTS = "borrowedobjects";
@@ -25,7 +25,13 @@ public class postgreSQLHeroku {
     //final strings for column names in table user
     public static final String COL_USERNAME = "username"; 
     public static final String COL_PASSWORD = "password"; 
-    public static final String COL_ADMINTYPE = "admintype";
+    
+    //final strings for column names in table admins
+    public static final String COL_USERS_FNAME = "firstname";
+    public static final String COL_USERS_LNAME = "lastname";
+    public static final String COL_USERS_EMAIL = "email";
+    public static final String COL_USERS_PHONE = "phone";
+    public static final String COL_USERS_ADMINTYPE = "admintype";
     
     //final strings for user types
     public static final String TYPE_ADMIN = "Admin";

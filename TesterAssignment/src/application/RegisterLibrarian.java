@@ -2,8 +2,12 @@ package application;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+
 import org.postgresql.util.PSQLException;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -35,55 +39,87 @@ public class RegisterLibrarian implements AutoCloseable {
 		pane.setHgap(5.5);
 		pane.setVgap(5.5);
 			
-		TextField username = new TextField();
-		PasswordField password = new PasswordField();
-		TextField name = new TextField();
-		TextField email = new TextField();
-		TextField phone = new TextField();
+		TextField usernameField = new TextField();
+		PasswordField passwordField = new PasswordField();
+		TextField fnameField = new TextField();
+		TextField lnameField = new TextField();
+		TextField emailField = new TextField();
+		TextField phoneField = new TextField();
 		
 		pane.add(new Label("Username:"), 0, 1);
-		pane.add(username, 1, 1);
+		pane.add(usernameField, 1, 1);
 		pane.add(new Label("Password:"), 0, 2);
-		pane.add(password, 1, 2);
-		pane.add(new Label("Name:"), 0, 3);
-		pane.add(name, 1, 3);
-		pane.add(new Label("Email:"), 0, 4);
-		pane.add(email, 1, 4);
-		pane.add(new Label("Phone No:"), 0, 5);
-		pane.add(phone, 1, 5);
+		pane.add(passwordField, 1, 2);
+		pane.add(new Label("First Name:"), 0, 3);
+		pane.add(fnameField, 1, 3);
+		pane.add(new Label("Last Name:"), 0, 4);
+		pane.add(lnameField, 1, 4);
+		pane.add(new Label("Email:"), 0, 5);
+		pane.add(emailField, 1, 5);
+		pane.add(new Label("Phone No:"), 0, 6);
+		pane.add(phoneField, 1, 6);
 
 		Button btn = new Button("Submit");
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent arg0) {
-				try (Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
+				String username = usernameField.getText();
+				String password = passwordField.getText();
+				String fname = fnameField.getText();
+				String lname = lnameField.getText();
+				String email = emailField.getText();
+				String phone = phoneField.getText();
+				
+				String query1 = String.format("insert into %s values(?,?);", postgreSQLHeroku.TABLE_USERLOGINS);
+				String query2 = String.format("insert into %s values(?,?,?,?,?,?,?)", postgreSQLHeroku.TABLE_USERS);
+				
+				if(username == "") {
+					AlertBox.display("Error", "Please enter a username!");
+				} else if(password == "") {
+					AlertBox.display("Error", "Please enter a password!");
+				} else if(fname == "" ) {
+					AlertBox.display("Error", "Please enter a first name!");
+				} else if(lname == "" ) {
+					AlertBox.display("Error", "Please enter a first name!");
+				} else {
+					try (Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD);
+							PreparedStatement insertUserLogin = connection.prepareStatement(query1);
+							PreparedStatement insertUser = connection.prepareStatement(query2)) {
 
-					connection.setAutoCommit(false);
-					Statement statement = connection.createStatement();
-		    		
-					String query1 = String.format("insert into %s values('%s','%s');", postgreSQLHeroku.TABLE_USERS, username.getText(), password.getText());
-					String query2 = String.format("insert into %s values('%s','%s','%s',%s,'%s');", postgreSQLHeroku.TABLE_ADMINS, username.getText(), name.getText(), email.getText(), phone.getText(), "Librarian");
-					
-					if(statement.executeUpdate(query1) == 1 && statement.executeUpdate(query2) == 1) {
-						System.out.println("Librarian created!");
-						connection.commit();
+						connection.setAutoCommit(false);
+
+						insertUserLogin.setString(1, username);
+						insertUserLogin.setString(2, password);
 						
-						try (AdminMenu adminMenu = new AdminMenu(stage, scene)) {
-							stage.setScene(adminMenu.showMenu()); 
-							stage.setTitle("Admin Menu");
-						} catch (Exception e2) {
-							e2.printStackTrace();
+						insertUser.setString(1, username);
+						insertUser.setString(2, fname);
+						insertUser.setString(3, lname);
+						insertUser.setString(4, email);
+						insertUser.setString(5, phone);
+						insertUser.setDate(6, new java.sql.Date((new java.util.Date()).getTime()));
+						insertUser.setString(7, postgreSQLHeroku.TYPE_LIBRARIAN);
+						
+						if(insertUserLogin.executeUpdate() == 1 && insertUser.executeUpdate() == 1) {
+							AlertBox.display("Success", "Librarian registered!");
+							connection.commit();
+							
+							try (AdminMenu adminMenu = new AdminMenu(stage, scene)) {
+								stage.setScene(adminMenu.showMenu()); 
+								stage.setTitle("Admin Menu");
+							} catch (Exception e2) {
+								e2.printStackTrace();
+							}
+						} else {
+							AlertBox.display("Error", "Could not register librarian!");
+							connection.rollback();
 						}
-					} else {
-						System.out.println("Failed!");
-						connection.rollback();
+						
+					} catch (PSQLException e) {
+						e.printStackTrace();
+					} catch (SQLException e) {
+						e.printStackTrace();
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
-					
-				} catch (PSQLException e) {
-					e.printStackTrace();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				} catch (Exception e) {
-					e.printStackTrace();
 				}
 			}
 		});
@@ -100,8 +136,8 @@ public class RegisterLibrarian implements AutoCloseable {
 			}
 		}); 
 
-		pane.add(btn, 1, 6);
-		pane.add(backBtn, 1, 8);
+		pane.add(btn, 1, 7);
+		pane.add(backBtn, 1, 9);
 		
 		Scene scene = new Scene(pane, 350, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
