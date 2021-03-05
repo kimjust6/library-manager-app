@@ -91,7 +91,7 @@ public class BookSearchMenu implements AutoCloseable {
 						
 						try (BookTable bookTable = new BookTable(stage, scene)) 
 						{
-							stage.setScene(bookTable.showMenu(queryResult));
+							stage.setScene(bookTable.showMenu(queryResult, stud));
 							stage.setTitle("Search Results");
 						} catch (Exception e) {
 							e.printStackTrace();
