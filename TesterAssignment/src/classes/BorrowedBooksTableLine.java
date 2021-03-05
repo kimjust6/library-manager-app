@@ -7,6 +7,7 @@ public class BorrowedBooksTableLine {
 	private int libid;
 	private String title;
 	private String author;
+	private String publisher;
 	private String media_type;
 	
 	
@@ -15,16 +16,30 @@ public class BorrowedBooksTableLine {
 		
 	}
 	
+
 	public BorrowedBooksTableLine(int studentno, String fname, String lname, int libid, String title, String author,
-			String media_type) {
+			String publisher, String media_type) {
 		this.studentno = studentno;
 		this.fname = fname;
 		this.lname = lname;
 		this.libid = libid;
 		this.title = title;
 		this.author = author;
+		this.publisher = publisher;
 		this.media_type = media_type;
 	}
+
+
+	public String getPublisher() {
+		return publisher;
+	}
+
+
+	public void setPublisher(String publisher) {
+		this.publisher = publisher;
+	}
+
+
 	public int getStudentno() {
 		return studentno;
 	}

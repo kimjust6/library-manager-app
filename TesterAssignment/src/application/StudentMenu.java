@@ -68,20 +68,19 @@ public class StudentMenu implements AutoCloseable {
 					
 					
 					query = String.format("select s.studentno, s.fname, s.lname, lib.libid, lib.title, lib.author, lib.publisher, lib.media_type from students s "
-							+ "join borrowedobjects bo on (s.studentno = bo.studentno) join library lib on (bo.libid = lib.libid) where %s='%s';",
+							+ "join borrowedobjects bo on (s.studentno = bo.studentno) join library lib on (bo.libid = lib.libid) where s.%s='%s';",
 							postgreSQLHeroku.COL_STUD_NO,stud.getStudentNo());
-					query = String.format("select * from %s where %s = %s;", postgreSQLHeroku.TABLE_BORROWED_OBJECTS, postgreSQLHeroku.COL_USERNAME, stud.getStudentNo());
+					//query = String.format("select * from %s where %s = %s;", postgreSQLHeroku.TABLE_BORROWED_OBJECTS, postgreSQLHeroku.COL_USERNAME, stud.getStudentNo());
 					
 
-					System.out.println(query);
+					//System.out.println(query);
 					
 					ResultSet queryResult = statement.executeQuery(query); 
-					
 					
 					try (BorrowedLibTable borrowTable = new BorrowedLibTable(stage, scene)) 
 					{
 						stage.setScene(borrowTable.showMenu(queryResult, stud));
-						stage.setTitle("Search Results");
+						stage.setTitle("Your Borrowed Items");
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
