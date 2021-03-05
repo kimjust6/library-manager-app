@@ -82,7 +82,7 @@ public class BookSearchMenu implements AutoCloseable {
 						}
 						else
 						{
-							query = String.format("select * from %s where %s like '%%%s%%';", postgreSQLHeroku.TABLE_LIBRARY, choiceBoxString, searchString);
+							query = String.format("select * from %s where upper(%s) like upper('%%%s%%');", postgreSQLHeroku.TABLE_LIBRARY, choiceBoxString, searchString);
 						}
 						System.out.println(choiceBoxString);
 						System.out.println(query);
