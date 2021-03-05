@@ -40,9 +40,9 @@ public class LibrarianMenu implements AutoCloseable {
 		Button viewBtn = new Button("View Books");
 		viewBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
-				try (Scanner in = new Scanner(System.in)) {
-//					stage.setScene(pagegoeshere);
-					stage.setTitle("Viewing Books");
+				try (ViewBooks book = new ViewBooks(stage, scene)) {
+					stage.setScene(book.viewBooks());
+					stage.setTitle("Viewing Book");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
