@@ -64,6 +64,9 @@ public class postgreSQLHeroku {
     public static final String TYPE_UNDER = "undergrad";
     public static final String TYPE_GRAD = "graduate";
     
+    
+    
+    
     //private variable that connects to database
     private Connection m_conn = null;
     
@@ -375,9 +378,9 @@ public class postgreSQLHeroku {
 
 
 //create table borrowedobjects (
-//		  username varchar(50),
+//		  studentno INT,
 //		  libid INT,
-//		  PRIMARY KEY(username,libid)
+//		  PRIMARY KEY(studentno,libid)
 //		);
 
 

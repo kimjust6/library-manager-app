@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import DatabaseTest.postgreSQLHeroku;
-import classes.LibraryObjects;
+import classes.BorrowedBooksTableLine;
 import classes.Student;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,17 +22,17 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class BookTable  implements AutoCloseable {
+public class BorrowedLibTable  implements AutoCloseable {
 
 	final int WIDTH = 250;
 	final int PADDING = 10;
 	private Stage stage;
 	private Scene scene;
 	
-	private ObservableList<LibraryObjects> lo =  FXCollections.observableArrayList();
-	TableView<LibraryObjects> table = new TableView<>();
+	private ObservableList<BorrowedBooksTableLine> lo =  FXCollections.observableArrayList();
+	TableView<BorrowedBooksTableLine> table = new TableView<>();
 	
-	public BookTable(Stage stage, Scene scene) {
+	public BorrowedLibTable(Stage stage, Scene scene) {
 		this.stage = stage;
 		this.scene = scene;
 	}
@@ -49,8 +49,8 @@ public class BookTable  implements AutoCloseable {
       	
 
       	Button backBtn = new Button("Back");
-      	Button waitlistBtn= new Button("Request Waitlist");
-      	hbox.getChildren().addAll(waitlistBtn,backBtn);
+      	//
+      	hbox.getChildren().addAll(backBtn);
       	backBtn.setMaxWidth(WIDTH);
       	
 
@@ -60,13 +60,14 @@ public class BookTable  implements AutoCloseable {
       		while (rs.next())
           	{
       			
-          		lo.add(new LibraryObjects(rs.getString(postgreSQLHeroku.COL_TITLE),
+          		lo.add(new BorrowedBooksTableLine(rs.getInt(postgreSQLHeroku.COL_STUD_NO),
+          				rs.getString(postgreSQLHeroku.COL_STUD_FNAME),
+          				rs.getString(postgreSQLHeroku.COL_STUD_LNAME),
+          				rs.getInt(postgreSQLHeroku.COL_ID),
+          				rs.getString(postgreSQLHeroku.COL_TITLE),
           				rs.getString(postgreSQLHeroku.COL_AUTHOR),
           				rs.getString(postgreSQLHeroku.COL_PUBLISHER),
-          				rs.getString(postgreSQLHeroku.COL_MEDIA_TYPE),
-          				rs.getInt(postgreSQLHeroku.COL_QTY_AVAIL),
-          				rs.getInt(postgreSQLHeroku.COL_QTY_BOR),
-          				rs.getInt(postgreSQLHeroku.COL_ID)));
+          				rs.getString(postgreSQLHeroku.COL_MEDIA_TYPE)));
           				
           	}
       	}
@@ -75,45 +76,49 @@ public class BookTable  implements AutoCloseable {
       		e.printStackTrace();
       	}
       	
+      	//Column Student No
+      	TableColumn<BorrowedBooksTableLine,String> studnoCol = new TableColumn<>("Student No");
+      	studnoCol.setMinWidth(120);
+      	studnoCol.setCellValueFactory(new PropertyValueFactory<>("studentno"));
+      	
+      	//Column First Name
+      	TableColumn<BorrowedBooksTableLine,String> fnameCol = new TableColumn<>("First name");
+      	fnameCol.setMinWidth(120);
+      	fnameCol.setCellValueFactory(new PropertyValueFactory<>("fname"));
+      	
+      	//Column Last Name
+      	TableColumn<BorrowedBooksTableLine,String> lnameCol = new TableColumn<>("Last Name");
+      	lnameCol.setMinWidth(120);
+      	lnameCol.setCellValueFactory(new PropertyValueFactory<>("lname"));
       	
       	//Column Title
-      	TableColumn<LibraryObjects,String> titleCol = new TableColumn<>("Title");
+      	TableColumn<BorrowedBooksTableLine,String> titleCol = new TableColumn<>("Title");
       	titleCol.setMinWidth(200);
       	titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
       	
       	//Column Author
-      	TableColumn<LibraryObjects,String> authCol = new TableColumn<>("Author");
+      	TableColumn<BorrowedBooksTableLine,String> authCol = new TableColumn<>("Author");
       	authCol.setMinWidth(150);
       	authCol.setCellValueFactory(new PropertyValueFactory<>("author"));
       	
       	//Column Publisher
-      	TableColumn<LibraryObjects,String> pubCol = new TableColumn<>("Publisher");
+      	TableColumn<BorrowedBooksTableLine,String> pubCol = new TableColumn<>("Publisher");
       	pubCol.setMinWidth(150);
       	pubCol.setCellValueFactory(new PropertyValueFactory<>("publisher"));
       	
       	//Column MediaType
-      	TableColumn<LibraryObjects,String> typeCol = new TableColumn<>("Type");
+      	TableColumn<BorrowedBooksTableLine,String> typeCol = new TableColumn<>("Type");
       	typeCol.setMinWidth(100);
-      	typeCol.setCellValueFactory(new PropertyValueFactory<>("mediaType"));
-      	
-      	//Column Qty Available
-      	TableColumn<LibraryObjects,String> aQtyCol = new TableColumn<>("# Available");
-      	aQtyCol.setMinWidth(120);
-      	aQtyCol.setCellValueFactory(new PropertyValueFactory<>("qtyAvailable"));
-      	
-      	//Column Qty Borrowed
-      	TableColumn<LibraryObjects,String> bQtyCol = new TableColumn<>("# Borrowed");
-      	bQtyCol.setMinWidth(120);
-      	bQtyCol.setCellValueFactory(new PropertyValueFactory<>("qtyBorrowed"));
+      	typeCol.setCellValueFactory(new PropertyValueFactory<>("media_type"));
       	
       	//Column ID
-      	TableColumn<LibraryObjects,String> idCol = new TableColumn<>("ID");
+      	TableColumn<BorrowedBooksTableLine,String> idCol = new TableColumn<>("BookID");
       	//idCol.setMinWidth(80);
       	idCol.setCellValueFactory(new PropertyValueFactory<>("libid"));
       	
       	
       	table.setItems(lo);
-      	table.getColumns().addAll(idCol, titleCol, authCol, pubCol, typeCol, aQtyCol, bQtyCol);
+      	table.getColumns().addAll(studnoCol, lnameCol, fnameCol, idCol, titleCol, authCol, pubCol, typeCol);
       	
       	
 		
@@ -132,14 +137,7 @@ public class BookTable  implements AutoCloseable {
 			
 		}); 
       	
-      	waitlistBtn.setOnAction(e-> {
-      		ObservableList<LibraryObjects> selected, allItems;
-      		allItems = table.getItems();
-      		selected = table.getSelectionModel().getSelectedItems();
-			LibraryObjects lObj = new LibraryObjects();
-      		
-			
-		}); 
+
       	
       	//viewBorrowedBtn.setMinSize(150, 40);
       	
