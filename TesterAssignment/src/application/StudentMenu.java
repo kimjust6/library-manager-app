@@ -31,7 +31,7 @@ public class StudentMenu implements AutoCloseable {
       	
       	Button searchBtn = new Button("Find Books");
       	Button reqIssueBtn = new Button("Request a book");
-      	Button viewBorrowedBtn = new Button("Borrow books");
+      	Button viewBorrowedBtn = new Button("View Borrowed");
       	Button backBtn = new Button("Logout");
       	
       	searchBtn.setMaxWidth(WIDTH);
@@ -89,9 +89,9 @@ public class StudentMenu implements AutoCloseable {
       	
       	pane.add(heading, 0, 0);
       	pane.add(searchBtn, 0, 1);
-      	pane.add(reqIssueBtn, 0, 2);
-      	pane.add(viewBorrowedBtn, 0, 3);
-      	pane.add(backBtn, 0, 4);
+      	//pane.add(reqIssueBtn, 0, 2);
+      	pane.add(viewBorrowedBtn, 0, 2);
+      	pane.add(backBtn, 0, 3);
       	
       	Scene scene = new Scene(pane, 350, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
