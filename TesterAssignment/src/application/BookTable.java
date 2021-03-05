@@ -70,41 +70,56 @@ public class BookTable  implements AutoCloseable {
       		e.printStackTrace();
       	}
       	
+      	//add dummy tester inputs
+//  		lo.add(new LibraryObjects("harry potter and the nicee memes",
+//  				"J.K.",
+//  				"An authentic publisher",
+//  				"Book",
+//  				1000,
+//  				69,
+//  				40));
       	
       	//Column Title
       	TableColumn<LibraryObjects,String> titleCol = new TableColumn<>("Title");
       	titleCol.setMinWidth(200);
-      	titleCol.setCellValueFactory(new PropertyValueFactory<>(postgreSQLHeroku.COL_TITLE));
+      	//titleCol.setCellValueFactory(new PropertyValueFactory<>(postgreSQLHeroku.COL_TITLE));
+      	titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
       	
       	//Column Author
       	TableColumn<LibraryObjects,String> authCol = new TableColumn<>("Author");
-      	titleCol.setMinWidth(200);
-      	titleCol.setCellValueFactory(new PropertyValueFactory<>(postgreSQLHeroku.COL_AUTHOR));
+      	authCol.setMinWidth(200);
+      	//titleCol.setCellValueFactory(new PropertyValueFactory<>(postgreSQLHeroku.COL_AUTHOR));
+      	authCol.setCellValueFactory(new PropertyValueFactory<>("author"));
       	
       	//Column Publisher
       	TableColumn<LibraryObjects,String> pubCol = new TableColumn<>("Publisher");
-      	titleCol.setMinWidth(200);
-      	titleCol.setCellValueFactory(new PropertyValueFactory<>(postgreSQLHeroku.COL_PUBLISHER));
+      	pubCol.setMinWidth(200);
+      	//titleCol.setCellValueFactory(new PropertyValueFactory<>(postgreSQLHeroku.COL_PUBLISHER));
+      	pubCol.setCellValueFactory(new PropertyValueFactory<>("publisher"));
       	
       	//Column MediaType
       	TableColumn<LibraryObjects,String> typeCol = new TableColumn<>("Type");
-      	titleCol.setMinWidth(200);
-      	titleCol.setCellValueFactory(new PropertyValueFactory<>(postgreSQLHeroku.COL_MEDIA_TYPE));
+      	typeCol.setMinWidth(200);
+      	//titleCol.setCellValueFactory(new PropertyValueFactory<>(postgreSQLHeroku.COL_MEDIA_TYPE));
+      	typeCol.setCellValueFactory(new PropertyValueFactory<>("mediaType"));
       	
       	//Column Qty Available
       	TableColumn<LibraryObjects,String> aQtyCol = new TableColumn<>("# Available");
-      	titleCol.setMinWidth(200);
-      	titleCol.setCellValueFactory(new PropertyValueFactory<>(postgreSQLHeroku.COL_QTY_AVAIL));
+      	aQtyCol.setMinWidth(200);
+      	//titleCol.setCellValueFactory(new PropertyValueFactory<>(postgreSQLHeroku.COL_QTY_AVAIL));
+      	aQtyCol.setCellValueFactory(new PropertyValueFactory<>("qtyAvailable"));
       	
       	//Column Qty Borrowed
       	TableColumn<LibraryObjects,String> bQtyCol = new TableColumn<>("# Borrowed");
-      	titleCol.setMinWidth(200);
-      	titleCol.setCellValueFactory(new PropertyValueFactory<>(postgreSQLHeroku.COL_QTY_BOR));
+      	bQtyCol.setMinWidth(200);
+      	//titleCol.setCellValueFactory(new PropertyValueFactory<>(postgreSQLHeroku.COL_QTY_BOR));
+      	bQtyCol.setCellValueFactory(new PropertyValueFactory<>("qtyBorrowed"));
       	
       	//Column ID
       	TableColumn<LibraryObjects,String> idCol = new TableColumn<>("ID");
-      	titleCol.setMinWidth(200);
-      	titleCol.setCellValueFactory(new PropertyValueFactory<>(postgreSQLHeroku.COL_ID));
+      	idCol.setMinWidth(200);
+      	//titleCol.setCellValueFactory(new PropertyValueFactory<>(postgreSQLHeroku.COL_ID));
+      	idCol.setCellValueFactory(new PropertyValueFactory<>("libid"));
       	
       	
       	
