@@ -26,10 +26,6 @@ public class LibrarianMenu implements AutoCloseable {
 		pane.setVgap(20);
 		    
 		Button addBtn = new Button("Add Book");
-		Button viewBtn = new Button("View Books");
-		Button issueBtn = new Button("Issue Book");
-		Button returnBtn = new Button("Return Book");
-			
 		addBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try (AddBook book = new AddBook(stage, scene)) {
@@ -40,7 +36,8 @@ public class LibrarianMenu implements AutoCloseable {
 				}
 			}
 		});
-			
+
+		Button viewBtn = new Button("View Books");
 		viewBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try (Scanner in = new Scanner(System.in)) {
@@ -51,7 +48,8 @@ public class LibrarianMenu implements AutoCloseable {
 				}
 			}
 		});
-			
+
+		Button issueBtn = new Button("Issue Book");
 		issueBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try (Scanner in = new Scanner(System.in)) {
@@ -62,7 +60,8 @@ public class LibrarianMenu implements AutoCloseable {
 				}
 			}
 		});
-		
+
+		Button returnBtn = new Button("Return Book");
 		returnBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try (Scanner in = new Scanner(System.in)) {
@@ -73,11 +72,24 @@ public class LibrarianMenu implements AutoCloseable {
 				}
 			}
 		});
+		
+		Button logoutBtn = new Button("Log out");
+		logoutBtn.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent arg0) {
+				try (Home homePage= new Home(stage, scene)) {
+					stage.setScene(homePage.showHomePage()); 
+					stage.setTitle("Library");
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}	
+			}
+        }); 
 			
 		pane.add(addBtn, 0, 0);
 		pane.add(viewBtn, 0, 1);
 		pane.add(issueBtn, 0, 2);
 		pane.add(returnBtn, 0, 3);
+		pane.add(logoutBtn, 0, 5);
 			
 		Scene scene = new Scene(pane, 350, 450);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());

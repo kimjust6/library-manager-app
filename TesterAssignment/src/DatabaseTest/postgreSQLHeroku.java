@@ -32,6 +32,7 @@ public class postgreSQLHeroku {
     public static final String COL_USERS_EMAIL = "email";
     public static final String COL_USERS_PHONE = "phone";
     public static final String COL_USERS_ADMINTYPE = "admintype";
+	public static final String COL_USERS_HIREDATE = "hiredate";
     
     //final strings for user types
     public static final String TYPE_ADMIN = "Admin";

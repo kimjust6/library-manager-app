@@ -26,10 +26,11 @@ public class AddBook implements AutoCloseable{
 	private Stage stage;
 	private Scene scene;
 	
-	AddBook(Stage stage, Scene scene){
+	public AddBook(Stage stage, Scene scene){
 		this.stage = stage;
 		this.scene = scene;
 	}
+	
 	public Scene addBook() throws Exception {
 		GridPane pane = new GridPane();
 		pane.setAlignment(Pos.CENTER);
@@ -67,9 +68,6 @@ public class AddBook implements AutoCloseable{
 		pane.add(qty, 1, 5);
 		
 		Button btn = new Button("Add");
-		pane.add(btn, 1, 6);
-		
-		
 		btn.setOnAction(new EventHandler<ActionEvent>() {
 			@Override public void handle(ActionEvent arg0) {
 				try (Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
@@ -77,7 +75,6 @@ public class AddBook implements AutoCloseable{
 					Statement statement = connection.createStatement();
 		    					
 					String query1 = String.format("insert into %s values('%s','%s','%s','%s', '%s', %d);", postgreSQLHeroku.TABLE_LIBRARY, title.getText(), author.getText(), publisher.getText(), selected_media, qty.getText(), 0);
-					
 					
 						if(statement.executeUpdate(query1) == 1) {
 							System.out.println("Book added");
@@ -102,6 +99,20 @@ public class AddBook implements AutoCloseable{
 			}
 		});
 		
+        Button backBtn = new Button("Back");
+        backBtn.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent arg0) {
+				try (LibrarianMenu librarianMenu = new LibrarianMenu(stage, scene)) {
+					stage.setScene(librarianMenu.showMenu()); 
+					stage.setTitle("Librarian Menu");
+				} catch (Exception e2) {
+					e2.printStackTrace();
+				}
+			}
+		}); 
+        
+		pane.add(btn, 1, 6);
+		pane.add(backBtn, 1, 8);
 		
 		Scene scene = new Scene(pane, 350, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());

@@ -12,16 +12,21 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import DatabaseTest.postgreSQLHeroku;
+import classes.Librarian;
 
 public class LibrarianTable implements AutoCloseable {
 
@@ -34,12 +39,11 @@ public class LibrarianTable implements AutoCloseable {
 		this.stage = stage;
 		this.scene = scene;
 	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+
 	public Scene display() {
-		try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
+		try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD);
+				Statement statement = connection.createStatement()) {
 			
-			Statement statement = connection.createStatement();
 			String query = String.format("select * from %s where %s='%s';", postgreSQLHeroku.TABLE_USERS, postgreSQLHeroku.COL_USERS_ADMINTYPE, postgreSQLHeroku.TYPE_LIBRARIAN);
 			ResultSet rs = statement.executeQuery(query);
 
@@ -48,27 +52,24 @@ public class LibrarianTable implements AutoCloseable {
 	    	hbox.setPadding(new Insets(PADDING,PADDING,PADDING,PADDING));
 	    	hbox.setSpacing(PADDING);
 	    	
-			ObservableList<ObservableList> data = FXCollections.observableArrayList();
-			TableView tableview = new TableView();
+			ObservableList<Librarian> data = FXCollections.observableArrayList();
+			TableView<Librarian> tableview = new TableView<>();
 			
 			if(rs != null) {
-				for (int i = 0; i < rs.getMetaData().getColumnCount() - 1; i++) {
-		            final int j = i;
-		            TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i + 1));
-		            col.setCellValueFactory(new Callback<CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-		                public ObservableValue<String> call(CellDataFeatures<ObservableList, String> param) {
-		                    return new SimpleStringProperty(param.getValue().get(j).toString());
-		                }
-		            });
-		            tableview.getColumns().addAll(col);
-		        }
-				
 				while (rs.next()) {
-		            ObservableList<String> row = FXCollections.observableArrayList();
-		            for (int i = 1; i < rs.getMetaData().getColumnCount(); i++) {
-		                row.add(rs.getString(i));
-		            }
-		            data.add(row);
+					for (int i = 0; i < rs.getMetaData().getColumnCount() - 1; i++) {
+			            TableColumn<Librarian, String> col = new TableColumn<>(rs.getMetaData().getColumnName(i + 1));
+			            col.setCellValueFactory(new PropertyValueFactory<>(rs.getMetaData().getColumnName(i + 1)));
+			            tableview.getColumns().addAll(col);
+			        }
+		            data.add(new Librarian(
+		            				rs.getString(postgreSQLHeroku.COL_USERNAME), 
+		            				rs.getString(postgreSQLHeroku.COL_USERS_FNAME), 
+		            				rs.getString(postgreSQLHeroku.COL_USERS_LNAME), 
+		            				rs.getString(postgreSQLHeroku.COL_USERS_EMAIL), 
+		            				rs.getString(postgreSQLHeroku.COL_USERS_PHONE), 
+		            				rs.getDate(postgreSQLHeroku.COL_USERS_HIREDATE)
+		            			));
 		        }
 				
 				scene = new Scene(tableview, 445, 450);
@@ -79,6 +80,21 @@ public class LibrarianTable implements AutoCloseable {
 			
 			tableview.setItems(data);
 			
+	        Button backBtn = new Button("Back");
+	        backBtn.setOnAction(new EventHandler<ActionEvent>(){
+				@Override public void handle(ActionEvent arg0) {
+					try (AdminMenu adminMenu = new AdminMenu(stage, scene)) {
+						stage.setScene(adminMenu.showMenu()); 
+						stage.setTitle("Admin Menu");
+					} catch (Exception e2) {
+						e2.printStackTrace();
+					}
+				}
+			}); 
+
+	        hbox.getChildren().addAll(backBtn);
+	        vbox.getChildren().addAll(tableview,hbox);
+	        
 		} catch (PSQLException e) {
 			e.printStackTrace();
 		} catch (SQLException e) {
