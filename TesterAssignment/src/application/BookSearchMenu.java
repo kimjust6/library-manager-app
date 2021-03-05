@@ -97,21 +97,7 @@ public class BookSearchMenu implements AutoCloseable {
 							e.printStackTrace();
 						}
 						
-//						
-//						if(queryResult.next()) {
-//							//System.out.println("Student is " + queryResult.getString(postgreSQLHeroku.COL_STUD_LVL));
-//							
-//							try (BookTable bookTable = new BookTable(stage, scene)) 
-//							{
-//								stage.setScene(bookTable.showMenu(queryResult));
-//								stage.setTitle("Search Results");
-//							} catch (Exception e) {
-//								e.printStackTrace();
-//							}
-//						} else {
-//							System.out.println("No Results Found!");
-//							AlertBox.display("Error!", "No Results Found!");
-//						}
+
 					} catch (PSQLException e2) {
 						e2.printStackTrace();
 					} catch (SQLException e1) {
