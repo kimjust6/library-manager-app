@@ -9,7 +9,9 @@ public class LibraryObjects {
 	private int qtyBorrowed;
 	private int libid;
 	
-	
+
+    
+    
 	public LibraryObjects()
 	{
 		this.title = "";
@@ -21,8 +23,15 @@ public class LibraryObjects {
 		this.libid = -1;
 	}
 	
-	public LibraryObjects(String title, String author, String publisher, String mediaType, int qtyAvailable,
-			int qtyBorrowed, int libid) {
+	public LibraryObjects(
+			String title, 
+			String author, 
+			String publisher, 
+			String mediaType, 
+			int qtyAvailable,
+			int qtyBorrowed, 
+			int libid) 
+	{
 
 		this.title = title;
 		this.author = author;
