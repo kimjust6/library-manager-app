@@ -70,7 +70,7 @@ public class StudentLogin implements AutoCloseable {
 										queryResult.getString(postgreSQLHeroku.COL_STUD_FNAME),
 										queryResult.getString(postgreSQLHeroku.COL_STUD_LNAME),
 										queryResult.getString(postgreSQLHeroku.COL_STUD_LVL),
-										Integer.parseInt(queryResult.getString(postgreSQLHeroku.COL_STUD_NO))
+										queryResult.getInt(postgreSQLHeroku.COL_STUD_NO)
 										);
 								stage.setScene(studentMenu.showMenu(stud));
 								stage.setTitle("Student Home Page");

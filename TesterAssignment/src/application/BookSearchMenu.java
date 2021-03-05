@@ -87,21 +87,31 @@ public class BookSearchMenu implements AutoCloseable {
 						System.out.println(choiceBoxString);
 						System.out.println(query);
 						ResultSet queryResult = statement.executeQuery(query); 
-
-						if(queryResult.next()) {
-							//System.out.println("Student is " + queryResult.getString(postgreSQLHeroku.COL_STUD_LVL));
-							
-							try (BookTable bookTable = new BookTable(stage, scene)) 
-							{
-								stage.setScene(bookTable.showMenu(queryResult));
-								stage.setTitle("Student Home Page");
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						} else {
-							System.out.println("No Results Found!");
-							AlertBox.display("Error!", "No Results Found!");
+						
+						
+						try (BookTable bookTable = new BookTable(stage, scene)) 
+						{
+							stage.setScene(bookTable.showMenu(queryResult));
+							stage.setTitle("Search Results");
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
+						
+//						
+//						if(queryResult.next()) {
+//							//System.out.println("Student is " + queryResult.getString(postgreSQLHeroku.COL_STUD_LVL));
+//							
+//							try (BookTable bookTable = new BookTable(stage, scene)) 
+//							{
+//								stage.setScene(bookTable.showMenu(queryResult));
+//								stage.setTitle("Search Results");
+//							} catch (Exception e) {
+//								e.printStackTrace();
+//							}
+//						} else {
+//							System.out.println("No Results Found!");
+//							AlertBox.display("Error!", "No Results Found!");
+//						}
 					} catch (PSQLException e2) {
 						e2.printStackTrace();
 					} catch (SQLException e1) {
@@ -144,7 +154,7 @@ public class BookSearchMenu implements AutoCloseable {
       	pane.add(choiceBox, 0, 1);
       	pane.add(bookField, 0, 2);
       	pane.add(searchBtn, 1, 2);
-      	pane.add(backBtn, 1, 3);
+      	pane.add(backBtn, 0, 3);
       	
       	
       	Scene scene = new Scene(pane, 350, 450);
