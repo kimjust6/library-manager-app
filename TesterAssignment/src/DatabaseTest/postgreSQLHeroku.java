@@ -33,11 +33,12 @@ public class postgreSQLHeroku {
     public static final String TYPE_LIBRARIAN = "Librarian";
     
     //final strings for column names in table library (book)    
-    public static final String COL_TITLE = "title";
+  	public static final String COL_TITLE = "title";
+    public static final String COL_AUTHOR = "author";
+    public static final String COL_PUBLISHER = "publisher";
+    public static final String COL_MEDIA_TYPE = "media_type";
     public static final String COL_QTY_AVAIL = "qtyAvailable";
     public static final String COL_QTY_BOR = "qtyBorrowed";
-    public static final String COL_TYPE = "type";
-    public static final String COL_PUBLISHER = "publisher";
     public static final String COL_ID = "libid";
     
     //final strings for library (book) types
