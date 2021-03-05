@@ -43,7 +43,7 @@ public class StudentMenu implements AutoCloseable {
       	searchBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try (BookSearchMenu bsm = new BookSearchMenu(stage, scene)) {
-					stage.setScene(bsm.showMenu());
+					stage.setScene(bsm.showMenu(stud));
 					stage.setTitle("Book Search");
 				} catch (Exception e) {
 					e.printStackTrace();
