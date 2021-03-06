@@ -57,11 +57,13 @@ public class LibrarianMenu implements AutoCloseable {
 			}
 		});
 
-		Button queueBtn = new Button("View Item Requests");
-		queueBtn.setOnAction(new EventHandler<ActionEvent>(){
+
+		Button issueBtn = new Button("Book Requests");
+		issueBtn.setOnAction(new EventHandler<ActionEvent>(){
+
 			@Override public void handle(ActionEvent arg0) {
-				try (Scanner in = new Scanner(System.in)) {
-//					stage.setScene(pagegoeshere);
+				try (BookRequests issueBooks = new BookRequests(stage, scene)) {
+					stage.setScene(issueBooks.viewRequests());
 					stage.setTitle("Issuing Book");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -122,7 +124,7 @@ public class LibrarianMenu implements AutoCloseable {
 			
 		pane.add(addBtn, 0, 0);
 		pane.add(viewBtn, 0, 1);
-		pane.add(queueBtn, 0, 2);
+		pane.add(issueBtn, 0, 2);
 		pane.add(returnBtn, 0, 3);
 		pane.add(logoutBtn, 0, 5);
 			

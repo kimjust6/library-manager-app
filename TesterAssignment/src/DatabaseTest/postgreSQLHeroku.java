@@ -45,8 +45,11 @@ public class postgreSQLHeroku {
     public static final String COL_PUBLISHER = "publisher";
     public static final String COL_MEDIA_TYPE = "media_type";
     public static final String COL_QTY_AVAIL = "qtyAvailable";
+    public static final String COL_QTY_REQD = "qtyRequested";
     public static final String COL_QTY_BOR = "qtyBorrowed";
     public static final String COL_ID = "libid";
+    
+    public static final String COL_WAITID = "waitid";
     
     //final strings for library (book) types
     public static final String TYPE_BOOK = "book";

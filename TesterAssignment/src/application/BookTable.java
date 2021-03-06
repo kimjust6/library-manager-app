@@ -25,7 +25,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class BookTable  implements AutoCloseable {
+public class BookTable implements AutoCloseable {
 
 	final int WIDTH = 250;
 	final int PADDING = 10;
@@ -133,7 +133,7 @@ public class BookTable  implements AutoCloseable {
 				e1.printStackTrace();
 			}
 			
-		}); 
+		});
       	
       	borrowBtn.setOnAction(e-> {
             ObservableList<LibraryObjects> selected;//, allItems;
