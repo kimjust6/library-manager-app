@@ -154,10 +154,6 @@ public class WaitListLibTable  implements AutoCloseable {
       	table.setItems(lo);
       	table.getColumns().addAll(studnoCol, lnameCol, fnameCol, idCol, titleCol, authCol, pubCol, typeCol);
       	
-      	
-		
-
-      	
       	backBtn.setOnAction(e-> {
 			
       		try (StudentMenu studentMenu = new StudentMenu(stage, scene)) 
@@ -175,58 +171,68 @@ public class WaitListLibTable  implements AutoCloseable {
             ObservableList<BorrowedBooksTableLine> selected;
             //ObservableList<LibraryObjects> allItems;
             //allItems = table.getItems();
-            selected = table.getSelectionModel().getSelectedItems();
-            System.out.println(selected.get(0).getLibid());
             
-            try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
-
-				Statement statement = connection.createStatement();
-				String query = "";
-				
-				
-				query = String.format("delete from %s where %s=%s AND %s=%s;",postgreSQLHeroku.TABLE_WAITLIST_OBJECTS,postgreSQLHeroku.COL_STUD_NO ,stud.getStudentNo(), postgreSQLHeroku.COL_ID ,selected.get(0).getLibid());
-				statement.executeUpdate(query);
-				
-				AlertBox.display("Success!", "The item has been removed from your queue!");
-				
-				//try to call yourself to redraw the scene
-				try(Connection connection2 = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
-
-					Statement statement2 = connection.createStatement();
-					String query2 = "";
-					
-					
-					query2 = String.format("select s.studentno, s.fname, s.lname, lib.libid, lib.title, lib.author, lib.publisher, lib.media_type from students s "
-							+ "join waitlistobjects bo on (s.studentno = bo.studentno) join library lib on (bo.libid = lib.libid) where s.%s='%s';",
-							postgreSQLHeroku.COL_STUD_NO,stud.getStudentNo());
-					//query = String.format("select * from %s where %s = %s;", postgreSQLHeroku.TABLE_BORROWED_OBJECTS, postgreSQLHeroku.COL_USERNAME, stud.getStudentNo());
-					
-
-					//System.out.println(query);
-					
-					ResultSet queryResult2 = statement2.executeQuery(query2); 
-					
-					try (WaitListLibTable waitListTable = new WaitListLibTable(stage, scene)) 
-					{
-						stage.setScene(waitListTable.showMenu(queryResult2, stud));
-						stage.setTitle("Your Borrowed Items");
-					} catch (Exception e2) {
-						e2.printStackTrace();
-					}
-					
-
-				} catch (PSQLException e5) {
-					e5.printStackTrace();
-				} catch (SQLException e4) {
-					e4.printStackTrace();
-				} catch (Exception e3) {
-					e3.printStackTrace();
-				}
-				
-            } catch (SQLException e1) 
+            //check if nothing is selected
+            if (!table.getSelectionModel().isEmpty())
             {
-				e1.printStackTrace();
+            	
+                selected = table.getSelectionModel().getSelectedItems();
+                
+                
+                //System.out.println(selected.get(0).getLibid());
+                System.out.println(selected.get(0));
+
+                try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
+
+    				Statement statement = connection.createStatement();
+    				String query = "";
+    				
+    				
+    				query = String.format("delete from %s where %s=%s AND %s=%s;",postgreSQLHeroku.TABLE_WAITLIST_OBJECTS,postgreSQLHeroku.COL_STUD_NO ,stud.getStudentNo(), postgreSQLHeroku.COL_ID ,selected.get(0).getLibid());
+    				statement.executeUpdate(query);
+    				
+    				AlertBox.display("Success!", "The item has been removed from your queue!");
+    				
+    				//try to call yourself to redraw the scene
+    				try(Connection connection2 = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
+
+    					Statement statement2 = connection.createStatement();
+    					String query2 = "";
+    					
+    					
+    					query2 = String.format("select s.studentno, s.fname, s.lname, lib.libid, lib.title, lib.author, lib.publisher, lib.media_type from students s "
+    							+ "join waitlistobjects bo on (s.studentno = bo.studentno) join library lib on (bo.libid = lib.libid) where s.%s='%s';",
+    							postgreSQLHeroku.COL_STUD_NO,stud.getStudentNo());
+    					//query = String.format("select * from %s where %s = %s;", postgreSQLHeroku.TABLE_BORROWED_OBJECTS, postgreSQLHeroku.COL_USERNAME, stud.getStudentNo());
+    					
+
+    					//System.out.println(query);
+    					
+    					ResultSet queryResult2 = statement2.executeQuery(query2); 
+    					
+    					try (WaitListLibTable waitListTable = new WaitListLibTable(stage, scene)) 
+    					{
+    						stage.setScene(waitListTable.showMenu(queryResult2, stud));
+    						stage.setTitle("Your Requested Waitlist Items");
+    					} catch (Exception e2) {
+    						e2.printStackTrace();
+    					}
+    					
+
+    				} catch (PSQLException e5) {
+    					e5.printStackTrace();
+    				} catch (SQLException e4) {
+    					e4.printStackTrace();
+    				} catch (Exception e3) {
+    					e3.printStackTrace();
+    				}
+    				
+                } catch (SQLException e1) 
+                {
+    				e1.printStackTrace();
+                }
             }
+            
       	});
       	
       	
