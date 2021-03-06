@@ -1,7 +1,10 @@
 package application;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import DatabaseTest.postgreSQLHeroku;
 import classes.LibraryObjects;
@@ -49,8 +52,8 @@ public class BookTable  implements AutoCloseable {
       	
 
       	Button backBtn = new Button("Back");
-      	Button waitlistBtn= new Button("Request Waitlist");
-      	hbox.getChildren().addAll(waitlistBtn,backBtn);
+      	Button borrowBtn= new Button("Request to Borrow");
+      	hbox.getChildren().addAll(borrowBtn,backBtn);
       	backBtn.setMaxWidth(WIDTH);
       	
 
@@ -132,15 +135,54 @@ public class BookTable  implements AutoCloseable {
 			
 		}); 
       	
-      	waitlistBtn.setOnAction(e-> {
-      		ObservableList<LibraryObjects> selected, allItems;
-      		allItems = table.getItems();
-      		selected = table.getSelectionModel().getSelectedItems();
-      		System.out.println(selected.toString());
-			LibraryObjects lObj = new LibraryObjects();
-      		
-			
-		}); 
+      	borrowBtn.setOnAction(e-> {
+            ObservableList<LibraryObjects> selected, allItems;
+            allItems = table.getItems();
+            selected = table.getSelectionModel().getSelectedItems();
+            System.out.println(selected.get(0).getLibid());
+            
+            try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
+
+				Statement statement = connection.createStatement();
+				String query = "";
+				String query2 = "";
+				
+				query = String.format("select * from %s where %s=%s AND %s=%s;",postgreSQLHeroku.TABLE_WAITLIST_OBJECTS,postgreSQLHeroku.COL_STUD_NO ,stud.getStudentNo(), postgreSQLHeroku.COL_ID ,selected.get(0).getLibid());
+				ResultSet queryResult = statement.executeQuery(query);
+				
+				
+				if (queryResult.next())
+				{
+					AlertBox.display("Error!", "You have already requested to borrow that item!");
+					
+				}
+				else 
+				{
+					query = String.format("select * from %s where %s=%s AND %s=%s;",postgreSQLHeroku.TABLE_BORROWED_OBJECTS,postgreSQLHeroku.COL_STUD_NO ,stud.getStudentNo(), postgreSQLHeroku.COL_ID ,selected.get(0).getLibid());
+					ResultSet queryResult2 = statement.executeQuery(query);
+					if (queryResult2.next())
+					{
+						AlertBox.display("Error!", "You have already borrowed that item!");
+					}
+					
+					else
+					{
+						query = String.format("insert into %s values (%s,%s);",postgreSQLHeroku.TABLE_WAITLIST_OBJECTS,stud.getStudentNo(),selected.get(0).getLibid());
+						statement.executeUpdate(query);
+						AlertBox.display("Success!", "Your request has been added to the queue!");
+					}
+				}
+				
+				
+            } catch (SQLException e1) 
+            {
+				e1.printStackTrace();
+            }
+				
+            
+            
+            
+  });
       	
       	//viewBorrowedBtn.setMinSize(150, 40);
       	
@@ -159,16 +201,7 @@ public class BookTable  implements AutoCloseable {
 	    return scene;
 	}
 	
-  	@FXML
-	public void clickItem(MouseEvent event)
-	{
-	    if (event.getClickCount() == 1) //Checking double click
-	    {
-	        System.out.println(table.getSelectionModel().getSelectedItem().getTitle());
-	        System.out.println(table.getSelectionModel().getSelectedItem().getAuthor());
-	        System.out.println(table.getSelectionModel().getSelectedItem().getPublisher());
-	    }
-	}
+
 	
 
 	
