@@ -18,6 +18,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import DatabaseTest.postgreSQLHeroku;
@@ -38,7 +40,12 @@ public class RegisterLibrarian implements AutoCloseable {
 		pane.setPadding(new Insets(11.5, 12.5, 13.5, 14.5));
 		pane.setHgap(5.5);
 		pane.setVgap(5.5);
-			
+		
+		Image image = new Image(getClass().getResourceAsStream("librarian.png"));
+	    ImageView imgV= new ImageView(image);
+	    imgV.setFitHeight(40);
+	    imgV.setFitWidth(40);
+		
 		TextField usernameField = new TextField();
 		PasswordField passwordField = new PasswordField();
 		TextField fnameField = new TextField();
@@ -46,6 +53,8 @@ public class RegisterLibrarian implements AutoCloseable {
 		TextField emailField = new TextField();
 		TextField phoneField = new TextField();
 		
+		
+		pane.add(imgV, 0, 0);
 		pane.add(new Label("Username:"), 0, 1);
 		pane.add(usernameField, 1, 1);
 		pane.add(new Label("Password:"), 0, 2);
