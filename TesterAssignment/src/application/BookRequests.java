@@ -35,6 +35,9 @@ public class BookRequests implements AutoCloseable {
 
 	private Stage stage;
 	private Scene scene;
+
+	ObservableList<LibraryObjects> data = FXCollections.observableArrayList();
+	TableView<LibraryObjects> tableview = new TableView<>();
 	
 	public BookRequests(Stage stage, Scene scene) {
 		this.stage = stage;
@@ -45,9 +48,6 @@ public class BookRequests implements AutoCloseable {
 		try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD);
 				Statement statement = connection.createStatement()) {
 
-			ObservableList<LibraryObjects> data = FXCollections.observableArrayList();
-			TableView<LibraryObjects> tableview = new TableView<>();
-			
 			String query = String.format("select B.%s, count(*) as \"%s\", B.%s as \"%s\", B.%s from %s A join %s B on A.%s=B.%s group by B.%s, B.%s, B.%s;",
 											postgreSQLHeroku.COL_TITLE,
 											postgreSQLHeroku.COL_QTY_REQD,
@@ -208,8 +208,12 @@ public class BookRequests implements AutoCloseable {
 			
 			Button closeBtn = new Button("Close");
 			closeBtn.setOnAction(e-> { 
-				window.close(); 
-				
+				try(BookRequests bookRequests = new BookRequests(stage, scene)) {
+    				window.close(); 
+        			bookRequests.viewRequests();
+        		} catch (Exception e3) {
+        			e3.printStackTrace();
+        		}
 			});
 			
 			VBox layout = new VBox(10);
