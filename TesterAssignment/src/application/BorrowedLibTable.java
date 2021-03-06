@@ -156,16 +156,16 @@ public class BorrowedLibTable  implements AutoCloseable {
 	    return scene;
 	}
 	
-  	@FXML
-	public void clickItem(MouseEvent event)
-	{
-	    if (event.getClickCount() == 1) //Checking double click
-	    {
-	        System.out.println(table.getSelectionModel().getSelectedItem().getTitle());
-	        System.out.println(table.getSelectionModel().getSelectedItem().getAuthor());
-	        System.out.println(table.getSelectionModel().getSelectedItem().getPublisher());
-	    }
-	}
+//  	@FXML
+//	public void clickItem(MouseEvent event)
+//	{
+//	    if (event.getClickCount() == 1) //Checking double click
+//	    {
+//	        System.out.println(table.getSelectionModel().getSelectedItem().getTitle());
+//	        System.out.println(table.getSelectionModel().getSelectedItem().getAuthor());
+//	        System.out.println(table.getSelectionModel().getSelectedItem().getPublisher());
+//	    }
+//	}
 	
 
 	
