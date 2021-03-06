@@ -1,10 +1,20 @@
 package application;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 import DatabaseTest.postgreSQLHeroku;
 import classes.BorrowedBooksTableLine;
+import classes.LibraryObjects;
 import classes.Student;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,6 +38,14 @@ public class BorrowedLibTable  implements AutoCloseable {
 	final int PADDING = 10;
 	private Stage stage;
 	private Scene scene;
+	private String lines = postgreSQLHeroku.COL_STUD_NO + ", "
+  			+ postgreSQLHeroku.COL_STUD_FNAME + ", " 
+  			+ postgreSQLHeroku.COL_STUD_LNAME  + ", "
+  			+ postgreSQLHeroku.COL_ID  + ", "
+  			+ postgreSQLHeroku.COL_TITLE  + ", "
+  			+ postgreSQLHeroku.COL_AUTHOR + ", "
+  			+ postgreSQLHeroku.COL_PUBLISHER + ", "
+  			+ postgreSQLHeroku.COL_MEDIA_TYPE + ", ";
 	
 	private ObservableList<BorrowedBooksTableLine> lo =  FXCollections.observableArrayList();
 	TableView<BorrowedBooksTableLine> table = new TableView<>();
@@ -36,6 +54,7 @@ public class BorrowedLibTable  implements AutoCloseable {
 		this.stage = stage;
 		this.scene = scene;
 	}
+	
 	
 	
 	public Scene showMenu(ResultSet rs, Student stud)  {
@@ -49,11 +68,13 @@ public class BorrowedLibTable  implements AutoCloseable {
       	
 
       	Button backBtn = new Button("Back");
+      	Button saveFileBtn = new Button("Save to File");
       	//
-      	hbox.getChildren().addAll(backBtn);
+      	hbox.getChildren().addAll(backBtn, saveFileBtn);
       	backBtn.setMaxWidth(WIDTH);
       	
 
+      	
       	//try and create the table
       	try
       	{
@@ -68,7 +89,16 @@ public class BorrowedLibTable  implements AutoCloseable {
           				rs.getString(postgreSQLHeroku.COL_AUTHOR),
           				rs.getString(postgreSQLHeroku.COL_PUBLISHER),
           				rs.getString(postgreSQLHeroku.COL_MEDIA_TYPE)));
-          				
+          		
+          		lines += rs.getString(postgreSQLHeroku.COL_STUD_NO) + ", "
+          				+ rs.getString(postgreSQLHeroku.COL_STUD_FNAME) + ", "
+          				+ rs.getString(postgreSQLHeroku.COL_STUD_LNAME) + ", "
+          				+ rs.getString(postgreSQLHeroku.COL_ID) + ", "
+          				+ rs.getString(postgreSQLHeroku.COL_TITLE) + ", "
+          				+ rs.getString(postgreSQLHeroku.COL_AUTHOR) + ", "
+          				+ rs.getString(postgreSQLHeroku.COL_PUBLISHER)
+          				+ rs.getString(postgreSQLHeroku.COL_MEDIA_TYPE) + "\n";
+      				
           	}
       	}
       	catch (SQLException e)
@@ -137,6 +167,35 @@ public class BorrowedLibTable  implements AutoCloseable {
 			
 		}); 
       	
+      	saveFileBtn.setOnAction(e-> {
+
+      		//create the file
+      		try {
+      	      File myObj = new File("Borrowed Books.csv");
+      	      if (myObj.createNewFile()) {
+      	        System.out.println("File created: " + myObj.getName());
+      	      } else {
+      	        System.out.println("File already exists.");
+      	      }
+      	    } catch (IOException e2) {
+      	      System.out.println("An error occurred.");
+      	      e2.printStackTrace();
+      	    }
+      		
+      		try {
+      	      FileWriter myWriter = new FileWriter("filename.txt");
+      	      myWriter.write("");
+      	      myWriter.write(lines);
+      	      myWriter.close();
+      	      System.out.println("Successfully wrote to the file.");
+      	    } catch (IOException e2) {
+      	      System.out.println("An error occurred.");
+      	      e2.printStackTrace();
+      	    }
+      		
+
+      	});
+      	
 
       	
       	//viewBorrowedBtn.setMinSize(150, 40);
@@ -155,17 +214,6 @@ public class BorrowedLibTable  implements AutoCloseable {
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	    return scene;
 	}
-	
-//  	@FXML
-//	public void clickItem(MouseEvent event)
-//	{
-//	    if (event.getClickCount() == 1) //Checking double click
-//	    {
-//	        System.out.println(table.getSelectionModel().getSelectedItem().getTitle());
-//	        System.out.println(table.getSelectionModel().getSelectedItem().getAuthor());
-//	        System.out.println(table.getSelectionModel().getSelectedItem().getPublisher());
-//	    }
-//	}
 	
 
 	

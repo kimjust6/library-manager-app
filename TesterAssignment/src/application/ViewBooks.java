@@ -74,7 +74,7 @@ public class ViewBooks implements AutoCloseable {
               				rs.getInt(postgreSQLHeroku.COL_ID)));
 	    			for (int i = 1; i <= colCount; ++i )
 	    			{
-	    				line += rs.getString(i) + " ";
+	    				line += rs.getString(i) + ", ";
 	    			}
 	    			bw.append(line);
     				bw.newLine();
