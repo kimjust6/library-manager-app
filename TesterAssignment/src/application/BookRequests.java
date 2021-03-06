@@ -36,6 +36,9 @@ public class BookRequests implements AutoCloseable {
 	private Stage stage;
 	private Scene scene;
 	
+	private ObservableList<LibraryObjects> data = FXCollections.observableArrayList();
+	private TableView<LibraryObjects> tableview = new TableView<>();
+	
 	public BookRequests(Stage stage, Scene scene) {
 		this.stage = stage;
 		this.scene = scene;
@@ -65,9 +68,6 @@ public class BookRequests implements AutoCloseable {
 	    	HBox hbox = new HBox();
 	    	hbox.setPadding(new Insets(10,10,10,10));
 	    	hbox.setSpacing(10);
-	    	
-			ObservableList<LibraryObjects> data = FXCollections.observableArrayList();
-			TableView<LibraryObjects> tableview = new TableView<>();
 			
 			if(rs != null) {
 				while (rs.next()) {
@@ -103,98 +103,7 @@ public class BookRequests implements AutoCloseable {
 			}); 
 	        
 	        Button viewWaitListBtn = new Button("View Wait List");
-	        viewWaitListBtn.setOnAction(new EventHandler<ActionEvent>(){
-				@Override public void handle(ActionEvent arg0) {
-		            
-					if(tableview.getSelectionModel().isEmpty()) {
-						AlertBox.display("Error", "Please select a Book to issue for!");
-					} else {
-						try (Connection connection2 = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD); 
-								Statement statement2 = connection2.createStatement()) {
-
-					    	ObservableList<Student> data2 = FXCollections.observableArrayList();
-					    	TableView<Student> waitListTable = new TableView<>();
-					    	
-							Stage window = new Stage();
-							window.initModality(Modality.APPLICATION_MODAL);
-							window.setTitle("Book Wait List");
-							window.setMinWidth(350);
-							window.setMinHeight(400);
-
-							int id = tableview.getSelectionModel().getSelectedItem().getLibid();
-							
-							String query2 = String.format("select A.%s, B.%s, B.%s, B.%s, B.%s from %s A join %s B on A.%s=B.%s where A.%s=" + id,     
-											postgreSQLHeroku.COL_WAITID,
-											postgreSQLHeroku.COL_STUD_FNAME,
-											postgreSQLHeroku.COL_STUD_LNAME,
-											postgreSQLHeroku.COL_STUD_LVL,
-											postgreSQLHeroku.COL_STUD_NO,
-											postgreSQLHeroku.TABLE_WAITLIST_OBJECTS,
-											postgreSQLHeroku.TABLE_STUDENTS,
-											postgreSQLHeroku.COL_STUD_NO,
-											postgreSQLHeroku.COL_STUD_NO,
-											postgreSQLHeroku.COL_ID);
-							ResultSet rs2 = statement2.executeQuery(query2);
-
-							System.out.println(query2);
-							
-							while(rs2.next()) {
-								data2.add(new Student(
-													rs2.getInt(postgreSQLHeroku.COL_WAITID),
-													rs2.getString(postgreSQLHeroku.COL_STUD_FNAME),
-													rs2.getString(postgreSQLHeroku.COL_STUD_LNAME),
-													rs2.getString(postgreSQLHeroku.COL_STUD_LVL),
-													rs2.getInt(postgreSQLHeroku.COL_STUD_NO)));
-							}
-							
-							TableColumn<Student, String> waitidCol = new TableColumn<>("waitID");
-							waitidCol.setMinWidth(80);
-							waitidCol.setCellValueFactory(new PropertyValueFactory<>("waitid"));
-							
-							TableColumn<Student, String> fnameCol = new TableColumn<>("firstName");
-					      	fnameCol.setMinWidth(120);
-					      	fnameCol.setCellValueFactory(new PropertyValueFactory<>("fName"));
-					      	
-					      	TableColumn<Student, String> lnameCol = new TableColumn<>("lastName");
-					      	lnameCol.setMinWidth(120);
-					      	lnameCol.setCellValueFactory(new PropertyValueFactory<>("lName"));
-							
-					      	TableColumn<Student, String> levelCol = new TableColumn<>("level");
-					      	levelCol.setMinWidth(120);
-					      	levelCol.setCellValueFactory(new PropertyValueFactory<>("studentLvl"));
-					      	
-					      	TableColumn<Student,String> studnoCol = new TableColumn<>("studentNo");
-					      	studnoCol.setMinWidth(120);
-					      	studnoCol.setCellValueFactory(new PropertyValueFactory<>("studentNo"));
-
-							waitListTable.setItems(data2);
-							waitListTable.getColumns().addAll(waitidCol, fnameCol, lnameCol, levelCol, studnoCol);
-							
-					    	Button issueBooks = new Button("Issue Books");
-					    	issueBooks.setOnAction(e-> { System.out.println("gonna issue books"); });
-							
-							Button closeBtn = new Button("Close");
-							closeBtn.setOnAction(e-> { window.close(); });
-							
-							VBox layout = new VBox(10);
-							HBox hbox2 = new HBox();
-					    	hbox2.setPadding(new Insets(10,10,10,10));
-					    	hbox2.setSpacing(10);
-					    	hbox2.getChildren().addAll(issueBooks, closeBtn);
-							layout.getChildren().addAll(waitListTable, hbox2);
-							layout.setAlignment(Pos.CENTER);
-							
-							Scene scene2 = new Scene(layout);
-							scene2.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-							window.setScene(scene2);
-							window.showAndWait();
-							
-						} catch (Exception e2) {
-							e2.printStackTrace();
-						}
-					}
-				}
-			}); 
+	        viewWaitListBtn.setOnAction((event) -> { this.waitList(); });
 
 	        if(tableview.getItems().isEmpty()) {
 	        	hbox.getChildren().addAll(backBtn);
@@ -216,6 +125,96 @@ public class BookRequests implements AutoCloseable {
 		}
 		
 		return scene;
+	}
+	
+	public void waitList() {
+		if(tableview.getSelectionModel().isEmpty()) {
+			AlertBox.display("Error", "Please select a Book to issue for!");
+		} else {
+			try (Connection connection2 = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD); 
+					Statement statement2 = connection2.createStatement()) {
+
+		    	ObservableList<Student> data2 = FXCollections.observableArrayList();
+		    	TableView<Student> waitListTable = new TableView<>();
+		    	
+				Stage window = new Stage();
+				window.initModality(Modality.APPLICATION_MODAL);
+				window.setTitle("Book Wait List");
+				window.setMinWidth(350);
+				window.setMinHeight(400);
+
+				int id = tableview.getSelectionModel().getSelectedItem().getLibid();
+				
+				String query2 = String.format("select A.%s, B.%s, B.%s, B.%s, B.%s from %s A join %s B on A.%s=B.%s where A.%s=" + id,     
+								postgreSQLHeroku.COL_WAITID,
+								postgreSQLHeroku.COL_STUD_FNAME,
+								postgreSQLHeroku.COL_STUD_LNAME,
+								postgreSQLHeroku.COL_STUD_LVL,
+								postgreSQLHeroku.COL_STUD_NO,
+								postgreSQLHeroku.TABLE_WAITLIST_OBJECTS,
+								postgreSQLHeroku.TABLE_STUDENTS,
+								postgreSQLHeroku.COL_STUD_NO,
+								postgreSQLHeroku.COL_STUD_NO,
+								postgreSQLHeroku.COL_ID);
+				ResultSet rs2 = statement2.executeQuery(query2);
+
+				System.out.println(query2);
+				
+				while(rs2.next()) {
+					data2.add(new Student(
+										rs2.getInt(postgreSQLHeroku.COL_WAITID),
+										rs2.getString(postgreSQLHeroku.COL_STUD_FNAME),
+										rs2.getString(postgreSQLHeroku.COL_STUD_LNAME),
+										rs2.getString(postgreSQLHeroku.COL_STUD_LVL),
+										rs2.getInt(postgreSQLHeroku.COL_STUD_NO)));
+				}
+				
+				TableColumn<Student, String> waitidCol = new TableColumn<>("waitID");
+				waitidCol.setMinWidth(80);
+				waitidCol.setCellValueFactory(new PropertyValueFactory<>("waitid"));
+				
+				TableColumn<Student, String> fnameCol = new TableColumn<>("firstName");
+		      	fnameCol.setMinWidth(120);
+		      	fnameCol.setCellValueFactory(new PropertyValueFactory<>("fName"));
+		      	
+		      	TableColumn<Student, String> lnameCol = new TableColumn<>("lastName");
+		      	lnameCol.setMinWidth(120);
+		      	lnameCol.setCellValueFactory(new PropertyValueFactory<>("lName"));
+				
+		      	TableColumn<Student, String> levelCol = new TableColumn<>("level");
+		      	levelCol.setMinWidth(120);
+		      	levelCol.setCellValueFactory(new PropertyValueFactory<>("studentLvl"));
+		      	
+		      	TableColumn<Student,String> studnoCol = new TableColumn<>("studentNo");
+		      	studnoCol.setMinWidth(120);
+		      	studnoCol.setCellValueFactory(new PropertyValueFactory<>("studentNo"));
+
+				waitListTable.setItems(data2);
+				waitListTable.getColumns().addAll(waitidCol, fnameCol, lnameCol, levelCol, studnoCol);
+				
+		    	Button issueBooks = new Button("Issue Books");
+		    	issueBooks.setOnAction(e-> { System.out.println("gonna issue books"); });
+				
+				Button closeBtn = new Button("Close");
+				closeBtn.setOnAction(e-> { window.close(); });
+				
+				VBox layout = new VBox(10);
+				HBox hbox2 = new HBox();
+		    	hbox2.setPadding(new Insets(10,10,10,10));
+		    	hbox2.setSpacing(10);
+		    	hbox2.getChildren().addAll(issueBooks, closeBtn);
+				layout.getChildren().addAll(waitListTable, hbox2);
+				layout.setAlignment(Pos.CENTER);
+				
+				Scene scene2 = new Scene(layout);
+				scene2.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+				window.setScene(scene2);
+				window.showAndWait();
+				
+			} catch (Exception e2) {
+				e2.printStackTrace();
+			}
+		}
 	}
 	
 	@Override
