@@ -4,40 +4,40 @@ import java.sql.Date;
 
 public class Librarian {
 	private String username;
-	private String fname;
-	private String lname;
+	private String firstname;
+	private String lastname;
 	private String email;
 	private String phone;
-	private Date date;
+	private Date hiredate;
 	
 	public Librarian() {
 		super();
 		this.username = "";
-		this.fname = "";
-		this.lname = "";
+		this.firstname = "";
+		this.lastname = "";
 		this.email = "";
 		this.phone = "";
-		this.date = null;
+		this.hiredate = null;
 	}
 
 	public Librarian(String username, String fname, String lname, String email, String phone, Date date) {
 		super();
 		this.username = username;
-		this.fname = fname;
-		this.lname = lname;
+		this.firstname = fname;
+		this.lastname = lname;
 		this.email = email;
 		this.phone = phone;
-		this.date = date;
+		this.hiredate = date;
 	}
 
 	public String getUsername() { return username; }
 	public void setUsername(String username) { this.username = username; }
 	
-	public String getFname() { return fname; }
-	public void setFname(String fname) { this.fname = fname; }
+	public String getFirstname() { return firstname; }
+	public void setFirstname(String fname) { this.firstname = fname; }
 	
-	public String getLname() { return lname; }
-	public void setLname(String lname) { this.lname = lname; }
+	public String getLastname() { return lastname; }
+	public void setLastname(String lname) { this.lastname = lname; }
 	
 	public String getEmail() { return email; }
 	public void setEmail(String email) { this.email = email; }
@@ -45,6 +45,6 @@ public class Librarian {
 	public String getPhone() { return phone; }
 	public void setPhone(String phone) { this.phone = phone; }
 	
-	public Date getDate() { return date; }
-	public void setDate(Date date) { this.date = date; }
+	public Date getHiredate() { return hiredate; }
+	public void setHiredate(Date date) { this.hiredate = date; }
 }

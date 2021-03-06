@@ -40,6 +40,7 @@ public class LibrarianTable implements AutoCloseable {
 		this.scene = scene;
 	}
 
+
 	public Scene display() {
 		try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD);
 				Statement statement = connection.createStatement()) {
@@ -56,12 +57,14 @@ public class LibrarianTable implements AutoCloseable {
 			TableView<Librarian> tableview = new TableView<>();
 			
 			if(rs != null) {
+				for (int i = 0; i < rs.getMetaData().getColumnCount() - 1; i++) {
+		            TableColumn<Librarian, String> col = new TableColumn<>(rs.getMetaData().getColumnName(i + 1));
+		            col.setCellValueFactory(new PropertyValueFactory<Librarian, String>(rs.getMetaData().getColumnName(i + 1)));
+		            col.setMinWidth(80);
+		            tableview.getColumns().add(col);
+		        }
+				
 				while (rs.next()) {
-					for (int i = 0; i < rs.getMetaData().getColumnCount() - 1; i++) {
-			            TableColumn<Librarian, String> col = new TableColumn<>(rs.getMetaData().getColumnName(i + 1));
-			            col.setCellValueFactory(new PropertyValueFactory<>(rs.getMetaData().getColumnName(i + 1)));
-			            tableview.getColumns().addAll(col);
-			        }
 		            data.add(new Librarian(
 		            				rs.getString(postgreSQLHeroku.COL_USERNAME), 
 		            				rs.getString(postgreSQLHeroku.COL_USERS_FNAME), 
@@ -71,14 +74,12 @@ public class LibrarianTable implements AutoCloseable {
 		            				rs.getDate(postgreSQLHeroku.COL_USERS_HIREDATE)
 		            			));
 		        }
-				
-				scene = new Scene(tableview, 445, 450);
-			    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
+
+				tableview.setItems(data);
+
 			} else {
 				System.out.println("No Librarians in database.");
 			}
-			
-			tableview.setItems(data);
 			
 	        Button backBtn = new Button("Back");
 	        backBtn.setOnAction(new EventHandler<ActionEvent>(){
@@ -94,6 +95,9 @@ public class LibrarianTable implements AutoCloseable {
 
 	        hbox.getChildren().addAll(backBtn);
 	        vbox.getChildren().addAll(tableview,hbox);
+	        
+			scene = new Scene(vbox, 610, 450);
+		    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	        
 		} catch (PSQLException e) {
 			e.printStackTrace();
