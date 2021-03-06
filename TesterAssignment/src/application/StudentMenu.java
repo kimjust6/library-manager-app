@@ -40,11 +40,13 @@ public class StudentMenu implements AutoCloseable {
       	
       	Button searchBtn = new Button("Find Books");
       	Button viewBorrowedBtn = new Button("View Borrowed Items");
+      	Button viewWaitListBtn = new Button("View Requested Items");
       	Button backBtn = new Button("Logout");
       	
       	searchBtn.setMaxWidth(WIDTH);
-
+      	viewWaitListBtn.setMaxWidth(WIDTH);
       	viewBorrowedBtn.setMaxWidth(WIDTH);
+      	
       	backBtn.setMaxWidth(WIDTH);
       	
       	
@@ -77,7 +79,7 @@ public class StudentMenu implements AutoCloseable {
 					
 					ResultSet queryResult = statement.executeQuery(query); 
 					
-					try (BorrowedLibTable borrowTable = new BorrowedLibTable(stage, scene)) 
+					try (WaitListLibTable borrowTable = new WaitListLibTable(stage, scene)) 
 					{
 						stage.setScene(borrowTable.showMenu(queryResult, stud));
 						stage.setTitle("Your Borrowed Items");
@@ -96,17 +98,43 @@ public class StudentMenu implements AutoCloseable {
 			}
       	});
       	
-//      	viewBorrowedBtn.setOnAction(new EventHandler<ActionEvent>(){
-//			@Override public void handle(ActionEvent arg0) {
-//				try {
-////					stage.setScene(pagegoeshere);
-//					stage.setTitle("Borrowed");
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//      	});
-      	
+      	viewWaitListBtn.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent arg0) {
+				try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
+
+					Statement statement = connection.createStatement();
+					String query = "";
+					
+					
+					query = String.format("select s.studentno, s.fname, s.lname, lib.libid, lib.title, lib.author, lib.publisher, lib.media_type from students s "
+							+ "join waitlistobjects bo on (s.studentno = bo.studentno) join library lib on (bo.libid = lib.libid) where s.%s='%s';",
+							postgreSQLHeroku.COL_STUD_NO,stud.getStudentNo());
+					//query = String.format("select * from %s where %s = %s;", postgreSQLHeroku.TABLE_BORROWED_OBJECTS, postgreSQLHeroku.COL_USERNAME, stud.getStudentNo());
+					
+
+					//System.out.println(query);
+					
+					ResultSet queryResult = statement.executeQuery(query); 
+					
+					try (WaitListLibTable waitListTable = new WaitListLibTable(stage, scene)) 
+					{
+						stage.setScene(waitListTable.showMenu(queryResult, stud));
+						stage.setTitle("Your Borrowed Items");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+
+				} catch (PSQLException e2) {
+					e2.printStackTrace();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+      	});
+
       	backBtn.setOnAction(e-> {
 			
 			try (Home homePage = new Home(stage, scene)) {
@@ -123,8 +151,9 @@ public class StudentMenu implements AutoCloseable {
       	
       	pane.add(heading, 0, 0);
       	pane.add(searchBtn, 0, 1);
-      	pane.add(viewBorrowedBtn, 0, 2);
-      	pane.add(backBtn, 0, 3);
+      	pane.add(viewWaitListBtn, 0, 2);
+      	pane.add(viewBorrowedBtn, 0, 3);
+      	pane.add(backBtn, 0, 4);
       	
       	Scene scene = new Scene(pane, 350, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
