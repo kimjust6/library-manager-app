@@ -79,7 +79,7 @@ public class StudentMenu implements AutoCloseable {
 					
 					ResultSet queryResult = statement.executeQuery(query); 
 					
-					try (WaitListLibTable borrowTable = new WaitListLibTable(stage, scene)) 
+					try (BorrowedLibTable borrowTable = new BorrowedLibTable(stage, scene)) 
 					{
 						stage.setScene(borrowTable.showMenu(queryResult, stud));
 						stage.setTitle("Your Borrowed Items");
@@ -119,7 +119,7 @@ public class StudentMenu implements AutoCloseable {
 					try (WaitListLibTable waitListTable = new WaitListLibTable(stage, scene)) 
 					{
 						stage.setScene(waitListTable.showMenu(queryResult, stud));
-						stage.setTitle("Your Borrowed Items");
+						stage.setTitle("Your Queued Items");
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
