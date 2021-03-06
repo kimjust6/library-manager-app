@@ -32,8 +32,6 @@ public class LibrarianTable implements AutoCloseable {
 
 	private Stage stage;
 	private Scene scene;
-	private final int WIDTH = 250;
-	private final int PADDING = 10;
 	
 	public LibrarianTable(Stage stage, Scene scene) {
 		this.stage = stage;
@@ -50,8 +48,8 @@ public class LibrarianTable implements AutoCloseable {
 
 			VBox vbox = new VBox();
 	    	HBox hbox = new HBox();
-	    	hbox.setPadding(new Insets(PADDING,PADDING,PADDING,PADDING));
-	    	hbox.setSpacing(PADDING);
+	    	hbox.setPadding(new Insets(10,10,10,10));
+	    	hbox.setSpacing(10);
 	    	
 			ObservableList<Librarian> data = FXCollections.observableArrayList();
 			TableView<Librarian> tableview = new TableView<>();

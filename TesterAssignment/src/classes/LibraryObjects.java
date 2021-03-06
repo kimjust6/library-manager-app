@@ -7,10 +7,8 @@ public class LibraryObjects {
 	private String mediaType;
 	private int qtyAvailable;
 	private int qtyBorrowed;
+	private int qtyRequested;
 	private int libid;
-	
-
-    
     
 	public LibraryObjects()
 	{
@@ -22,7 +20,13 @@ public class LibraryObjects {
 		this.qtyBorrowed = 0;
 		this.libid = -1;
 	}
-	
+	public LibraryObjects(String title, int qtyRequested, int qtyAvailable, int libid) 
+	{
+		this.title = title;
+		this.qtyRequested = qtyRequested;
+		this.qtyAvailable = qtyAvailable;
+		this.libid = libid;
+	}
 	public LibraryObjects(
 			String title, 
 			String author, 
@@ -32,7 +36,6 @@ public class LibraryObjects {
 			int qtyBorrowed, 
 			int libid) 
 	{
-
 		this.title = title;
 		this.author = author;
 		this.publisher = publisher;
@@ -83,5 +86,10 @@ public class LibraryObjects {
 	public void setLibid(int libid) {
 		this.libid = libid;
 	}
-	
+	public int getQtyRequested() {
+		return qtyRequested;
+	}
+	public void setQtyRequested(int qtyRequested) {
+		this.qtyRequested = qtyRequested;
+	}
 }

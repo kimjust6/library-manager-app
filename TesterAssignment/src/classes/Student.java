@@ -5,6 +5,7 @@ public class Student {
 	private String lName;
 	private String studentLvl;
 	private int studentNo;
+	private int waitid;
 	
 	public Student()
 	{
@@ -19,13 +20,22 @@ public class Student {
 		this.studentNo = studentNo;
 	}
 	
-	public String getfName() {
+	public Student(int waitid, String fName, String lName, String studentLvl, int studentNo) {
+		super();
+		this.waitid = waitid;
+		this.fName = fName;
+		this.lName = lName;
+		this.studentLvl = studentLvl;
+		this.studentNo = studentNo;
+	}
+	
+	public String getFName() {
 		return fName;
 	}
 	public void setfName(String fName) {
 		this.fName = fName;
 	}
-	public String getlName() {
+	public String getLName() {
 		return lName;
 	}
 	public void setlName(String lName) {
@@ -43,6 +53,10 @@ public class Student {
 	public void setStudentNo(int studentNo) {
 		this.studentNo = studentNo;
 	}
-	
-	
+	public int getWaitid() {
+		return waitid;
+	}
+	public void setWaitid(int waitid) {
+		this.waitid = waitid;
+	}
 }
