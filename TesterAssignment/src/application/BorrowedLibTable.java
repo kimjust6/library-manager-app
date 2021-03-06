@@ -45,7 +45,7 @@ public class BorrowedLibTable  implements AutoCloseable {
   			+ postgreSQLHeroku.COL_TITLE  + ", "
   			+ postgreSQLHeroku.COL_AUTHOR + ", "
   			+ postgreSQLHeroku.COL_PUBLISHER + ", "
-  			+ postgreSQLHeroku.COL_MEDIA_TYPE + ", ";
+  			+ postgreSQLHeroku.COL_MEDIA_TYPE + "\n";
 	
 	private ObservableList<BorrowedBooksTableLine> lo =  FXCollections.observableArrayList();
 	TableView<BorrowedBooksTableLine> table = new TableView<>();
@@ -179,17 +179,20 @@ public class BorrowedLibTable  implements AutoCloseable {
       	      }
       	    } catch (IOException e2) {
       	      System.out.println("An error occurred.");
+      	      AlertBox.display("Error!", "Could not open the file!");
       	      e2.printStackTrace();
       	    }
       		
       		try {
-      	      FileWriter myWriter = new FileWriter("filename.txt");
+      	      FileWriter myWriter = new FileWriter("Borrowed Books.csv");
       	      myWriter.write("");
       	      myWriter.write(lines);
       	      myWriter.close();
       	      System.out.println("Successfully wrote to the file.");
+      	      AlertBox.display("Success!", "Successfully saved to file!");
       	    } catch (IOException e2) {
       	      System.out.println("An error occurred.");
+      	      AlertBox.display("Error!", "Could not save to the file!");
       	      e2.printStackTrace();
       	    }
       		
