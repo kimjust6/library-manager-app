@@ -1,7 +1,15 @@
 package application;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Scanner;
 
+import org.postgresql.util.PSQLException;
+
+import DatabaseTest.postgreSQLHeroku;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -49,8 +57,8 @@ public class LibrarianMenu implements AutoCloseable {
 			}
 		});
 
-		Button issueBtn = new Button("Issue Book");
-		issueBtn.setOnAction(new EventHandler<ActionEvent>(){
+		Button queueBtn = new Button("View Item Requests");
+		queueBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try (Scanner in = new Scanner(System.in)) {
 //					stage.setScene(pagegoeshere);
@@ -62,16 +70,43 @@ public class LibrarianMenu implements AutoCloseable {
 		});
 
 		Button returnBtn = new Button("Return Book");
+		
 		returnBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
-				try (Scanner in = new Scanner(System.in)) {
-//					stage.setScene(pagegoeshere);
-					stage.setTitle("Returning Book");
+				try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
+
+					Statement statement = connection.createStatement();
+					String query = "";
+					
+					
+					query = String.format("select s.studentno, s.fname, s.lname, lib.libid, lib.title, lib.author, lib.publisher, lib.media_type from students s "
+							+ "join borrowedobjects bo on (s.studentno = bo.studentno) join library lib on (bo.libid = lib.libid);",
+							postgreSQLHeroku.COL_STUD_NO);
+					//query = String.format("select * from %s where %s = %s;", postgreSQLHeroku.TABLE_BORROWED_OBJECTS, postgreSQLHeroku.COL_USERNAME, stud.getStudentNo());
+					
+
+					//System.out.println(query);
+					
+					ResultSet queryResult = statement.executeQuery(query); 
+					
+					try (BorrowedLibTableFull borrowTable = new BorrowedLibTableFull(stage, scene)) 
+					{
+						stage.setScene(borrowTable.showMenu(queryResult));
+						stage.setTitle("All Borrowed Items");
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+
+				} catch (PSQLException e2) {
+					e2.printStackTrace();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
-		});
+      	});
 		
 		Button logoutBtn = new Button("Log out");
 		logoutBtn.setOnAction(new EventHandler<ActionEvent>(){
@@ -87,7 +122,7 @@ public class LibrarianMenu implements AutoCloseable {
 			
 		pane.add(addBtn, 0, 0);
 		pane.add(viewBtn, 0, 1);
-		pane.add(issueBtn, 0, 2);
+		pane.add(queueBtn, 0, 2);
 		pane.add(returnBtn, 0, 3);
 		pane.add(logoutBtn, 0, 5);
 			
