@@ -96,7 +96,7 @@ public class BorrowedLibTable  implements AutoCloseable {
           				+ rs.getString(postgreSQLHeroku.COL_ID) + ", "
           				+ rs.getString(postgreSQLHeroku.COL_TITLE) + ", "
           				+ rs.getString(postgreSQLHeroku.COL_AUTHOR) + ", "
-          				+ rs.getString(postgreSQLHeroku.COL_PUBLISHER)
+          				+ rs.getString(postgreSQLHeroku.COL_PUBLISHER) + ", "
           				+ rs.getString(postgreSQLHeroku.COL_MEDIA_TYPE) + "\n";
       				
           	}
@@ -112,7 +112,7 @@ public class BorrowedLibTable  implements AutoCloseable {
       	studnoCol.setCellValueFactory(new PropertyValueFactory<>("studentno"));
       	
       	//Column First Name
-      	TableColumn<BorrowedBooksTableLine,String> fnameCol = new TableColumn<>("First name");
+      	TableColumn<BorrowedBooksTableLine,String> fnameCol = new TableColumn<>("First Name");
       	fnameCol.setMinWidth(120);
       	fnameCol.setCellValueFactory(new PropertyValueFactory<>("fname"));
       	
@@ -171,7 +171,7 @@ public class BorrowedLibTable  implements AutoCloseable {
 
       		//create the file
       		try {
-      	      File myObj = new File("Borrowed Books.csv");
+      	      File myObj = new File("Borrowed Items.csv");
       	      if (myObj.createNewFile()) {
       	        System.out.println("File created: " + myObj.getName());
       	      } else {
@@ -184,7 +184,7 @@ public class BorrowedLibTable  implements AutoCloseable {
       	    }
       		
       		try {
-      	      FileWriter myWriter = new FileWriter("Borrowed Books.csv");
+      	      FileWriter myWriter = new FileWriter("Borrowed Items.csv");
       	      myWriter.write("");
       	      myWriter.write(lines);
       	      myWriter.close();
