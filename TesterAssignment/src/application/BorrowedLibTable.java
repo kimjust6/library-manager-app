@@ -201,15 +201,6 @@ public class BorrowedLibTable  implements AutoCloseable {
       	
 
       	
-      	//viewBorrowedBtn.setMinSize(150, 40);
-      	
-      	//pane.add(heading, 0, 0);
-      	//pane.add(table, 0, 0);
-      	//pane.add(searchBtn, 0, 1);
-      	//pane.add(reqIssueBtn, 0, 2);
-      	//pane.add(viewBorrowedBtn, 0, 3);
-      	//pane.add(backBtn, 0, 4);
-      	
       	vbox.getChildren().addAll(table,hbox);
       	
       	//Scene scene = new Scene(vbox, 350, 450);
