@@ -118,6 +118,7 @@ public class AddBook implements AutoCloseable{
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	    return scene;
 	}
+	
 	@Override
 	public void close() throws Exception {
 		// TODO Auto-generated method stub

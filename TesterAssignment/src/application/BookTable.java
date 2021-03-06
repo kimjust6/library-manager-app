@@ -136,6 +136,7 @@ public class BookTable  implements AutoCloseable {
       		ObservableList<LibraryObjects> selected, allItems;
       		allItems = table.getItems();
       		selected = table.getSelectionModel().getSelectedItems();
+      		selected.get(0).display();
 			LibraryObjects lObj = new LibraryObjects();
       		
 			

@@ -34,5 +34,7 @@ public class LibraryObject
 		this.m_publisher = m_publisher;
 	}
 	
-	
+	public void display() {
+		System.out.println("Object: " + m_title);
+	}
 }
