@@ -193,39 +193,26 @@ public class WaitListLibTable  implements AutoCloseable {
     				
     				AlertBox.display("Success!", "The item has been removed from your queue!");
     				
-    				//try to call yourself to redraw the scene
-    				try(Connection connection2 = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
+    				query = String.format("select s.studentno, s.fname, s.lname, lib.libid, lib.title, lib.author, lib.publisher, lib.media_type from students s "
+							+ "join waitlistobjects bo on (s.studentno = bo.studentno) join library lib on (bo.libid = lib.libid) where s.%s='%s';",
+							postgreSQLHeroku.COL_STUD_NO,stud.getStudentNo());
+					//query = String.format("select * from %s where %s = %s;", postgreSQLHeroku.TABLE_BORROWED_OBJECTS, postgreSQLHeroku.COL_USERNAME, stud.getStudentNo());
+					
 
-    					Statement statement2 = connection.createStatement();
-    					String query2 = "";
-    					
-    					
-    					query2 = String.format("select s.studentno, s.fname, s.lname, lib.libid, lib.title, lib.author, lib.publisher, lib.media_type from students s "
-    							+ "join waitlistobjects bo on (s.studentno = bo.studentno) join library lib on (bo.libid = lib.libid) where s.%s='%s';",
-    							postgreSQLHeroku.COL_STUD_NO,stud.getStudentNo());
-    					//query = String.format("select * from %s where %s = %s;", postgreSQLHeroku.TABLE_BORROWED_OBJECTS, postgreSQLHeroku.COL_USERNAME, stud.getStudentNo());
-    					
-
-    					//System.out.println(query);
-    					
-    					ResultSet queryResult2 = statement2.executeQuery(query2); 
-    					
-    					try (WaitListLibTable waitListTable = new WaitListLibTable(stage, scene)) 
-    					{
-    						stage.setScene(waitListTable.showMenu(queryResult2, stud));
-    						stage.setTitle("Your Requested Waitlist Items");
-    					} catch (Exception e2) {
-    						e2.printStackTrace();
-    					}
-    					
-
-    				} catch (PSQLException e5) {
-    					e5.printStackTrace();
-    				} catch (SQLException e4) {
-    					e4.printStackTrace();
-    				} catch (Exception e3) {
-    					e3.printStackTrace();
-    				}
+					//System.out.println(query);
+					
+					ResultSet queryResult2 = statement.executeQuery(query); 
+					
+					//try to call yourself to redraw the scene
+					try (WaitListLibTable waitListTable = new WaitListLibTable(stage, scene)) 
+					{
+						stage.setScene(waitListTable.showMenu(queryResult2, stud));
+						stage.setTitle("Your Requested Waitlist Items");
+					} catch (Exception e2) {
+						e2.printStackTrace();
+					}
+    				
+    				
     				
                 } catch (SQLException e1) 
                 {

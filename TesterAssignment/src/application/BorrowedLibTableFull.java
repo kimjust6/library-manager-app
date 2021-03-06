@@ -178,7 +178,7 @@ public class BorrowedLibTableFull  implements AutoCloseable {
     						selected.get(0).getStudentno(), 
     						postgreSQLHeroku.COL_ID,
     						selected.get(0).getLibid());
-    				System.out.println(query);
+    				//System.out.println(query);
     				statement.executeUpdate(query);
     				
     				
@@ -195,7 +195,7 @@ public class BorrowedLibTableFull  implements AutoCloseable {
 							+ "join borrowedobjects bo on (s.studentno = bo.studentno) join library lib on (bo.libid = lib.libid);");
 					
 
-					System.out.println(query);
+					//System.out.println(query);
 					
 					ResultSet queryResult = statement.executeQuery(query); 
 					
@@ -204,8 +204,6 @@ public class BorrowedLibTableFull  implements AutoCloseable {
 
 //    					
 //        				//try to call yourself to redraw the scene
-    					
-    					
     					try (BorrowedLibTableFull waitListTable = new BorrowedLibTableFull(stage, scene)) 
     					{
     						stage.setScene(waitListTable.showMenu(queryResult));
