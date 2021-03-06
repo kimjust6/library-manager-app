@@ -138,50 +138,50 @@ public class BookTable implements AutoCloseable {
       	borrowBtn.setOnAction(e-> {
             ObservableList<LibraryObjects> selected;//, allItems;
             //allItems = table.getItems();
-            selected = table.getSelectionModel().getSelectedItems();
-            System.out.println(selected.get(0).getLibid());
-            
-            try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
-
-				Statement statement = connection.createStatement();
-				String query = "";
-				String query2 = "";
-				
-				query = String.format("select * from %s where %s=%s AND %s=%s;",postgreSQLHeroku.TABLE_WAITLIST_OBJECTS,postgreSQLHeroku.COL_STUD_NO ,stud.getStudentNo(), postgreSQLHeroku.COL_ID ,selected.get(0).getLibid());
-				ResultSet queryResult = statement.executeQuery(query);
-				
-				
-				if (queryResult.next())
-				{
-					AlertBox.display("Error!", "You have already requested to borrow that item!");
-					
-				}
-				else 
-				{
-					query = String.format("select * from %s where %s=%s AND %s=%s;",postgreSQLHeroku.TABLE_BORROWED_OBJECTS,postgreSQLHeroku.COL_STUD_NO ,stud.getStudentNo(), postgreSQLHeroku.COL_ID ,selected.get(0).getLibid());
-					ResultSet queryResult2 = statement.executeQuery(query);
-					if (queryResult2.next())
-					{
-						AlertBox.display("Error!", "You have already borrowed that item!");
-					}
-					
-					else
-					{
-						query = String.format("insert into %s values (%s,%s);",postgreSQLHeroku.TABLE_WAITLIST_OBJECTS,stud.getStudentNo(),selected.get(0).getLibid());
-						statement.executeUpdate(query);
-						AlertBox.display("Success!", "Your request has been added to the queue!");
-					}
-				}
-				
-				
-            } catch (SQLException e1) 
+            if (!table.getSelectionModel().isEmpty())
             {
-				e1.printStackTrace();
+            	selected = table.getSelectionModel().getSelectedItems();
+                System.out.println(selected.get(0).getLibid());
+                
+                try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
+
+    				Statement statement = connection.createStatement();
+    				String query = "";
+    				String query2 = "";
+    				
+    				query = String.format("select * from %s where %s=%s AND %s=%s;",postgreSQLHeroku.TABLE_WAITLIST_OBJECTS,postgreSQLHeroku.COL_STUD_NO ,stud.getStudentNo(), postgreSQLHeroku.COL_ID ,selected.get(0).getLibid());
+    				ResultSet queryResult = statement.executeQuery(query);
+    				
+    				
+    				if (queryResult.next())
+    				{
+    					AlertBox.display("Error!", "You have already requested to borrow that item!");
+    					
+    				}
+    				else 
+    				{
+    					query = String.format("select * from %s where %s=%s AND %s=%s;",postgreSQLHeroku.TABLE_BORROWED_OBJECTS,postgreSQLHeroku.COL_STUD_NO ,stud.getStudentNo(), postgreSQLHeroku.COL_ID ,selected.get(0).getLibid());
+    					ResultSet queryResult2 = statement.executeQuery(query);
+    					if (queryResult2.next())
+    					{
+    						AlertBox.display("Error!", "You have already borrowed that item!");
+    					}
+    					
+    					else
+    					{
+    						query = String.format("insert into %s values (%s,%s);",postgreSQLHeroku.TABLE_WAITLIST_OBJECTS,stud.getStudentNo(),selected.get(0).getLibid());
+    						statement.executeUpdate(query);
+    						AlertBox.display("Success!", "Your request has been added to the queue!");
+    					}
+    				}
+    				
+    				
+                } catch (SQLException e1) 
+                {
+    				e1.printStackTrace();
+                }
             }
-				
-            
-            
-            
+  
   });
       	
       	//viewBorrowedBtn.setMinSize(150, 40);
