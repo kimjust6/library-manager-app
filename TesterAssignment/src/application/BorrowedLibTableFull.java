@@ -12,6 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.postgresql.util.PSQLException;
+
 import DatabaseTest.postgreSQLHeroku;
 import classes.BorrowedBooksTableLine;
 import classes.LibraryObjects;
@@ -154,7 +156,70 @@ public class BorrowedLibTableFull  implements AutoCloseable {
       	table.getColumns().addAll(studnoCol, lnameCol, fnameCol, idCol, titleCol, authCol, pubCol, typeCol);
       	
       	returnBtn.setOnAction(e-> {
-			
+      		ObservableList<BorrowedBooksTableLine> selected;
+            //ObservableList<LibraryObjects> allItems;
+            //allItems = table.getItems();
+            
+            //check if nothing is selected
+            if (!table.getSelectionModel().isEmpty())
+            {
+            	
+                selected = table.getSelectionModel().getSelectedItems();
+
+                try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
+
+    				Statement statement = connection.createStatement();
+    				String query = "";
+    				
+    				
+    				query = String.format("delete from %s where %s=%s AND %s=%s;",
+    						postgreSQLHeroku.TABLE_BORROWED_OBJECTS,
+    						postgreSQLHeroku.COL_STUD_NO,
+    						selected.get(0).getStudentno(), 
+    						postgreSQLHeroku.COL_ID,
+    						selected.get(0).getLibid());
+    				System.out.println(query);
+    				statement.executeUpdate(query);
+    				
+    				
+					query = String.format("update %s set %s=%s+1, %s=%s-1;", 
+							postgreSQLHeroku.TABLE_LIBRARY, 
+							postgreSQLHeroku.COL_QTY_AVAIL,
+							postgreSQLHeroku.COL_QTY_AVAIL,
+							postgreSQLHeroku.COL_QTY_BOR,
+							postgreSQLHeroku.COL_QTY_BOR);
+					
+					statement.executeUpdate(query);
+    				
+					query = String.format("select s.studentno, s.fname, s.lname, lib.libid, lib.title, lib.author, lib.publisher, lib.media_type from students s "
+							+ "join borrowedobjects bo on (s.studentno = bo.studentno) join library lib on (bo.libid = lib.libid);");
+					
+
+					System.out.println(query);
+					
+					ResultSet queryResult = statement.executeQuery(query); 
+					
+    				//AlertBox.display("Success!", "The item has been removed from your queue!");
+    				
+
+//    					
+//        				//try to call yourself to redraw the scene
+    					
+    					
+    					try (BorrowedLibTableFull waitListTable = new BorrowedLibTableFull(stage, scene)) 
+    					{
+    						stage.setScene(waitListTable.showMenu(queryResult));
+    						stage.setTitle("Your Requested Waitlist Items");
+    					} catch (Exception e2) {
+    						e2.printStackTrace();
+    					}
+
+    				
+                } catch (SQLException e1) 
+                {
+    				e1.printStackTrace();
+                }
+            }
       		
 		}); 
 		
