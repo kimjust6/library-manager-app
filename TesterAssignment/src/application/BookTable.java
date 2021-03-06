@@ -130,17 +130,15 @@ public class BookTable  implements AutoCloseable {
 				e1.printStackTrace();
 			}
 			
-		}); 
+		});
       	
       	waitlistBtn.setOnAction(e-> {
       		ObservableList<LibraryObjects> selected, allItems;
       		allItems = table.getItems();
       		selected = table.getSelectionModel().getSelectedItems();
-      		selected.get(0).display();
+      		System.out.println(selected.get(0).getTitle());
 			LibraryObjects lObj = new LibraryObjects();
-      		
-			
-		}); 
+		});
       	
       	//viewBorrowedBtn.setMinSize(150, 40);
       	

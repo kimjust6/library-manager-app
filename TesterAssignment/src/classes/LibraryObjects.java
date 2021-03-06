@@ -83,10 +83,5 @@ public class LibraryObjects {
 	public void setLibid(int libid) {
 		this.libid = libid;
 	}
-
-	public void display() {
-		// TODO Auto-generated method stub
-		System.out.println("Object: " + title);
-	}
 	
 }
