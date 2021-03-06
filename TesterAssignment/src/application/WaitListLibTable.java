@@ -189,7 +189,7 @@ public class WaitListLibTable  implements AutoCloseable {
 				
 				AlertBox.display("Success!", "The item has been removed from your queue!");
 				
-				//try to call yourself
+				//try to call yourself to redraw the scene
 				try(Connection connection2 = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
 
 					Statement statement2 = connection.createStatement();
