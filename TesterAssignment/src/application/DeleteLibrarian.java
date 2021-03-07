@@ -18,7 +18,7 @@ import java.sql.SQLException;
 
 import org.postgresql.util.PSQLException;
 
-import DatabaseTest.postgreSQLHeroku;
+import database.postgreSQLHeroku;
 
 public class DeleteLibrarian implements AutoCloseable {
 

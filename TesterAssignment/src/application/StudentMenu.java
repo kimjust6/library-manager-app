@@ -8,8 +8,8 @@ import java.sql.Statement;
 
 import org.postgresql.util.PSQLException;
 
-import DatabaseTest.postgreSQLHeroku;
 import classes.Student;
+import database.postgreSQLHeroku;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;

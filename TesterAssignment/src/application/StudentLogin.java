@@ -1,6 +1,8 @@
 package application;
 
 import classes.Student;
+import database.postgreSQLHeroku;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -9,7 +11,6 @@ import java.sql.Statement;
 
 import org.postgresql.util.PSQLException;
 
-import DatabaseTest.postgreSQLHeroku;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;

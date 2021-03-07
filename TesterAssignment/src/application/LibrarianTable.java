@@ -22,9 +22,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
-
-import DatabaseTest.postgreSQLHeroku;
 import classes.Librarian;
+import database.postgreSQLHeroku;
 
 public class LibrarianTable implements AutoCloseable {
 

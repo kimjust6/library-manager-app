@@ -8,8 +8,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import DatabaseTest.postgreSQLHeroku;
+
 import classes.BorrowedBooksTableLine;
+import database.postgreSQLHeroku;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
