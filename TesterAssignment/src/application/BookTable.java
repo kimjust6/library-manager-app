@@ -116,7 +116,8 @@ public class BookTable implements AutoCloseable {
       	
       	
       	table.setItems(lo);
-      	table.getColumns().addAll(idCol, titleCol, authCol, pubCol, typeCol, aQtyCol, bQtyCol);
+      	//table.getColumns().addAll(idCol, titleCol, authCol, pubCol, typeCol, aQtyCol, bQtyCol);
+      	table.getColumns().addAll(idCol, titleCol, authCol, pubCol, typeCol, aQtyCol);
       	
       	
 		
@@ -184,14 +185,7 @@ public class BookTable implements AutoCloseable {
   
   });
       	
-      	//viewBorrowedBtn.setMinSize(150, 40);
-      	
-      	//pane.add(heading, 0, 0);
-      	//pane.add(table, 0, 0);
-      	//pane.add(searchBtn, 0, 1);
-      	//pane.add(reqIssueBtn, 0, 2);
-      	//pane.add(viewBorrowedBtn, 0, 3);
-      	//pane.add(backBtn, 0, 4);
+
       	
       	vbox.getChildren().addAll(table,hbox);
       	
