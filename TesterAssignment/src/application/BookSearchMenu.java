@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -50,80 +51,25 @@ public class BookSearchMenu implements AutoCloseable {
       	//getItems
       	choiceBox.getItems().addAll("Title","Author","Publisher","ID");
       	choiceBox.setValue("Title");
-      	
+
       	
       	//searchBtn.setMaxWidth(WIDTH);
+      	searchBtn.setOnAction((event) -> {
+          	String choiceBoxString = choiceBox.getValue();
+          	String searchString = bookField.getText();
+      		this.handleSearch(choiceBoxString, searchString, stud); });
+
       	
-      	
-      	searchBtn.setOnAction(new EventHandler<ActionEvent>(){
-			@Override public void handle(ActionEvent arg0) {
-				
-				//****************************
-				
-				String searchString = bookField.getText();
-				
-				String choiceBoxString = choiceBox.getValue();
-				if(choiceBoxString == null)
-				{
-					System.out.println("Please enter a valid field from the dropdown menu!");
-					AlertBox.display("Error!", "Please enter a valid field from the dropdown menu!");
-				}
-				else if (searchString == "") 
-				{
-					System.out.println("Please enter something to search!");
-					AlertBox.display("Error!","Please enter something to search!");
-				}
-				else
-				{
-					try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
-
-						Statement statement = connection.createStatement();
-						String query = "";
-						
-						if (choiceBoxString.equalsIgnoreCase("ID"))
-						{
-							query = String.format("select * from %s where %s = %s;", postgreSQLHeroku.TABLE_LIBRARY, postgreSQLHeroku.COL_ID, searchString);
-							
-						}
-						else
-						{
-							query = String.format("select * from %s where upper(%s) like upper('%%%s%%');", postgreSQLHeroku.TABLE_LIBRARY, choiceBoxString, searchString);
-						}
-						System.out.println(choiceBoxString);
-						System.out.println(query);
-						ResultSet queryResult = statement.executeQuery(query); 
-						
-						
-						try (BookTable bookTable = new BookTable(stage, scene)) 
-						{
-							stage.setScene(bookTable.showMenu(queryResult, stud));
-							stage.setTitle("Search Results");
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-						
-
-					} catch (PSQLException e2) {
-						e2.printStackTrace();
-					} catch (SQLException e1) {
-						e1.printStackTrace();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-				//****************************
-				
-
-				
-				
-				try {
-//					stage.setScene(pagegoeshere);
-					stage.setTitle("Book Search");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+      	pane.setOnKeyPressed((event) -> {
+      	    if(event.getCode() == KeyCode.ENTER) {
+      	        // method handler
+      	    	String choiceBoxString = choiceBox.getValue();
+              	String searchString = bookField.getText();
+          		this.handleSearch(choiceBoxString, searchString, stud); 
+      	    }
       	});
+				
+
       	
       	
       	
@@ -152,7 +98,58 @@ public class BookSearchMenu implements AutoCloseable {
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	    return scene;
 	}
+	
+	public void handleSearch(String choiceBoxString, String searchString, Student stud)
+	{
+		if(choiceBoxString == null)
+		{
+			System.out.println("Please enter a valid field from the dropdown menu!");
+			AlertBox.display("Error!", "Please enter a valid field from the dropdown menu!");
+		}
+		else if (searchString == "") 
+		{
+			System.out.println("Please enter something to search!");
+			AlertBox.display("Error!","Please enter something to search!");
+		}
+		else
+		{
+			try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
 
+				Statement statement = connection.createStatement();
+				String query = "";
+				
+				if (choiceBoxString.equalsIgnoreCase("ID"))
+				{
+					query = String.format("select * from %s where %s = %s;", postgreSQLHeroku.TABLE_LIBRARY, postgreSQLHeroku.COL_ID, searchString);
+					
+				}
+				else
+				{
+					query = String.format("select * from %s where upper(%s) like upper('%%%s%%');", postgreSQLHeroku.TABLE_LIBRARY, choiceBoxString, searchString);
+				}
+				System.out.println(choiceBoxString);
+				System.out.println(query);
+				ResultSet queryResult = statement.executeQuery(query); 
+				
+				
+				try (BookTable bookTable = new BookTable(stage, scene)) 
+				{
+					stage.setScene(bookTable.showMenu(queryResult, stud));
+					stage.setTitle("Search Results");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+
+			} catch (PSQLException e2) {
+				e2.printStackTrace();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	@Override
 	public void close() throws Exception {
 		// TODO Auto-generated method stub

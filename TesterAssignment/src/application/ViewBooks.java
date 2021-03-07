@@ -119,7 +119,6 @@ public class ViewBooks implements AutoCloseable {
 		 
       //try and create the table
       	
-		
       //Column Title
       	TableColumn<LibraryObjects,String> titleCol = new TableColumn<>("Title");
       	titleCol.setMinWidth(200);
