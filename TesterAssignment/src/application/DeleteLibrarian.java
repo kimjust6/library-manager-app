@@ -15,11 +15,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import org.postgresql.util.PSQLException;
 
-import DatabaseTest.postgreSQLHeroku;
+import database.postgreSQLHeroku;
 
 public class DeleteLibrarian implements AutoCloseable {
 

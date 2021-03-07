@@ -6,12 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import DatabaseTest.postgreSQLHeroku;
 import classes.LibraryObjects;
 import classes.Student;
+import database.postgreSQLHeroku;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 
 import javafx.scene.Scene;
@@ -19,7 +18,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -116,7 +114,8 @@ public class BookTable implements AutoCloseable {
       	
       	
       	table.setItems(lo);
-      	table.getColumns().addAll(idCol, titleCol, authCol, pubCol, typeCol, aQtyCol, bQtyCol);
+      	//table.getColumns().addAll(idCol, titleCol, authCol, pubCol, typeCol, aQtyCol, bQtyCol);
+      	table.getColumns().addAll(idCol, titleCol, authCol, pubCol, typeCol, aQtyCol);
       	
       	
 		
@@ -184,14 +183,7 @@ public class BookTable implements AutoCloseable {
   
   });
       	
-      	//viewBorrowedBtn.setMinSize(150, 40);
-      	
-      	//pane.add(heading, 0, 0);
-      	//pane.add(table, 0, 0);
-      	//pane.add(searchBtn, 0, 1);
-      	//pane.add(reqIssueBtn, 0, 2);
-      	//pane.add(viewBorrowedBtn, 0, 3);
-      	//pane.add(backBtn, 0, 4);
+
       	
       	vbox.getChildren().addAll(table,hbox);
       	

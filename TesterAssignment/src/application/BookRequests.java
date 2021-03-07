@@ -6,14 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
 import org.postgresql.util.PSQLException;
 
-import DatabaseTest.postgreSQLHeroku;
-import classes.BorrowedBooksTableLine;
-import classes.Librarian;
 import classes.LibraryObjects;
 import classes.Student;
+import database.postgreSQLHeroku;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,7 +19,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -35,6 +31,9 @@ public class BookRequests implements AutoCloseable {
 
 	private Stage stage;
 	private Scene scene;
+
+	ObservableList<LibraryObjects> data = FXCollections.observableArrayList();
+	TableView<LibraryObjects> tableview = new TableView<>();
 	
 	public BookRequests(Stage stage, Scene scene) {
 		this.stage = stage;
@@ -45,9 +44,6 @@ public class BookRequests implements AutoCloseable {
 		try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD);
 				Statement statement = connection.createStatement()) {
 
-			ObservableList<LibraryObjects> data = FXCollections.observableArrayList();
-			TableView<LibraryObjects> tableview = new TableView<>();
-			
 			String query = String.format("select B.%s, count(*) as \"%s\", B.%s as \"%s\", B.%s from %s A join %s B on A.%s=B.%s group by B.%s, B.%s, B.%s;",
 											postgreSQLHeroku.COL_TITLE,
 											postgreSQLHeroku.COL_QTY_REQD,
@@ -95,7 +91,22 @@ public class BookRequests implements AutoCloseable {
 	        Button viewWaitListBtn = new Button("View Wait List");
 	        viewWaitListBtn.setOnAction((event) -> { 
 	        	if(!tableview.getSelectionModel().isEmpty()) {
-	        		this.waitList(tableview.getSelectionModel().getSelectedItem().getLibid(), tableview.getSelectionModel().getSelectedItem().getQtyAvailable());
+	        		
+	        		Stage window = new Stage();
+	    			window.initModality(Modality.APPLICATION_MODAL);
+	    			window.setTitle("Book Wait List");
+	    			window.setMinWidth(350);
+	    			window.setMinHeight(400);
+	        		
+	        		this.waitList(tableview.getSelectionModel().getSelectedItem().getLibid(), window);
+	        		
+	    			window.showAndWait();
+	        		
+					try(BookRequests bookRequests = new BookRequests(stage, scene)) {
+	        			stage.setScene(bookRequests.viewRequests());
+	        		} catch (Exception e3) {
+	        			e3.printStackTrace();
+	        		}
 	        	} else {
 	        		AlertBox.display("Error", "Please select a Book to issue for!");
 	        	}
@@ -125,18 +136,12 @@ public class BookRequests implements AutoCloseable {
 		return scene;
 	}
 	
-	public void waitList(int libID, int qtyAvailable) {
+	public void waitList(int libID, Stage window) {
 		try (Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD); 
 				Statement statement = connection.createStatement()) {
 
 			ObservableList<Student> studentData = FXCollections.observableArrayList();
 			TableView<Student> waitListTable = new TableView<>();
-			
-			Stage window = new Stage();
-			window.initModality(Modality.APPLICATION_MODAL);
-			window.setTitle("Book Wait List");
-			window.setMinWidth(350);
-			window.setMinHeight(400);
 			
 			String query = String.format("select row_number() over(order by A.%s) as \"%s\", B.%s, B.%s, B.%s, B.%s from %s A join %s B on A.%s=B.%s where A.%s=" + libID,     
 							postgreSQLHeroku.COL_WAITID,
@@ -187,43 +192,50 @@ public class BookRequests implements AutoCloseable {
 	    	Button issueBooks = new Button("Issue Book");
 	    	
 	    	issueBooks.setOnAction(e-> { 
-	    		if(qtyAvailable > 0) {
-		    		if(!waitListTable.getSelectionModel().isEmpty()) {
-		    			int studentID = waitListTable.getSelectionModel().getSelectedItem().getStudentNo();
-		    			
-		    			if(this.issueBooks(studentID, libID)) {	
-		    				AlertBox.display("Success", "Issued Book for student #" + studentID + "!");
-		    				window.close();
-		    				this.waitList(libID, qtyAvailable - 1);
-		    			} else {
-		    				AlertBox.display("Error", "Failed to issue book!");
-		    			}
-		    		} else {
-		    			AlertBox.display("Error", "Please select a student to issue book for!");
-		    		} 
-	    		} else {
-	    			AlertBox.display("Error", "Not enough books to issue!");
-	    		}
+	    		try (Connection connection2 = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD);
+	    				Statement getQty = connection2.createStatement()) {
+	    			ResultSet rs2 = getQty.executeQuery(String.format("select %s from %s where %s=" + libID, postgreSQLHeroku.COL_QTY_AVAIL, postgreSQLHeroku.TABLE_LIBRARY, postgreSQLHeroku.COL_ID));
+	    			
+	    			if(rs2.next()) {
+	    				if(rs2.getInt(postgreSQLHeroku.COL_QTY_AVAIL) > 0) {
+				    		if(!waitListTable.getSelectionModel().isEmpty()) {
+				    			int studentID = waitListTable.getSelectionModel().getSelectedItem().getStudentNo();
+				    			
+				    			if(this.issueBooks(studentID, libID)) {	
+				    				AlertBox.display("Success", "Issued Book for student #" + studentID + "!");
+				    				this.waitList(libID, window);
+				    			} else {
+				    				AlertBox.display("Error", "Failed to issue book!");
+				    			}
+				    		} else {
+				    			AlertBox.display("Error", "Please select a student to issue book for!");
+				    		} 
+			    		} else {
+			    			AlertBox.display("Error", "Not enough books to issue!");
+			    		}
+	    			}
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
 	    	});
 			
 			Button closeBtn = new Button("Close");
-			closeBtn.setOnAction(e-> { 
-				window.close(); 
-				
-			});
+			closeBtn.setOnAction(e-> { window.close(); });
 			
 			VBox layout = new VBox(10);
 			HBox hbox = new HBox();
 	    	hbox.setPadding(new Insets(10,10,10,10));
 	    	hbox.setSpacing(10);
-	    	hbox.getChildren().addAll(issueBooks, closeBtn);
+	    	
+	    	if(studentData.isEmpty()) hbox.getChildren().addAll(closeBtn);
+	    	else hbox.getChildren().addAll(issueBooks, closeBtn);
+	    	
 			layout.getChildren().addAll(waitListTable, hbox);
 			layout.setAlignment(Pos.CENTER);
 			
 			Scene scene = new Scene(layout);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			window.setScene(scene);
-			window.showAndWait();
 			
 		} catch (Exception e2) {
 			e2.printStackTrace();
