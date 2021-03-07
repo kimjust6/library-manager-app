@@ -182,12 +182,14 @@ public class BorrowedLibTableFull  implements AutoCloseable {
     				statement.executeUpdate(query);
     				
     				
-					query = String.format("update %s set %s=%s+1, %s=%s-1;", 
+					query = String.format("update %s set %s=%s+1, %s=%s-1 where %s = %s;", 
 							postgreSQLHeroku.TABLE_LIBRARY, 
 							postgreSQLHeroku.COL_QTY_AVAIL,
 							postgreSQLHeroku.COL_QTY_AVAIL,
 							postgreSQLHeroku.COL_QTY_BOR,
-							postgreSQLHeroku.COL_QTY_BOR);
+							postgreSQLHeroku.COL_QTY_BOR,
+							postgreSQLHeroku.COL_ID,
+							selected.get(0).getLibid());
 					
 					statement.executeUpdate(query);
     				
