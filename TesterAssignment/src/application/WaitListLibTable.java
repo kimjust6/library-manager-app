@@ -171,8 +171,7 @@ public class WaitListLibTable  implements AutoCloseable {
                 selected = table.getSelectionModel().getSelectedItems();
                 
                 
-                //System.out.println(selected.get(0).getLibid());
-                System.out.println(selected.get(0));
+
 
                 try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
 
