@@ -104,12 +104,12 @@ public class BookSearchMenu implements AutoCloseable {
 	{
 		if(choiceBoxString == null)
 		{
-			System.out.println("Please enter a valid field from the dropdown menu!");
+			//System.out.println("Please enter a valid field from the dropdown menu!");
 			AlertBox.display("Error!", "Please enter a valid field from the dropdown menu!");
 		}
 		else if (searchString == "") 
 		{
-			System.out.println("Please enter something to search!");
+			//System.out.println("Please enter something to search!");
 			AlertBox.display("Error!","Please enter something to search!");
 		}
 		else
@@ -128,8 +128,8 @@ public class BookSearchMenu implements AutoCloseable {
 				{
 					query = String.format("select * from %s where upper(%s) like upper('%%%s%%');", postgreSQLHeroku.TABLE_LIBRARY, choiceBoxString, searchString);
 				}
-				System.out.println(choiceBoxString);
-				System.out.println(query);
+				//System.out.println(choiceBoxString);
+				//System.out.println(query);
 				ResultSet queryResult = statement.executeQuery(query); 
 				
 				
