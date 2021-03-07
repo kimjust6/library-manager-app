@@ -65,7 +65,7 @@ public class ViewBooks implements AutoCloseable {
               				+ rs.getInt(postgreSQLHeroku.COL_QTY_BOR) + ", "
 	          				+ rs.getString(postgreSQLHeroku.COL_ID) + "\n";
 
-	    			System.out.println("");
+	    			
 	    		}
 	    		
 	    		

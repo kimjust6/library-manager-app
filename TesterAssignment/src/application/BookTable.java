@@ -140,13 +140,13 @@ public class BookTable implements AutoCloseable {
             if (!table.getSelectionModel().isEmpty())
             {
             	selected = table.getSelectionModel().getSelectedItems();
-                System.out.println(selected.get(0).getLibid());
+                //System.out.println(selected.get(0).getLibid());
                 
                 try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
 
     				Statement statement = connection.createStatement();
     				String query = "";
-    				String query2 = "";
+    				
     				
     				query = String.format("select * from %s where %s=%s AND %s=%s;",postgreSQLHeroku.TABLE_WAITLIST_OBJECTS,postgreSQLHeroku.COL_STUD_NO ,stud.getStudentNo(), postgreSQLHeroku.COL_ID ,selected.get(0).getLibid());
     				ResultSet queryResult = statement.executeQuery(query);
