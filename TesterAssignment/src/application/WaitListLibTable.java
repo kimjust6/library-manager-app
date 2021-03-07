@@ -220,13 +220,15 @@ public class WaitListLibTable  implements AutoCloseable {
       		try {
       	      File myObj = new File("Waitlist Items.csv");
       	      if (myObj.createNewFile()) {
-      	        System.out.println("File created: " + myObj.getName());
+      	        //System.out.println("File created: " + myObj.getName());
+      	        AlertBox.display("File Created", "File created: " + myObj.getName());
       	      } else {
-      	        System.out.println("File already exists.");
+      	        //System.out.println("File already exists.");
+      	    	AlertBox.display("Error!", "File already exists!");
       	      }
       	    } catch (IOException e2) {
-      	      System.out.println("An error occurred.");
-      	      AlertBox.display("Error!", "Could not open the file!");
+      	      //System.out.println("An error occurred.");
+      	      AlertBox.display("Error!", "An error occurred!");
       	      e2.printStackTrace();
       	    }
       		
@@ -235,10 +237,10 @@ public class WaitListLibTable  implements AutoCloseable {
       	      myWriter.write("");
       	      myWriter.write(lines);
       	      myWriter.close();
-      	      System.out.println("Successfully wrote to the file.");
+      	      //System.out.println("Successfully wrote to the file.");
       	      AlertBox.display("Success!", "Successfully saved to file!");
       	    } catch (IOException e2) {
-      	      System.out.println("An error occurred.");
+      	      //System.out.println("An error occurred.");
       	      AlertBox.display("Error!", "Could not save to the file!");
       	      e2.printStackTrace();
       	    }
