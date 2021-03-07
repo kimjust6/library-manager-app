@@ -2,6 +2,8 @@ package application;
 
 import java.io.*;
 import classes.LibraryObjects;
+import database.postgreSQLHeroku;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -9,7 +11,6 @@ import java.sql.Statement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import DatabaseTest.postgreSQLHeroku;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -118,7 +119,6 @@ public class ViewBooks implements AutoCloseable {
 		 
       //try and create the table
       	
-		
       //Column Title
       	TableColumn<LibraryObjects,String> titleCol = new TableColumn<>("Title");
       	titleCol.setMinWidth(200);

@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.postgresql.util.PSQLException;
+
+import database.postgreSQLHeroku;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -19,7 +21,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import DatabaseTest.postgreSQLHeroku;
 
 public class RegisterLibrarian implements AutoCloseable {
 
@@ -38,7 +39,7 @@ public class RegisterLibrarian implements AutoCloseable {
 		pane.setHgap(5.5);
 		pane.setVgap(5.5);
 		
-		Image image = new Image(getClass().getResourceAsStream("librarian.png"));
+		Image image = new Image(getClass().getResourceAsStream("images/librarian.png"));
 	    ImageView imgV= new ImageView(image);
 	    imgV.setFitHeight(40);
 	    imgV.setFitWidth(40);
@@ -141,10 +142,13 @@ public class RegisterLibrarian implements AutoCloseable {
 				}
 			}
 		}); 
-
+        
+        btn.setStyle("-fx-background-color: mediumaquamarine");
+        backBtn.setStyle("-fx-background-color: coral");
 		pane.add(btn, 1, 7);
 		pane.add(backBtn, 1, 9);
 		
+		pane.setStyle("-fx-background-color: #B7D8D6");
 		Scene scene = new Scene(pane, 350, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	    return scene;

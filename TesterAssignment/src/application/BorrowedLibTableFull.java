@@ -8,8 +8,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import DatabaseTest.postgreSQLHeroku;
+
 import classes.BorrowedBooksTableLine;
+import database.postgreSQLHeroku;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -189,18 +190,15 @@ public class BorrowedLibTableFull  implements AutoCloseable {
 					
 					ResultSet queryResult = statement.executeQuery(query); 
 					
-    				//AlertBox.display("Success!", "The item has been removed from your queue!");
-    				
-
-//    					
-//        				//try to call yourself to redraw the scene
-    					try (BorrowedLibTableFull waitListTable = new BorrowedLibTableFull(stage, scene)) 
-    					{
-    						stage.setScene(waitListTable.showMenu(queryResult));
-    						stage.setTitle("Your Requested Waitlist Items");
-    					} catch (Exception e2) {
-    						e2.printStackTrace();
-    					}
+    				AlertBox.display("Success!", "The item has been returned to the system!");
+    				//try to call yourself to redraw the scene
+					try (BorrowedLibTableFull waitListTable = new BorrowedLibTableFull(stage, scene)) 
+					{
+						stage.setScene(waitListTable.showMenu(queryResult));
+						stage.setTitle("Your Requested Waitlist Items");
+					} catch (Exception e2) {
+						e2.printStackTrace();
+					}
 
     				
                 } catch (SQLException e1) 

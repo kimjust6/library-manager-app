@@ -1,6 +1,8 @@
 package application;
 
 import classes.Student;
+import database.postgreSQLHeroku;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -9,7 +11,6 @@ import java.sql.Statement;
 
 import org.postgresql.util.PSQLException;
 
-import DatabaseTest.postgreSQLHeroku;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -55,11 +56,15 @@ public class StudentLogin implements AutoCloseable {
     			e2.printStackTrace();
     		}
        }); 
+       
+       btn.setStyle("-fx-background-color: mediumaquamarine");
+       backBtn.setStyle("-fx-background-color: coral");
        pane.add(userLabel, 0 , 0);
        pane.add(studentNoField, 1 , 0);
        pane.add(btn, 1, 1);
        pane.add(backBtn, 1, 2);
        
+       pane.setStyle("-fx-background-color: #B7D8D6");
        Scene scene = new Scene(pane, 350, 450);
 	   scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	   return scene;

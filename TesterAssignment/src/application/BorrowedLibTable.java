@@ -5,9 +5,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import DatabaseTest.postgreSQLHeroku;
+
 import classes.BorrowedBooksTableLine;
 import classes.Student;
+import database.postgreSQLHeroku;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;

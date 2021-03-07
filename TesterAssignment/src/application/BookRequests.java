@@ -7,9 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import org.postgresql.util.PSQLException;
-import DatabaseTest.postgreSQLHeroku;
+
 import classes.LibraryObjects;
 import classes.Student;
+import database.postgreSQLHeroku;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

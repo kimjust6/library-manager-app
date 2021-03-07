@@ -18,7 +18,7 @@ import java.sql.SQLException;
 
 import org.postgresql.util.PSQLException;
 
-import DatabaseTest.postgreSQLHeroku;
+import database.postgreSQLHeroku;
 
 public class DeleteLibrarian implements AutoCloseable {
 
@@ -96,9 +96,12 @@ public class DeleteLibrarian implements AutoCloseable {
 			}
 		}); 
         
+        btn.setStyle("-fx-background-color: mediumaquamarine");
+        backBtn.setStyle("-fx-background-color: coral");
 		pane.add(btn, 1, 2);
 		pane.add(backBtn, 1, 4);
 		
+		pane.setStyle("-fx-background-color: #B7D8D6");
 		Scene scene = new Scene(pane, 350, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	    return scene;

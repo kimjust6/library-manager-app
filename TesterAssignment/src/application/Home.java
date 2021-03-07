@@ -28,12 +28,12 @@ public class Home implements AutoCloseable {
 	    pane.setHgap(10);
 	    pane.setVgap(2);
 	    
-	    Image image = new Image(getClass().getResourceAsStream("admin.png"));
+	    Image image = new Image(getClass().getResourceAsStream("images/admin.png"));
 	    ImageView imgV= new ImageView(image);
 	    imgV.setFitHeight(70);
 	    imgV.setFitWidth(70);
 	    
-	    Image image2 = new Image(getClass().getResourceAsStream("student.png"));
+	    Image image2 = new Image(getClass().getResourceAsStream("images/student.png"));
 	    ImageView imgV2= new ImageView(image2);
 	    imgV2.setFitHeight(70);
 	    imgV2.setFitWidth(70);
@@ -43,6 +43,7 @@ public class Home implements AutoCloseable {
 		Button btAdmin = new Button("Admin");
 	    Button btStu = new Button("Student");
 
+	    
 	    btAdmin.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try (AdminLogin adminLogin = new AdminLogin(stage, scene)) {
@@ -64,13 +65,15 @@ public class Home implements AutoCloseable {
 				}
 			}
 	    });
-	    
+	    btAdmin.setStyle("-fx-background-color: #4D6466; -fx-text-fill: white");
+	    btStu.setStyle("-fx-background-color: #4D6466; -fx-text-fill: white");
 	    pane.add(wlcMSG, 0 , 0);
 	    pane.add(imgV, 0 ,1);
 	    pane.add(imgV2, 1 ,1);
 	    pane.add(btAdmin, 0, 2);
 	    pane.add(btStu, 1, 2);
 	    
+	    pane.setStyle("-fx-background-color: #EEF3DB");
 	    return new Scene(pane, 350, 450);
 	}
 

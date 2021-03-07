@@ -8,14 +8,16 @@ import java.sql.Statement;
 
 import org.postgresql.util.PSQLException;
 
-import DatabaseTest.postgreSQLHeroku;
 import classes.Student;
+import database.postgreSQLHeroku;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -36,7 +38,8 @@ public class StudentMenu implements AutoCloseable {
       	pane.setAlignment(Pos.CENTER);
       	pane.setHgap(5.5);
     	pane.setVgap(10);
-      	Label heading = new Label("Welcome, " + stud.getFName() + "\nWhat would you like to do today?\n");
+	    
+      	Label heading = new Label("Welcome " + stud.getFName().toUpperCase() + "\nWhat would you like to do today?\n");
       	
       	Button searchBtn = new Button("Find Books");
       	Button viewBorrowedBtn = new Button("View Borrowed Items");
@@ -148,13 +151,18 @@ public class StudentMenu implements AutoCloseable {
       	
       	
       	//viewBorrowedBtn.setMinSize(150, 40);
-      	
+      	backBtn.setStyle("-fx-background-color: #FE615A");
+      	searchBtn.setStyle("-fx-background-color: #789E9E; -fx-text-fill: white");
+      	viewWaitListBtn.setStyle("-fx-background-color: #789E9E; -fx-text-fill: white");
+      	viewBorrowedBtn.setStyle("-fx-background-color: #789E9E; -fx-text-fill: white");
+	    
       	pane.add(heading, 0, 0);
       	pane.add(searchBtn, 0, 1);
       	pane.add(viewWaitListBtn, 0, 2);
       	pane.add(viewBorrowedBtn, 0, 3);
       	pane.add(backBtn, 0, 4);
       	
+      	pane.setStyle("-fx-background-color: #EEF3DB");
       	Scene scene = new Scene(pane, 350, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	    return scene;

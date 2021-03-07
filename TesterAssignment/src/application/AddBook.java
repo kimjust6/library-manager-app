@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 import org.postgresql.util.PSQLException;
 
-import DatabaseTest.postgreSQLHeroku;
+import database.postgreSQLHeroku;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -38,7 +38,7 @@ public class AddBook implements AutoCloseable{
 		pane.setHgap(5.5);
 		pane.setVgap(5.5);
 		
-		Image image = new Image(getClass().getResourceAsStream("open-book.png"));
+		Image image = new Image(getClass().getResourceAsStream("images/open-book.png"));
 	    ImageView imgV= new ImageView(image);
 	    imgV.setFitHeight(40);
 	    imgV.setFitWidth(40);
@@ -111,9 +111,12 @@ public class AddBook implements AutoCloseable{
 			}
 		}); 
         
+        btn.setStyle("-fx-background-color: mediumaquamarine");
+        backBtn.setStyle("-fx-background-color: coral");
 		pane.add(btn, 1, 6);
 		pane.add(backBtn, 1, 8);
 		
+		pane.setStyle("-fx-background-color: #B7D8D6");
 		Scene scene = new Scene(pane, 350, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	    return scene;
