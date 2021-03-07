@@ -147,7 +147,7 @@ public class WaitListLibTable  implements AutoCloseable {
       	
       	//Column ID
       	TableColumn<BorrowedBooksTableLine,String> idCol = new TableColumn<>("BookID");
-      	//idCol.setMinWidth(80);
+      	idCol.setMinWidth(80);
       	idCol.setCellValueFactory(new PropertyValueFactory<>("libid"));
       	
       	

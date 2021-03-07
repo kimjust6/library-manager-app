@@ -157,8 +157,8 @@ public class ViewBooks implements AutoCloseable {
       	bQtyCol.setCellValueFactory(new PropertyValueFactory<>("qtyBorrowed"));
       	
       	//Column ID
-      	TableColumn<LibraryObjects,String> idCol = new TableColumn<>("ID");
-      	//idCol.setMinWidth(80);
+      	TableColumn<LibraryObjects,String> idCol = new TableColumn<>("Book ID");
+      	idCol.setMinWidth(80);
       	idCol.setCellValueFactory(new PropertyValueFactory<>("libid"));
       	
       	
