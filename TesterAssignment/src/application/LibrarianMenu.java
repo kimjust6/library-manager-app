@@ -15,6 +15,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -32,7 +34,12 @@ public class LibrarianMenu implements AutoCloseable {
 		pane.setAlignment(Pos.CENTER);
 		pane.setHgap(10);
 		pane.setVgap(20);
-		    
+		
+		Image image = new Image(getClass().getResourceAsStream("add.png"));
+	    ImageView imgV= new ImageView(image);
+	    imgV.setFitHeight(40);
+	    imgV.setFitWidth(40);
+		
 		Button addBtn = new Button("Add Book");
 		addBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
@@ -121,8 +128,9 @@ public class LibrarianMenu implements AutoCloseable {
 				}	
 			}
         }); 
-			
-		pane.add(addBtn, 0, 0);
+		
+		pane.add(imgV, 0, 0);	
+		pane.add(addBtn, 1, 0);
 		pane.add(viewBtn, 0, 1);
 		pane.add(issueBtn, 0, 2);
 		pane.add(returnBtn, 0, 3);

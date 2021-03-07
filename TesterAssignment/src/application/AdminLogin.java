@@ -16,6 +16,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import DatabaseTest.postgreSQLHeroku;
 
@@ -38,7 +41,9 @@ public class AdminLogin implements AutoCloseable {
 			
 		TextField usernameField = new TextField();
 		PasswordField passwordField = new PasswordField();
-		
+		Label title = new Label("LOG IN");
+		title.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+		pane.add(title, 0, 0);
 		pane.add(new Label("Username:"), 0, 1);
 		pane.add(usernameField, 1, 1);
 		pane.add(new Label("Password:"), 0, 2);
@@ -64,10 +69,12 @@ public class AdminLogin implements AutoCloseable {
 				}
 			}
 		});
-        
+        btn.setStyle("-fx-background-color: mediumaquamarine");
+        backBtn.setStyle("-fx-background-color: coral");
 		pane.add(btn, 1, 3);
 		pane.add(backBtn, 1, 5);
 		
+		pane.setStyle("-fx-background-color: #79A6E0"); //lightblue
 		Scene scene = new Scene(pane, 350, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	    return scene;

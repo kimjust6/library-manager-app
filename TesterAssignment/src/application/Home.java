@@ -71,6 +71,7 @@ public class Home implements AutoCloseable {
 	    pane.add(btAdmin, 0, 2);
 	    pane.add(btStu, 1, 2);
 	    
+	    pane.setStyle("-fx-background-color: #79A6E0");
 	    return new Scene(pane, 350, 450);
 	}
 
