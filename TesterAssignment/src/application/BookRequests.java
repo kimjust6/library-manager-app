@@ -147,13 +147,6 @@ public class BookRequests implements AutoCloseable {
 			ObservableList<Student> studentData = FXCollections.observableArrayList();
 			TableView<Student> waitListTable = new TableView<>();
 			
-//			Stage window = new Stage();
-//			window.initModality(Modality.APPLICATION_MODAL);
-//			window.setTitle("Book Wait List");
-//			window.setMinWidth(350);
-//			window.setMinHeight(400);
-			
-			
 			String query = String.format("select row_number() over(order by A.%s) as \"%s\", B.%s, B.%s, B.%s, B.%s from %s A join %s B on A.%s=B.%s where A.%s=" + libID,     
 							postgreSQLHeroku.COL_WAITID,
 							postgreSQLHeroku.COL_WAITID,
@@ -237,7 +230,10 @@ public class BookRequests implements AutoCloseable {
 			HBox hbox = new HBox();
 	    	hbox.setPadding(new Insets(10,10,10,10));
 	    	hbox.setSpacing(10);
-	    	hbox.getChildren().addAll(issueBooks, closeBtn);
+	    	
+	    	if(studentData.isEmpty()) hbox.getChildren().addAll(closeBtn);
+	    	else hbox.getChildren().addAll(issueBooks, closeBtn);
+	    	
 			layout.getChildren().addAll(waitListTable, hbox);
 			layout.setAlignment(Pos.CENTER);
 			
