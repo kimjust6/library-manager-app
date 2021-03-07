@@ -86,14 +86,15 @@ public class BookSearchMenu implements AutoCloseable {
 			
 		});
       	
-      	
+      	searchBtn.setStyle("-fx-background-color: mediumaquamarine");
+        backBtn.setStyle("-fx-background-color: coral");
       	pane.add(heading, 0, 0);
       	pane.add(choiceBox, 0, 1);
       	pane.add(bookField, 0, 2);
       	pane.add(searchBtn, 1, 2);
       	pane.add(backBtn, 0, 3);
       	
-      	
+      	pane.setStyle("-fx-background-color: #B7D8D6");
       	Scene scene = new Scene(pane, 350, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	    return scene;

@@ -28,17 +28,17 @@ public class AdminMenu implements AutoCloseable {
 		pane.setHgap(10);
 		pane.setVgap(20);
 		
-		Image image = new Image(getClass().getResourceAsStream("register.png"));
+		Image image = new Image(getClass().getResourceAsStream("images/register.png"));
 	    ImageView imgV= new ImageView(image);
 	    imgV.setFitHeight(40);
 	    imgV.setFitWidth(40);
 		
-	    Image image1 = new Image(getClass().getResourceAsStream("delete.png"));
+	    Image image1 = new Image(getClass().getResourceAsStream("images/delete.png"));
 	    ImageView imgV1= new ImageView(image1);
 	    imgV1.setFitHeight(40);
 	    imgV1.setFitWidth(40);
 	    
-	    Image image2 = new Image(getClass().getResourceAsStream("view.png"));
+	    Image image2 = new Image(getClass().getResourceAsStream("images/view.png"));
 	    ImageView imgV2= new ImageView(image2);
 	    imgV2.setFitHeight(40);
 	    imgV2.setFitWidth(40);
@@ -91,6 +91,11 @@ public class AdminMenu implements AutoCloseable {
 			}
         }); 
 		
+		logoutBtn.setStyle("-fx-background-color: #FE615A");
+		regBtn.setStyle("-fx-background-color: #789E9E; -fx-text-fill: white");
+		delBtn.setStyle("-fx-background-color: #789E9E; -fx-text-fill: white");
+		viewBtn.setStyle("-fx-background-color: #789E9E; -fx-text-fill: white");
+	    
 		pane.add(imgV, 0, 0);
 		pane.add(regBtn, 1, 0);
 		pane.add(imgV1, 0, 1);
@@ -99,6 +104,7 @@ public class AdminMenu implements AutoCloseable {
 		pane.add(viewBtn, 1, 2);
 		pane.add(logoutBtn, 1, 4);
 		
+		pane.setStyle("-fx-background-color: #EEF3DB");
 		Scene scene = new Scene(pane, 350, 450);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		return scene;

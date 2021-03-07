@@ -75,7 +75,7 @@ public class AdminLogin implements AutoCloseable {
 		pane.add(btn, 1, 3);
 		pane.add(backBtn, 1, 5);
 		
-		pane.setStyle("-fx-background-color: #79A6E0"); //lightblue
+		pane.setStyle("-fx-background-color: #B7D8D6"); //lightblue
 		Scene scene = new Scene(pane, 350, 450);
 	    scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	    return scene;

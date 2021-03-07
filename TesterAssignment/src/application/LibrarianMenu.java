@@ -34,11 +34,26 @@ public class LibrarianMenu implements AutoCloseable {
 		pane.setHgap(10);
 		pane.setVgap(20);
 		
-		Image image = new Image(getClass().getResourceAsStream("add.png"));
+		Image image = new Image(getClass().getResourceAsStream("images/add.png"));
 	    ImageView imgV= new ImageView(image);
 	    imgV.setFitHeight(40);
 	    imgV.setFitWidth(40);
 		
+	    Image image1 = new Image(getClass().getResourceAsStream("images/coffee.png"));
+	    ImageView imgV1= new ImageView(image1);
+	    imgV1.setFitHeight(40);
+	    imgV1.setFitWidth(40);
+	    
+	    Image image2 = new Image(getClass().getResourceAsStream("images/request.png"));
+	    ImageView imgV2= new ImageView(image2);
+	    imgV2.setFitHeight(40);
+	    imgV2.setFitWidth(40);
+	    
+	    Image image3 = new Image(getClass().getResourceAsStream("images/return.png"));
+	    ImageView imgV3= new ImageView(image3);
+	    imgV3.setFitHeight(40);
+	    imgV3.setFitWidth(40);
+	    
 		Button addBtn = new Button("Add Book");
 		addBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
@@ -127,14 +142,23 @@ public class LibrarianMenu implements AutoCloseable {
 				}	
 			}
         }); 
-		
+		logoutBtn.setStyle("-fx-background-color: #FE615A");
+		addBtn.setStyle("-fx-background-color: #789E9E; -fx-text-fill: white");
+	    viewBtn.setStyle("-fx-background-color: #789E9E; -fx-text-fill: white");
+	    issueBtn.setStyle("-fx-background-color: #789E9E; -fx-text-fill: white");
+	    returnBtn.setStyle("-fx-background-color: #789E9E; -fx-text-fill: white");
+	    
 		pane.add(imgV, 0, 0);	
 		pane.add(addBtn, 1, 0);
-		pane.add(viewBtn, 0, 1);
-		pane.add(issueBtn, 0, 2);
-		pane.add(returnBtn, 0, 3);
-		pane.add(logoutBtn, 0, 5);
-			
+		pane.add(imgV1, 0, 1);
+		pane.add(viewBtn, 1, 1);
+		pane.add(imgV2, 0, 2);
+		pane.add(issueBtn, 1, 2);
+		pane.add(imgV3, 0, 3);
+		pane.add(returnBtn, 1, 3);
+		pane.add(logoutBtn, 1, 5);
+		
+		pane.setStyle("-fx-background-color: #EEF3DB");
 		Scene scene = new Scene(pane, 350, 450);
 		scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 		return scene;

@@ -64,7 +64,7 @@ public class StudentLogin implements AutoCloseable {
        pane.add(btn, 1, 1);
        pane.add(backBtn, 1, 2);
        
-       pane.setStyle("-fx-background-color: #79A6E0");
+       pane.setStyle("-fx-background-color: #B7D8D6");
        Scene scene = new Scene(pane, 350, 450);
 	   scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	   return scene;
