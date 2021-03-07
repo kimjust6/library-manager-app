@@ -32,7 +32,7 @@ public class ViewBooks implements AutoCloseable {
 	final int PADDING = 10;
 	private Stage stage;
 	private Scene scene;
-	
+	private String lines = "";
 	private ObservableList<LibraryObjects> lo =  FXCollections.observableArrayList();
 	TableView<LibraryObjects> table = new TableView<>();
 	
@@ -43,28 +43,18 @@ public class ViewBooks implements AutoCloseable {
 	
 	public Scene viewBooks() throws Exception, IOException, FileNotFoundException{
 		//READ THE BOOKS FROM DB AND GENERATE OUTPUT FILE
+
+    	Button saveFileBtn = new Button("Save to File");
 		
-    	
     	try (Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD))
     	{
     		String query = String.format("SELECT * FROM %s;", postgreSQLHeroku.TABLE_LIBRARY);
     		Statement statement = connection.createStatement();
     		ResultSet rs = statement.executeQuery(query);
-    		int colCount = rs.getMetaData().getColumnCount();
-    		
-    		File file = new File("books.txt");
-    		//create file
-    		if (!file.exists()) {
-				file.createNewFile();
-			}
-			//clear file first
-			PrintWriter writer = new PrintWriter("books.txt");
-			writer.print("");
-			writer.close();
-    		try (BufferedWriter bw = new BufferedWriter(new FileWriter("books.txt", true))) {
+
+
 	    		while(rs.next())
 	    		{
-	    			String line = "";
 	    			lo.add(new LibraryObjects(rs.getString(postgreSQLHeroku.COL_TITLE),
               				rs.getString(postgreSQLHeroku.COL_AUTHOR),
               				rs.getString(postgreSQLHeroku.COL_PUBLISHER),
@@ -72,23 +62,53 @@ public class ViewBooks implements AutoCloseable {
               				rs.getInt(postgreSQLHeroku.COL_QTY_AVAIL),
               				rs.getInt(postgreSQLHeroku.COL_QTY_BOR),
               				rs.getInt(postgreSQLHeroku.COL_ID)));
-	    			for (int i = 1; i <= colCount; ++i )
-	    			{
-	    				line += rs.getString(i) + ", ";
-	    			}
-	    			bw.append(line);
-    				bw.newLine();
+
+	          		lines += rs.getString(postgreSQLHeroku.COL_TITLE) + ", "
+	          				+ rs.getString(postgreSQLHeroku.COL_AUTHOR) + ", "
+	          				+ rs.getString(postgreSQLHeroku.COL_PUBLISHER) + ", "
+	          				+ rs.getString(postgreSQLHeroku.COL_MEDIA_TYPE) + ", "
+	          				+ rs.getInt(postgreSQLHeroku.COL_QTY_AVAIL) + ", "
+              				+ rs.getInt(postgreSQLHeroku.COL_QTY_BOR) + ", "
+	          				+ rs.getString(postgreSQLHeroku.COL_ID) + "\n";
+
 	    			System.out.println("");
 	    		}
 	    		
-	    		bw.flush();
+	    		
     		}
-    		System.out.println("file created "+file.getCanonicalPath()); 
-    		
-    	}catch(Exception e)
-    	{
-    		System.out.println(e);
-    	}
+
+    	
+    	saveFileBtn.setOnAction(e-> {
+
+      		//create the file
+      		try {
+      	      File myObj = new File("All Books.csv");
+      	      if (myObj.createNewFile()) {
+      	        System.out.println("File created: " + myObj.getName());
+      	      } else {
+      	        System.out.println("File already exists.");
+      	      }
+      	    } catch (IOException e2) {
+      	      System.out.println("An error occurred.");
+      	      AlertBox.display("Error!", "Could not open the file!");
+      	      e2.printStackTrace();
+      	    }
+      		
+      		try {
+      	      FileWriter myWriter = new FileWriter("All Books.csv");
+      	      myWriter.write("");
+      	      myWriter.write(lines);
+      	      myWriter.close();
+      	      System.out.println("Successfully wrote to the file.");
+      	      AlertBox.display("Success!", "Successfully saved to file!");
+      	    } catch (IOException e2) {
+      	      System.out.println("An error occurred.");
+      	      AlertBox.display("Error!", "Could not save to the file!");
+      	      e2.printStackTrace();
+      	    }
+      		
+
+      	});
     	
     	
     	//DISPLAY IN A NICE TABLE
@@ -99,7 +119,7 @@ public class ViewBooks implements AutoCloseable {
     	hbox.setSpacing(PADDING);
     	
     	Button backBtn = new Button("Back");
-      	hbox.getChildren().addAll(backBtn);
+      	hbox.getChildren().addAll(backBtn,saveFileBtn);
       	backBtn.setMaxWidth(WIDTH);
       	
 		 
@@ -137,8 +157,8 @@ public class ViewBooks implements AutoCloseable {
       	bQtyCol.setCellValueFactory(new PropertyValueFactory<>("qtyBorrowed"));
       	
       	//Column ID
-      	TableColumn<LibraryObjects,String> idCol = new TableColumn<>("ID");
-      	//idCol.setMinWidth(80);
+      	TableColumn<LibraryObjects,String> idCol = new TableColumn<>("Book ID");
+      	idCol.setMinWidth(80);
       	idCol.setCellValueFactory(new PropertyValueFactory<>("libid"));
       	
       	
