@@ -148,7 +148,8 @@ public class BorrowedLibTable  implements AutoCloseable {
       	
       	
       	table.setItems(lo);
-      	table.getColumns().addAll(studnoCol, lnameCol, fnameCol, idCol, titleCol, authCol, pubCol, typeCol);
+      	table.getColumns().addAll(idCol, titleCol, authCol, pubCol, typeCol);
+      	//table.getColumns().addAll(studnoCol, lnameCol, fnameCol, idCol, titleCol, authCol, pubCol, typeCol);
       	
       	
 		
