@@ -16,6 +16,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -36,7 +38,8 @@ public class StudentMenu implements AutoCloseable {
       	pane.setAlignment(Pos.CENTER);
       	pane.setHgap(5.5);
     	pane.setVgap(10);
-      	Label heading = new Label("Welcome, " + stud.getFName() + "\nWhat would you like to do today?\n");
+	    
+      	Label heading = new Label("Welcome " + stud.getFName().toUpperCase() + "\nWhat would you like to do today?\n");
       	
       	Button searchBtn = new Button("Find Books");
       	Button viewBorrowedBtn = new Button("View Borrowed Items");
