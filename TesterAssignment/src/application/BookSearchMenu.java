@@ -10,6 +10,7 @@ import org.postgresql.util.PSQLException;
 
 import DatabaseTest.postgreSQLHeroku;
 import classes.Student;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -44,8 +45,11 @@ public class BookSearchMenu implements AutoCloseable {
       	TextField bookField = new TextField();
       	ChoiceBox <String> choiceBox = new ChoiceBox<>();
       	
+      	Platform.runLater(()->bookField.requestFocus());
+      	
       	//getItems
       	choiceBox.getItems().addAll("Title","Author","Publisher","ID");
+      	choiceBox.setValue("Title");
       	
       	
       	//searchBtn.setMaxWidth(WIDTH);
@@ -57,6 +61,7 @@ public class BookSearchMenu implements AutoCloseable {
 				//****************************
 				
 				String searchString = bookField.getText();
+				
 				String choiceBoxString = choiceBox.getValue();
 				if(choiceBoxString == null)
 				{
