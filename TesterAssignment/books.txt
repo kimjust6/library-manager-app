@@ -1,0 +1,7 @@
+java, nat, nv, null, 10, 0, 1, 
+nodejs, mochi, mv, Newspaper, 10, 0, 5, 
+c++, harsh, hk, null, 10, 0, 2, 
+c, matt, mk, Magazine, 10, 0, 4, 
+javascript, justin, jk, Newspaper, 10, 0, 3, 
+Teaching Myself, BTP and BTI, Seneca, Book, 10, 0, 7, 
+hopeless romance, nat, nv, Book, 10, 0, 6, 
