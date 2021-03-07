@@ -190,18 +190,15 @@ public class BorrowedLibTableFull  implements AutoCloseable {
 					
 					ResultSet queryResult = statement.executeQuery(query); 
 					
-    				//AlertBox.display("Success!", "The item has been removed from your queue!");
-    				
-
-//    					
-//        				//try to call yourself to redraw the scene
-    					try (BorrowedLibTableFull waitListTable = new BorrowedLibTableFull(stage, scene)) 
-    					{
-    						stage.setScene(waitListTable.showMenu(queryResult));
-    						stage.setTitle("Your Requested Waitlist Items");
-    					} catch (Exception e2) {
-    						e2.printStackTrace();
-    					}
+    				AlertBox.display("Success!", "The item has been returned to the system!");
+    				//try to call yourself to redraw the scene
+					try (BorrowedLibTableFull waitListTable = new BorrowedLibTableFull(stage, scene)) 
+					{
+						stage.setScene(waitListTable.showMenu(queryResult));
+						stage.setTitle("Your Requested Waitlist Items");
+					} catch (Exception e2) {
+						e2.printStackTrace();
+					}
 
     				
                 } catch (SQLException e1) 
