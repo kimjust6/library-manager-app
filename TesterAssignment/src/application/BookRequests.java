@@ -203,7 +203,8 @@ public class BookRequests implements AutoCloseable {
 	    	Button issueBooks = new Button("Issue Book");
 	    	
 	    	issueBooks.setOnAction(e-> { 
-	    		try (Statement getQty = connection.createStatement()) {
+	    		try (Connection connection2 = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD);
+	    				Statement getQty = connection2.createStatement()) {
 	    			ResultSet rs2 = getQty.executeQuery(String.format("select %s from %s where %s=" + libID, postgreSQLHeroku.COL_QTY_AVAIL, postgreSQLHeroku.TABLE_LIBRARY, postgreSQLHeroku.COL_ID));
 	    			
 	    			if(rs2.next()) {
