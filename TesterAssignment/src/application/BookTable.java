@@ -51,6 +51,7 @@ public class BookTable implements AutoCloseable {
 
       	Button backBtn = new Button("Back");
       	Button borrowBtn= new Button("Request to Borrow");
+      	borrowBtn.setMinWidth(150);
       	hbox.getChildren().addAll(borrowBtn,backBtn);
       	backBtn.setMaxWidth(WIDTH);
       	
