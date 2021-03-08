@@ -61,7 +61,7 @@ public class WaitListLibTable  implements AutoCloseable {
       	
 
       	Button backBtn = new Button("Back");
-      	Button removeListBtn = new Button("Remove Waitlist");
+      	Button removeListBtn = new Button("Remove Request");
       	Button saveFileBtn = new Button("Save to File");
       	
       	//

@@ -195,7 +195,7 @@ public class BorrowedLibTableFull  implements AutoCloseable {
 					try (BorrowedLibTableFull waitListTable = new BorrowedLibTableFull(stage, scene)) 
 					{
 						stage.setScene(waitListTable.showMenu(queryResult));
-						stage.setTitle("Your Requested Waitlist Items");
+						stage.setTitle("Requested Items");
 					} catch (Exception e2) {
 						e2.printStackTrace();
 					}
