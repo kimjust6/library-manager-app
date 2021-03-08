@@ -92,7 +92,7 @@ public class AdminMenu implements AutoCloseable {
         }); 
 		
 		logoutBtn.setStyle("-fx-background-color: #FE615A");
-		regBtn.setStyle("-fx-background-color: #789E9E; -fx-text-fill: white");
+		regBtn.setStyle("-fx-background-color: #292b2c; -fx-text-fill: white");
 		delBtn.setStyle("-fx-background-color: #789E9E; -fx-text-fill: white");
 		viewBtn.setStyle("-fx-background-color: #789E9E; -fx-text-fill: white");
 	    
