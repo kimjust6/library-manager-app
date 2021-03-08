@@ -74,6 +74,7 @@ public class LibrarianTable implements AutoCloseable {
 
 			} else {
 				System.out.println("No Librarians in database.");
+				AlertBox.display("Error!", "No Librarians in database.");
 			}
 			
 	        Button backBtn = new Button("Back");

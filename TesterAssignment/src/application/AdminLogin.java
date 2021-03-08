@@ -113,7 +113,8 @@ public class AdminLogin implements AutoCloseable {
 								}
 								
 							} else {
-								System.out.println("You are not an admin or librarian!");
+								//System.out.println("You are not an admin or librarian!");
+								AlertBox.display("Error", "You are not an admin or librarian!");
 							}
 	    				}
 	    			} else {

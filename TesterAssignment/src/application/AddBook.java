@@ -76,8 +76,10 @@ public class AddBook implements AutoCloseable{
 		    					
 					String query1 = String.format("insert into %s values('%s','%s','%s','%s', '%s', %d);", postgreSQLHeroku.TABLE_LIBRARY, title.getText(), author.getText(), publisher.getText(), selected_media, qty.getText(), 0);
 					
-						if(statement.executeUpdate(query1) == 1) {
-							System.out.println("Book added");
+						if(statement.executeUpdate(query1) == 1) 
+						{
+							//System.out.println("Book added");
+							AlertBox.display("Book added", "Book has been added!");
 							try (LibrarianMenu librarianMenu = new LibrarianMenu(stage, scene)) {
 								stage.setScene(librarianMenu.showMenu());
 								stage.setTitle("Librarian Menu");
@@ -85,7 +87,8 @@ public class AddBook implements AutoCloseable{
 								e.printStackTrace();
 							}
 						} else {
-							System.out.println("Failed!");
+							//System.out.println("Failed!");
+							AlertBox.display("Error!", "Could not add book!");
 						}
 					
 					
