@@ -99,16 +99,9 @@ public class LibrarianMenu implements AutoCloseable {
 				try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
 
 					Statement statement = connection.createStatement();
-					String query = "";
-					
-					
-					query = String.format("select s.studentno, s.fname, s.lname, lib.libid, lib.title, lib.author, lib.publisher, lib.media_type from students s "
-							+ "join borrowedobjects bo on (s.studentno = bo.studentno) join library lib on (bo.libid = lib.libid);",
-							postgreSQLHeroku.COL_STUD_NO);
-					//query = String.format("select * from %s where %s = %s;", postgreSQLHeroku.TABLE_BORROWED_OBJECTS, postgreSQLHeroku.COL_USERNAME, stud.getStudentNo());
-					
-
-					//System.out.println(query);
+					String query = String.format("select s.studentno, s.fname, s.lname, lib.libid, lib.title, lib.author, lib.publisher, lib.media_type from students s "
+													+ "join borrowedobjects bo on (s.studentno = bo.studentno) join library lib on (bo.libid = lib.libid);",
+													postgreSQLHeroku.COL_STUD_NO);
 					
 					ResultSet queryResult = statement.executeQuery(query); 
 					
@@ -119,7 +112,6 @@ public class LibrarianMenu implements AutoCloseable {
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					
 
 				} catch (PSQLException e2) {
 					e2.printStackTrace();

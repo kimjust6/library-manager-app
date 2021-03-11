@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import classes.BorrowedBooksTableLine;
 import classes.Librarian;
-import classes.LibraryObjects;
+import classes.LibraryObject;
 import classes.Student;
 
 class TestClasses {
@@ -56,7 +56,7 @@ class TestClasses {
 	void testLibraryObjects() {
 		
 	
-		LibraryObjects lo = new LibraryObjects("Harry Potter and the Prisoner of Azkaban","J.K. Rowling","Scholastic","book", 3,0,1);
+		LibraryObject lo = new LibraryObject("Harry Potter and the Prisoner of Azkaban","J.K. Rowling","Scholastic","book", 3,0,1);
 		assertEquals("Harry Potter and the Prisoner of Azkaban",lo.getTitle());
 		assertEquals("J.K. Rowling",lo.getAuthor());
 		assertEquals("Scholastic",lo.getPublisher());

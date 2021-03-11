@@ -1,6 +1,6 @@
 package classes;
 
-public class LibraryObjects {
+public class LibraryObject {
 	private String title;
 	private String author;
 	private String publisher;
@@ -10,7 +10,7 @@ public class LibraryObjects {
 	private int qtyRequested;
 	private int libid;
     
-	public LibraryObjects()
+	public LibraryObject()
 	{
 		this.title = "";
 		this.author = "";
@@ -20,14 +20,14 @@ public class LibraryObjects {
 		this.qtyBorrowed = 0;
 		this.libid = -1;
 	}
-	public LibraryObjects(String title, int qtyRequested, int qtyAvailable, int libid) 
+	public LibraryObject(String title, int qtyRequested, int qtyAvailable, int libid) 
 	{
 		this.title = title;
 		this.qtyRequested = qtyRequested;
 		this.qtyAvailable = qtyAvailable;
 		this.libid = libid;
 	}
-	public LibraryObjects(
+	public LibraryObject(
 			String title, 
 			String author, 
 			String publisher, 

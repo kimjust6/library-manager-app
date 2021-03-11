@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import org.postgresql.util.PSQLException;
 
-import classes.LibraryObjects;
+import classes.LibraryObject;
 import classes.Student;
 import database.postgreSQLHeroku;
 import javafx.collections.FXCollections;
@@ -32,8 +32,8 @@ public class BookRequests implements AutoCloseable {
 	private Stage stage;
 	private Scene scene;
 
-	ObservableList<LibraryObjects> data = FXCollections.observableArrayList();
-	TableView<LibraryObjects> tableview = new TableView<>();
+	ObservableList<LibraryObject> data = FXCollections.observableArrayList();
+	TableView<LibraryObject> tableview = new TableView<>();
 	
 	public BookRequests(Stage stage, Scene scene) {
 		this.stage = stage;
@@ -61,15 +61,15 @@ public class BookRequests implements AutoCloseable {
 			ResultSet rs = statement.executeQuery(query);
 	    	
 	    	while (rs.next()) {
-				data.add(new LibraryObjects(rs.getString(postgreSQLHeroku.COL_TITLE),
+				data.add(new LibraryObject(rs.getString(postgreSQLHeroku.COL_TITLE),
 											rs.getInt(postgreSQLHeroku.COL_QTY_REQD),
 											rs.getInt(postgreSQLHeroku.COL_QTY_AVAIL),
 											rs.getInt(postgreSQLHeroku.COL_ID)));
 	        }
 			
 			for (int i = 1; i < rs.getMetaData().getColumnCount(); i++) {
-	            TableColumn<LibraryObjects, String> col = new TableColumn<>(rs.getMetaData().getColumnName(i));
-	            col.setCellValueFactory(new PropertyValueFactory<LibraryObjects, String>(rs.getMetaData().getColumnName(i)));
+	            TableColumn<LibraryObject, String> col = new TableColumn<>(rs.getMetaData().getColumnName(i));
+	            col.setCellValueFactory(new PropertyValueFactory<LibraryObject, String>(rs.getMetaData().getColumnName(i)));
 	            col.setMinWidth(160);
 	            tableview.getColumns().add(col);
 	        }

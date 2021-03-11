@@ -1,7 +1,7 @@
 package application;
 
 import java.io.*;
-import classes.LibraryObjects;
+import classes.LibraryObject;
 import database.postgreSQLHeroku;
 
 import java.sql.Connection;
@@ -27,8 +27,8 @@ public class ViewBooks implements AutoCloseable {
 	private Stage stage;
 	private Scene scene;
 	private String lines = "";
-	private ObservableList<LibraryObjects> lo =  FXCollections.observableArrayList();
-	TableView<LibraryObjects> table = new TableView<>();
+	private ObservableList<LibraryObject> lo =  FXCollections.observableArrayList();
+	TableView<LibraryObject> table = new TableView<>();
 	
 	ViewBooks(Stage stage, Scene scene){
 		this.stage = stage;
@@ -49,7 +49,7 @@ public class ViewBooks implements AutoCloseable {
 
 	    		while(rs.next())
 	    		{
-	    			lo.add(new LibraryObjects(rs.getString(postgreSQLHeroku.COL_TITLE),
+	    			lo.add(new LibraryObject(rs.getString(postgreSQLHeroku.COL_TITLE),
               				rs.getString(postgreSQLHeroku.COL_AUTHOR),
               				rs.getString(postgreSQLHeroku.COL_PUBLISHER),
               				rs.getString(postgreSQLHeroku.COL_MEDIA_TYPE),
@@ -120,37 +120,37 @@ public class ViewBooks implements AutoCloseable {
       //try and create the table
       	
       //Column Title
-      	TableColumn<LibraryObjects,String> titleCol = new TableColumn<>("Title");
+      	TableColumn<LibraryObject,String> titleCol = new TableColumn<>("Title");
       	titleCol.setMinWidth(200);
       	titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
       	
       	//Column Author
-      	TableColumn<LibraryObjects,String> authCol = new TableColumn<>("Author");
+      	TableColumn<LibraryObject,String> authCol = new TableColumn<>("Author");
       	authCol.setMinWidth(150);
       	authCol.setCellValueFactory(new PropertyValueFactory<>("author"));
       	
       	//Column Publisher
-      	TableColumn<LibraryObjects,String> pubCol = new TableColumn<>("Publisher");
+      	TableColumn<LibraryObject,String> pubCol = new TableColumn<>("Publisher");
       	pubCol.setMinWidth(150);
       	pubCol.setCellValueFactory(new PropertyValueFactory<>("publisher"));
       	
       	//Column MediaType
-      	TableColumn<LibraryObjects,String> typeCol = new TableColumn<>("Type");
+      	TableColumn<LibraryObject,String> typeCol = new TableColumn<>("Type");
       	typeCol.setMinWidth(100);
       	typeCol.setCellValueFactory(new PropertyValueFactory<>("mediaType"));
       	
       	//Column Qty Available
-      	TableColumn<LibraryObjects,String> aQtyCol = new TableColumn<>("# Available");
+      	TableColumn<LibraryObject,String> aQtyCol = new TableColumn<>("# Available");
       	aQtyCol.setMinWidth(120);
       	aQtyCol.setCellValueFactory(new PropertyValueFactory<>("qtyAvailable"));
       	
       	//Column Qty Borrowed
-      	TableColumn<LibraryObjects,String> bQtyCol = new TableColumn<>("# Borrowed");
+      	TableColumn<LibraryObject,String> bQtyCol = new TableColumn<>("# Borrowed");
       	bQtyCol.setMinWidth(120);
       	bQtyCol.setCellValueFactory(new PropertyValueFactory<>("qtyBorrowed"));
       	
       	//Column ID
-      	TableColumn<LibraryObjects,String> idCol = new TableColumn<>("Book ID");
+      	TableColumn<LibraryObject,String> idCol = new TableColumn<>("Book ID");
       	idCol.setMinWidth(80);
       	idCol.setCellValueFactory(new PropertyValueFactory<>("libid"));
       	
