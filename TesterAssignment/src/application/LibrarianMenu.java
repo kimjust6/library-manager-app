@@ -28,6 +28,7 @@ public class LibrarianMenu implements AutoCloseable {
 		this.stage = stage;
 		this.scene = scene;
 	}
+	
 	public Scene showMenu() throws Exception {
 		GridPane pane = new GridPane();
 		pane.setAlignment(Pos.CENTER);
@@ -77,7 +78,6 @@ public class LibrarianMenu implements AutoCloseable {
 				}
 			}
 		});
-
 
 		Button issueBtn = new Button("Book Requests");
 		issueBtn.setOnAction(new EventHandler<ActionEvent>(){
