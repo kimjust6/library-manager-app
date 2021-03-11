@@ -40,7 +40,7 @@ public class Home implements AutoCloseable {
 	    
 	    Label wlcMSG = new Label("Welcome!\nWho are you logging in as...?\n");
 	    wlcMSG.setFont(new Font(18));
-		Button btAdmin = new Button("User");
+		Button btAdmin = new Button("Employee");
 	    Button btStu = new Button("Student");
 
 	    
