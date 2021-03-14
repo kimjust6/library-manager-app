@@ -31,8 +31,11 @@ public class StudentLogin implements AutoCloseable {
 	}
 	
 	public Scene showLoginPage() throws Exception {
+		//declare pane
 		GridPane pane = new GridPane();
+		//set alignment
 		pane.setAlignment(Pos.CENTER);
+		//set gaps
 		pane.setHgap(5.5);
 	    pane.setVgap(10);
 	    
@@ -41,13 +44,15 @@ public class StudentLogin implements AutoCloseable {
         Button backBtn = new Button("Back");
         Button btn = new Button("Login");
         
+        //action handler for pressing enter
         btn.setOnAction((event) -> { this.handle(studentNoField.getText()); });
 		pane.setOnKeyPressed((event) -> {
 			if(event.getCode() == KeyCode.ENTER) {
 				this.handle(studentNoField.getText());
 			}
 		});        
-
+		
+		//action handler for back button
        backBtn.setOnAction(e-> {
         	try (Home homePage = new Home(stage, scene);) {
     			stage.setScene(homePage.showHomePage()); 
@@ -57,18 +62,27 @@ public class StudentLogin implements AutoCloseable {
     		}
        }); 
        
+       //style
        btn.setStyle("-fx-background-color: mediumaquamarine");
        backBtn.setStyle("-fx-background-color: coral");
+       
+       //adding to the pane
        pane.add(userLabel, 0 , 0);
        pane.add(studentNoField, 1 , 0);
        pane.add(btn, 1, 1);
        pane.add(backBtn, 1, 2);
        
+       //style
        pane.setStyle("-fx-background-color: #B7D8D6");
+
+       //creating a new scene and adding pane to it
        Scene scene = new Scene(pane, 350, 450);
+       
+       //adding an external css styling doc
 	   scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	   return scene;
 	}
+	//function that handles the enter key/button press
 	public void handle(String studentNo) {
 		if (studentNo == "") 
 		{
@@ -78,16 +92,19 @@ public class StudentLogin implements AutoCloseable {
 		}
 		else
 		{
+			//connect to the database
 			try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
 
 				Statement statement = connection.createStatement();
-				
+				//generating the query string
 				String query = "select * from " + postgreSQLHeroku.TABLE_STUDENTS + " where " + postgreSQLHeroku.COL_STUD_NO + "=" + studentNo + ";";
+				//getting the result of the sql query
 				ResultSet queryResult = statement.executeQuery(query); 
-
+				//checking if there is a result
 				if(queryResult.next()) {
 					//System.out.println("Student is " + queryResult.getString(postgreSQLHeroku.COL_STUD_LVL));
 					
+					//if there is a result, create a new student object and pass it to the StudentMenu class
 					try (StudentMenu studentMenu = new StudentMenu(stage, scene)) 
 					{
 						//create new Student object
@@ -103,6 +120,7 @@ public class StudentLogin implements AutoCloseable {
 						e.printStackTrace();
 					}
 				} else {
+					//otherwise there is no matches
 					AlertBox.display("Error!", "Student not found!");
 				}
 			} catch (PSQLException e2) {

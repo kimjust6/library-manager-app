@@ -34,14 +34,18 @@ public class StudentMenu implements AutoCloseable {
 	
 	
 	public Scene showMenu(Student stud)  {
+		//create a new grid pane
 		GridPane pane = new GridPane();
+		//set alignment
       	pane.setAlignment(Pos.CENTER);
+      	//set gap
       	pane.setHgap(5.5);
     	pane.setVgap(10);
 	    
       	Label heading = new Label("STUDENT NO: " + stud.getStudentNo() + "\nSTATUS: " + stud.getStudentLvl().toUpperCase() +
       			"\nNAME: " + stud.getFName().toUpperCase() + " " + stud.getLName().toUpperCase());
       	
+      	//declare buttons
       	Button searchBtn = new Button("Find Books");
       	Button viewBorrowedBtn = new Button("View Borrowed Items");
       	Button viewWaitListBtn = new Button("View Requested Items");
@@ -53,7 +57,7 @@ public class StudentMenu implements AutoCloseable {
       	
       	backBtn.setMaxWidth(WIDTH);
       	
-      	
+      	//event handler for searching books
       	searchBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try (BookSearchMenu bsm = new BookSearchMenu(stage, scene)) {
@@ -65,14 +69,15 @@ public class StudentMenu implements AutoCloseable {
 			}
       	});
       	
+      	//event handler for viewing borrowed books
       	viewBorrowedBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
-
+					
 					Statement statement = connection.createStatement();
 					String query = "";
 					
-					
+					//creating a query string
 					query = String.format("select s.studentno, s.fname, s.lname, lib.libid, lib.title, lib.author, lib.publisher, lib.media_type from students s "
 							+ "join borrowedobjects bo on (s.studentno = bo.studentno) join library lib on (bo.libid = lib.libid) where s.%s='%s';",
 							postgreSQLHeroku.COL_STUD_NO,stud.getStudentNo());
@@ -81,8 +86,10 @@ public class StudentMenu implements AutoCloseable {
 
 					//System.out.println(query);
 					
+					//query the sql server
 					ResultSet queryResult = statement.executeQuery(query); 
 					
+					//call the BorrowedLibTable
 					try (BorrowedLibTable borrowTable = new BorrowedLibTable(stage, scene)) 
 					{
 						stage.setScene(borrowTable.showMenu(queryResult, stud));
@@ -102,6 +109,8 @@ public class StudentMenu implements AutoCloseable {
 			}
       	});
       	
+      	
+      	//event handler for viewing waitlistbutton
       	viewWaitListBtn.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent arg0) {
 				try(Connection connection = DriverManager.getConnection(postgreSQLHeroku.DATABASE_URL, postgreSQLHeroku.DATABASE_USERNAME, postgreSQLHeroku.DATABASE_PASSWORD)) {
@@ -109,7 +118,7 @@ public class StudentMenu implements AutoCloseable {
 					Statement statement = connection.createStatement();
 					String query = "";
 					
-					
+					//create the query string
 					query = String.format("select s.studentno, s.fname, s.lname, lib.libid, lib.title, lib.author, lib.publisher, lib.media_type from students s "
 							+ "join waitlistobjects bo on (s.studentno = bo.studentno) join library lib on (bo.libid = lib.libid) where s.%s='%s';",
 							postgreSQLHeroku.COL_STUD_NO,stud.getStudentNo());
@@ -117,9 +126,9 @@ public class StudentMenu implements AutoCloseable {
 					
 
 					//System.out.println(query);
-					
+					//get the result from sql server
 					ResultSet queryResult = statement.executeQuery(query); 
-					
+					//call the WaitListLibTable class
 					try (WaitListLibTable waitListTable = new WaitListLibTable(stage, scene)) 
 					{
 						stage.setScene(waitListTable.showMenu(queryResult, stud));
@@ -139,6 +148,7 @@ public class StudentMenu implements AutoCloseable {
 			}
       	});
 
+      	//back button action listener
       	backBtn.setOnAction(e-> {
 			
 			try (Home homePage = new Home(stage, scene)) {
